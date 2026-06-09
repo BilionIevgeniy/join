@@ -1,0 +1,26 @@
+.layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 232px;
+  flex-shrink: 0;
+}
+
+.layout__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.header {
+  flex-shrink: 0;
+}
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+}
