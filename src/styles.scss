@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+@use './styles/reset';
+@use './styles/variables/global.scss';
+@use './styles/themes/normal.scss' as *;
+@use './styles/themes/dark.scss' as *;
+
+.app {
+  font: var(--font-m);
+  color: var(--primary-color);
+  background-color: var(--bg-color);
+  min-height: 100dvh;
+}
