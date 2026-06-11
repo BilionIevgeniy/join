@@ -5,8 +5,8 @@ import { Contact, CreateContactDto, UpdateContactDto } from '../models/contact.m
 @Injectable({ providedIn: 'root' })
 export class ContactService {
   private supabase = inject(SupabaseService);
-
   private contactsMap = signal<Record<string, Contact>>({});
+  isLoading = signal(false);
 
   contacts = computed(() => Object.values(this.contactsMap()));
 
@@ -26,22 +26,23 @@ export class ContactService {
     return groups;
   });
 
-  // Get all contacts from Supabase
-  async getAll(): Promise<void> {
-    const { data, error } = await this.supabase.db.from('contacts').select('*');
-    if (error) {
-      console.error('Error loading contacts:', error);
-      return;
-    }
-    data.forEach((contact: Contact) => this.upsert(contact));
-  }
-
   // Get contact by ID — used to render avatars on task cards
   getById(id: string): Contact | undefined {
     return this.contactsMap()[id];
   }
 
-  // ─── CRUD (mock — replace with HTTP calls later) ──────────────
+  // ─── CRUD ──────────────
+  async getAll(): Promise<void> {
+    this.isLoading.set(true);
+    const { data, error } = await this.supabase.db.from('contacts').select('*');
+    if (error) {
+      console.error('Error loading contacts:', error);
+    } else {
+      data.forEach((contact: Contact) => this.upsert(contact));
+    }
+
+    this.isLoading.set(false);
+  }
 
   addContact(dto: CreateContactDto): void {
     const contact: Contact = {
