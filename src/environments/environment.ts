@@ -1,5 +1,5 @@
-// src/environments/environment.ts  (development)
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000',   // NestJS dev server
+  supabaseUrl: 'https://unxouybjmncfbjdnudlt.supabase.co',
+  supabaseKey: 'sb_publishable_FVNMWG6zT2kGchiMMxy6xg_ec6NBFPb',
 };

@@ -1,8 +1,11 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { SupabaseService } from './supabase.service';
 import { Contact, CreateContactDto, UpdateContactDto } from '../models/contact.model';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
+  private supabase = inject(SupabaseService);
+
   private contactsMap = signal<Record<string, Contact>>({});
 
   contacts = computed(() => Object.values(this.contactsMap()));
@@ -22,6 +25,16 @@ export class ContactService {
     });
     return groups;
   });
+
+  // Get all contacts from Supabase
+  async getAll(): Promise<void> {
+    const { data, error } = await this.supabase.db.from('contacts').select('*');
+    if (error) {
+      console.error('Error loading contacts:', error);
+      return;
+    }
+    data.forEach((contact: Contact) => this.upsert(contact));
+  }
 
   // Get contact by ID — used to render avatars on task cards
   getById(id: string): Contact | undefined {
