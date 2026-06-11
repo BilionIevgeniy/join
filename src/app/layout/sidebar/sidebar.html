@@ -7,49 +7,18 @@
   <!-- Navigation Links -->
   <nav class="sidebar__nav">
     <ul class="nav-list">
-      <li class="nav-item">
-        <a 
-          routerLink="/summary" 
-          routerLinkActive="nav-item--active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <img src="/assets/icons/summary-icon.svg" alt="Summary" class="nav-icon" />
-          <span class="nav-text">Summary</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a 
-          routerLink="/board" 
-          routerLinkActive="nav-item--active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <img src="/assets/icons/board-icon.svg" alt="Board" class="nav-icon" />
-          <span class="nav-text">Board</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a 
-          routerLink="/add-task" 
-          routerLinkActive="nav-item--active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <img src="/assets/icons/add-task-icon.svg" alt="Add Task" class="nav-icon" />
-          <span class="nav-text">Add Task</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a 
-          routerLink="/contacts" 
-          routerLinkActive="nav-item--active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <img src="/assets/icons/contacts-icon.svg" alt="Contacts" class="nav-icon" />
-          <span class="nav-text">Contacts</span>
-        </a>
-      </li>
+      @for (item of navItems; track item.route) {
+        <li class="nav-item">
+          <a
+            [routerLink]="'/' + item.route"
+            routerLinkActive="nav-item--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <img [src]="item.icon" [alt]="item.label" class="nav-icon" />
+            <span class="nav-text">{{ item.label }}</span>
+          </a>
+        </li>
+      }
     </ul>
   </nav>
 

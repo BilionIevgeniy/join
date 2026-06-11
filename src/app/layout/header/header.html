@@ -2,33 +2,26 @@
   <div class="header__content">
     <!-- Leerer Platz (später: Breadcrumbs) -->
     <div class="header__breadcrumb">
-      <!-- Wird später gefüllt -->
+      <!-- Logo nur im Responsive sichtbar -->
+      <img src="/assets/img/join-logo-dark.svg" alt="Join Logo" class="header__logo" />
     </div>
 
     <!-- Benutzer Sektion rechts -->
     <div class="header__user">
       <!-- Hilfenachricht -->
-      <button class="help-button" title="Help">
-      </button>
+      <button class="help-button" title="Help"></button>
 
       <!-- Benutzer Dropdown -->
       <div class="user-dropdown">
-        <button 
-          class="user-button"
-          (click)="toggleDropdown()"
-        >
-          <div class="user-avatar">
-            {{ userInitials() }}
-          </div>
-          <span class="user-name">{{ userName() }}</span>
+        <button class="user-button" (click)="toggleDropdown()">
+          <app-avatar [initials]="userInitials()"></app-avatar>
         </button>
 
         <!-- Dropdown Menü -->
         <div class="dropdown-menu" *ngIf="isDropdownOpen()">
           <div class="dropdown-header">
-            <div class="user-avatar">{{ userInitials() }}</div>
+            <app-avatar [initials]="userInitials()"></app-avatar>
             <div>
-              <div class="dropdown-name">{{ userName() }}</div>
               <div class="dropdown-email">{{ userEmail() }}</div>
             </div>
           </div>
