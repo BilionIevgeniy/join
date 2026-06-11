@@ -1,6 +1,6 @@
 // Global CSS variables for font sizes and families
 :root {
-  --font-family-main: 'Consolas', 'Times New Roman', 'Arial, sans-serif';
+  --font-family: var(--font-family-main);
 
   /* Default font family */
   --font-size-m: 16px;
