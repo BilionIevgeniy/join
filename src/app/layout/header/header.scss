@@ -1,0 +1,153 @@
+.header {
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 16px 32px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.header__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+}
+
+.header__breadcrumb {
+  flex: 1;
+}
+
+.header__user {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+// Hilfe Button
+.help-button {
+  width: 32px;
+  height: 32px;
+  background-image: url(/assets/icons/help-icon.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+
+  &:hover {
+    transform: scale(1.3);
+    background-color: #f5f5f5;
+    transition: all 0.2s ease;
+  }
+}
+
+// Benutzer Dropdown
+.user-dropdown {
+  position: relative;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.user-name {
+  font-weight: 500;
+  color: #333;
+}
+
+// Dropdown Menü
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 280px;
+  margin-top: 8px;
+  padding: 8px 0;
+  z-index: 1000;
+
+  hr {
+    margin: 8px 0;
+    border: none;
+    border-top: 1px solid #f0f0f0;
+  }
+}
+
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+
+  .user-avatar {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.dropdown-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.dropdown-email {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 14px;
+
+  &:hover {
+    background: #f5f5f5;
+    color: #333;
+  }
+
+  &.logout {
+    color: #e74c3c;
+
+    &:hover {
+      background: #ffe6e6;
+    }
+  }
+}
