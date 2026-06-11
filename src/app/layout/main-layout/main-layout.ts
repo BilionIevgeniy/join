@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ContactService } from '../../core/services/contact.service';
 // import { Sidebar } from '../sidebar/sidebar.component';
 // import { Header } from '../header/header.component';
 
@@ -14,4 +15,11 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
 })
-export class MainLayout {}
+export class MainLayout implements OnInit {
+  private contactService = inject(ContactService);
+  isLoading = this.contactService.isLoading;
+
+  ngOnInit(): void {
+    this.contactService.getAll();
+  }
+}
