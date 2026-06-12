@@ -1,0 +1,155 @@
+<div class="contacts" [class.contacts--detail-open]="selectedContact()">
+  <!-- LEFT PANEL — scrollable contact list -->
+  <div class="contacts__list">
+    <div class="contacts__groups">
+      <div class="contacts__add-btn-wrapper">
+        <button class="contacts__add-btn" (click)="openAddModal()">
+          Add new contact
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <line x1="19" y1="8" x2="19" y2="14" />
+            <line x1="22" y1="11" x2="16" y2="11" />
+          </svg>
+        </button>
+      </div>
+      @for (letter of getLetters(); track letter) {
+        <div class="contacts__group">
+          <span class="contacts__letter">{{ letter }}</span>
+          <div class="contacts__divider"></div>
+
+          @for (contact of groupedContacts()[letter]; track contact.id) {
+            <div
+              class="contacts__item"
+              [class.contacts__item--active]="selectedContact()?.id === contact.id"
+              (click)="selectContact(contact)"
+            >
+              <div class="contacts__avatar" [style.background-color]="contact.color">
+                {{ contact.initials }}
+              </div>
+              <div class="contacts__info">
+                <span class="contacts__name">{{ getFullName(contact) }}</span>
+                <span class="contacts__email">{{ contact.email }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- VERTICAL SEPARATOR — desktop only -->
+  <div class="contacts__separator"></div>
+
+  <!-- RIGHT PANEL — detail view -->
+  <div class="contacts__detail">
+    <!-- Back button — mobile only, shown when a contact is selected -->
+    @if (selectedContact()) {
+      <button class="contacts__back-btn" (click)="goBack()" aria-label="Back to list">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="19" y1="12" x2="5" y2="12" />
+          <polyline points="12 19 5 12 12 5" />
+        </svg>
+      </button>
+    }
+
+    <!-- Always-visible header -->
+    <div class="contacts__placeholder">
+      <h1 class="contacts__title">Contacts</h1>
+      <div class="contacts__title-divider"></div>
+      <span class="contacts__subtitle">Better with a team</span>
+    </div>
+
+    <!-- Contact detail — animates on every selection change -->
+    @if (selectedContact(); as contact) {
+      <div class="contacts__detail-content" [@slideIn]="contact.id">
+        <div class="contacts__detail-header">
+          <div class="contacts__detail-avatar" [style.background-color]="contact.color">
+            {{ contact.initials }}
+          </div>
+          <div class="contacts__detail-meta">
+            <h2 class="contacts__detail-name">{{ getFullName(contact) }}</h2>
+            <div class="contacts__detail-actions">
+              <button class="contacts__action-btn" (click)="editContact(contact)">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+                Edit
+              </button>
+              <button class="contacts__action-btn" (click)="deleteContact(contact.id)">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="3 6 5 6 21 6" />
+                  <path
+                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                  />
+                </svg>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <span class="contacts__detail-label">Contact Information</span>
+
+        <div class="contacts__detail-info">
+          <div class="contacts__detail-field">
+            <span class="contacts__field-label">Email</span>
+            <a class="contacts__field-email" [href]="'mailto:' + contact.email">{{
+              contact.email
+            }}</a>
+          </div>
+          <div class="contacts__detail-field">
+            <span class="contacts__field-label">Phone</span>
+            <span class="contacts__field-value">{{ contact.phone }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- FAB — mobile only, always visible -->
+  <button class="contacts__fab" (click)="openAddModal()" aria-label="Add new contact">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <line x1="19" y1="8" x2="19" y2="14" />
+      <line x1="22" y1="11" x2="16" y2="11" />
+    </svg>
+  </button>
+</div>

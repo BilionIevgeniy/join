@@ -12,14 +12,14 @@ export class ContactService {
 
   // Alphabetical sort — for the Contacts page
   sortedContacts = computed(() =>
-    [...this.contacts()].sort((a, b) => a.name.localeCompare(b.name)),
+    [...this.contacts()].sort((a, b) => a.first_name.localeCompare(b.first_name)),
   );
 
   // Grouped by first letter — { A: [...], B: [...] }
   groupedContacts = computed(() => {
     const groups: Record<string, Contact[]> = {};
     this.sortedContacts().forEach((contact) => {
-      const letter = contact.name[0].toUpperCase();
+      const letter = contact.first_name[0].toUpperCase();
       if (!groups[letter]) groups[letter] = [];
       groups[letter].push(contact);
     });
@@ -48,8 +48,8 @@ export class ContactService {
     const contact: Contact = {
       ...dto,
       id: this.generateId(),
-      initials: this.generateInitials(dto.name),
-      avatarColor: this.generateAvatarColor(dto.name),
+      initials: this.generateInitials(dto.first_name),
+      color: this.generateAvatarColor(dto.first_name),
     };
     this.upsert(contact);
   }
@@ -62,7 +62,7 @@ export class ContactService {
     const updated: Contact = {
       ...existing,
       ...dto,
-      initials: dto.name ? this.generateInitials(dto.name) : existing.initials,
+      initials: dto.first_name ? this.generateInitials(dto.first_name) : existing.initials,
     };
     this.upsert(updated);
   }

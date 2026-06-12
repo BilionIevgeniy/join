@@ -33,11 +33,10 @@ export const routes: Routes = [
       //       (m) => m.AddTaskPageComponent,
       //     ),
       // },
-      // {
-      //   path: 'contacts',
-      //   loadComponent: () =>
-      //     import('./pages/contacts/contacts').then((m) => m.Contacts),
-      // },
+      {
+        path: 'contacts',
+        loadComponent: () => import('./pages/contacts/contacts').then((m) => m.Contacts),
+      },
       // Redirect from root
       { path: '', redirectTo: 'summary', pathMatch: 'full' },
     ],
