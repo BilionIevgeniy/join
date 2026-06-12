@@ -13,6 +13,7 @@ export class Header {
   userInitials = signal('SM');
   userColor = signal('linear-gradient(135deg, #3498db 0%, #2980b9 100%)');
   
+  isLoggedIn = signal(true);
   isDropdownOpen = signal(false);
 
   toggleDropdown() {
