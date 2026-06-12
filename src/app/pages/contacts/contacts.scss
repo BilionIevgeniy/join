@@ -106,15 +106,14 @@
     top: 0;
     z-index: 1;
     background-color: var(--c-list-bg);
+    padding: 12px 16px 16px;
   }
 
   &__add-btn {
-    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin: 12px 16px 16px;
     width: calc(100% - 32px);
     height: 56px;
     background-color: var(--c-item-active-bg);
