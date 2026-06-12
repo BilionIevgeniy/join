@@ -15,6 +15,10 @@
       <router-outlet />
     </main>
 
+    @if (isLoading()) {
+      <app-loader />
+    }
+
   </div>
 
 </div>

@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
 import { ContactService } from '../../core/services/contact.service';
+import { Loader } from '../../components/shared/loader/loader';
 
 
 @Component({
@@ -11,7 +12,8 @@ import { ContactService } from '../../core/services/contact.service';
   imports: [
     RouterOutlet,
     Sidebar,
-    Header
+    Header,
+    Loader
   ],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
