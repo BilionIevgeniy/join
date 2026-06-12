@@ -24,3 +24,21 @@
   flex: 1;
   overflow-y: auto;
 }
+
+
+// === RESPONSIVE ab 1024px ===
+@media (max-width: 1025px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  // Sidebar-Platzhalter oben entfernen
+  .sidebar {
+    width: 100%;
+  }
+
+  // Platz unten lassen für die fixierte Bottom-Navigation
+  .main {
+    padding-bottom: 80px;
+  }
+}

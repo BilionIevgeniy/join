@@ -1,0 +1,30 @@
+<aside class="sidebar">
+  <!-- Logo -->
+  <div class="sidebar__logo">
+    <img src="/assets/img/join-logo-white.svg" alt="Join Logo" />
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="sidebar__nav">
+    <ul class="nav-list">
+      @for (item of navItems; track item.route) {
+        <li class="nav-item">
+          <a
+            [routerLink]="'/' + item.route"
+            routerLinkActive="nav-item--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <img [src]="item.icon" [alt]="item.label" class="nav-icon" />
+            <span class="nav-text">{{ item.label }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <!-- Footer Links -->
+  <footer class="sidebar__footer">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Legal notice</a>
+  </footer>
+</aside>

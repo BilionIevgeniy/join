@@ -1,16 +1,19 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Header } from '../header/header';
+import { Sidebar } from '../sidebar/sidebar';
 import { ContactService } from '../../core/services/contact.service';
-// import { Sidebar } from '../sidebar/sidebar.component';
-// import { Header } from '../header/header.component';
+import { Loader } from '../../components/shared/loader/loader';
+
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
   imports: [
     RouterOutlet,
-    // Sidebar,
-    // Header
+    Sidebar,
+    Header,
+    Loader
   ],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
