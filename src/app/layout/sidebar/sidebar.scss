@@ -1,0 +1,161 @@
+.sidebar {
+  width: 232px;
+  background: var(--bg-color);
+  color: white;
+  padding: 50px 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+// Logo Bereich
+.sidebar__logo {
+  padding: 0 24px 100px;
+  text-align: center;
+
+  img {
+    max-width: 80px;
+  }
+}
+
+// Navigation Bereich
+.sidebar__nav {
+  flex: 1;
+  padding: 0;  
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin-bottom: 0;
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 8px 60px;
+    height: 46px;
+    border-radius: 0;
+    color: white;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 16px;
+    font-weight: 400;
+    box-sizing: border-box;
+
+    &:hover {
+      background: var(--hover-color);
+      transform: none;
+    }
+  }
+}
+
+// Aktiver Link
+.nav-item--active a {
+  background: var(--nav-active-bg);
+  box-shadow: none;
+}
+
+// Icons
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.nav-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Footer Bereich (unten)
+.sidebar__footer {
+  width: 100%;
+  height: 232px;
+  padding: 24px 77px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  font-size: 12px;
+
+  a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--nav-footer-link-hover);
+    }
+  }
+}
+
+// === RESPONSIVE: Bottom-Navigation ab 1024px ===
+@media (max-width: 1025px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    padding: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+  }
+
+  // Logo in der Sidebar ausblenden (wandert in Header)
+  .sidebar__logo {
+    display: none;
+  }
+
+  // Footer (Privacy/Legal) ausblenden
+  .sidebar__footer {
+    display: none;
+  }
+
+  // Navigation horizontal
+  .sidebar__nav {
+    width: 100%;
+    height: 80px;
+    padding: 0;
+  }
+
+  .nav-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .nav-item {
+
+    a {
+      width: 76px;
+      height: 76px;
+      flex-direction: column;  // Icon über Text
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 4px;
+      font-size: 16px;
+      
+      &:hover {
+        background-color: var(--nav-active-bg);
+        border-radius: 16px;
+      }
+    }
+
+    
+  }
+
+  // Icons etwas kleiner
+  .nav-icon {
+    width: 21px;
+    height: 24px;
+  }
+}
