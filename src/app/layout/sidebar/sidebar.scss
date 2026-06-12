@@ -50,7 +50,7 @@
     box-sizing: border-box;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--hover-color);
       transform: none;
     }
   }
@@ -58,8 +58,8 @@
 
 // Aktiver Link
 .nav-item--active a {
-  background: #091931;
-  box-shadow: none;  
+  background: var(--nav-active-bg);
+  box-shadow: none;
 }
 
 // Icons
@@ -92,7 +92,7 @@
     transition: color 0.2s ease;
 
     &:hover {
-      color: white;
+      color: var(--nav-footer-link-hover);
     }
   }
 }
@@ -144,10 +144,10 @@
       padding: 8px 4px;
       font-size: 16px;
       
-      &:hover{
-      background-color: #091931;
-      border-radius: 16px;
-    }
+      &:hover {
+        background-color: var(--nav-active-bg);
+        border-radius: 16px;
+      }
     }
 
     
