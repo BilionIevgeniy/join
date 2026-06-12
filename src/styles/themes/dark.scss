@@ -1,9 +1,13 @@
 .app.dark {
   --bg-color: #2a3647;
-  --inverted-bg-color: #34495e;
+  --inverted-bg-color: white;
+
   --text-color: #ecf0f1;
+  --inverted-text-color: #2a3647;
+
   --primary-color: #3498db;
   --inverted-primary-color: #2980b9;
+
   --secondary-color: #2ecc71;
   --inverted-secondary-color: #27ae60;
 
@@ -11,7 +15,6 @@
   --dropdown-text: #cdcdcd;
   --hover-color: #2a3d59;
 
-  --header-bg: white;
   --header-border: white;
   --header-button-hover: #2a3d59;
 

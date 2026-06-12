@@ -20,7 +20,6 @@
   &__groups {
     flex: 1;
     overflow-y: auto;
-    padding: 4px 0 8px;
   }
 
   &__group {
@@ -31,12 +30,13 @@
     display: block;
     padding: 8px 16px 4px;
     font-size: var(--font-size-m);
-    color: var(--text-color);
+    color: var(--inverted-text-color);
   }
 
   &__divider {
     height: 1px;
     background-color: var(--c-separator);
+    opacity: 0.3;
     margin: 0 16px 4px;
   }
 
@@ -87,7 +87,7 @@
 
   &__name {
     font-size: var(--font-size-m);
-    color: var(--text-color);
+    color: var(--inverted-text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -120,7 +120,7 @@
     background-color: var(--c-item-active-bg);
     color: var(--c-item-active-txt);
     border: none;
-    border-radius: 32px;
+    border-radius: 10px;
     font-size: var(--font-size-m);
     cursor: pointer;
     transition: background-color 150ms ease;
@@ -162,7 +162,7 @@
   &__title {
     font-size: 47px;
     font-weight: 700;
-    color: var(--text-color);
+    color: var(--inverted-text-color);
     line-height: 1;
   }
 
@@ -175,7 +175,7 @@
 
   &__subtitle {
     font-size: var(--font-size-m);
-    color: var(--text-color);
+    color: var(--inverted-text-color);
   }
 
   &__back-btn {

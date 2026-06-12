@@ -1,5 +1,5 @@
 .header {
-  background: var(--header-bg);
+  background: var(--inverted-bg-color);
   border-bottom: 1px solid var(--header-border);
   padding: 16px 32px;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
@@ -111,9 +111,9 @@
 }
 
 .header__logo {
-    display: none;
-    height: 40px;
-  }
+  display: none;
+  height: 40px;
+}
 
 @media (max-width: 1025px) {
   .header__logo {

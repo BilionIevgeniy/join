@@ -9,11 +9,11 @@
     </header>
 
     <main class="main">
-      <router-outlet />
+      @if (isLoading()) {
+        <app-loader />
+      } @else {
+        <router-outlet />
+      }
     </main>
-
-    @if (isLoading()) {
-      <app-loader />
-    }
   </div>
 </div>
