@@ -11,6 +11,7 @@ import { Avatar } from '../../components/shared/avatar/avatar';
 export class Header {
   userEmail = signal('sofia.mueller@join.com');
   userInitials = signal('SM');
+  userColor = signal('linear-gradient(135deg, #3498db 0%, #2980b9 100%)');
   
   isDropdownOpen = signal(false);
 

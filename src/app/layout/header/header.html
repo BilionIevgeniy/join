@@ -14,13 +14,13 @@
       <!-- Benutzer Dropdown -->
       <div class="user-dropdown">
         <button class="user-button" (click)="toggleDropdown()">
-          <app-avatar [initials]="userInitials()"></app-avatar>
+          <app-avatar [initials]="userInitials()" [color]="userColor()"></app-avatar>
         </button>
 
         <!-- Dropdown Menü -->
         <div class="dropdown-menu" *ngIf="isDropdownOpen()">
           <div class="dropdown-header">
-            <app-avatar [initials]="userInitials()"></app-avatar>
+            <app-avatar [initials]="userInitials()" [color]="userColor()"></app-avatar>
             <div>
               <div class="dropdown-email">{{ userEmail() }}</div>
             </div>
