@@ -13,11 +13,12 @@
     <div class="modal__right">
       <button class="modal__close" (click)="close()">✕</button>
 
-      <div class="modal__avatar">
-        <app-avatar [initials]="getInitials()" [color]="getAvatarColor()" size="large" />
-      </div>
+      <div class="modal__content">
+        <div class="modal__avatar">
+          <app-avatar [initials]="getInitials()" [color]="getAvatarColor()" size="large" />
+        </div>
 
-      <form class="modal__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <form class="modal__form" [formGroup]="form" (ngSubmit)="onSubmit()">
 
         <!-- Name -->
         <div class="modal__field">
@@ -61,14 +62,15 @@
             <app-button variant="outline" size="medium" weight="bold" fontSize="medium"
               label="Cancel" icon="x-black-icon.svg" (click)="close()" />
           }
-          <app-button variant="secondary" size="medium" weight="bold" fontSize="medium"
+          <app-button variant="primary" size="medium" weight="bold" fontSize="medium"
             [label]="mode === 'edit' ? 'Save' : 'Create contact'"
             icon="check.svg"
             [disabled]="isLoading"
             (click)="onSubmit()" />
         </div>
 
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>
