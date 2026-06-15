@@ -12,6 +12,7 @@ import { Contact } from '../../core/models/contact.model';
   styleUrl: './contacts.scss',
   animations: [
     trigger('slideIn', [
+      transition(':leave', []),
       transition('* => *', [
         style({ opacity: 0, transform: 'translateX(60px)' }),
         animate('240ms ease-out', style({ opacity: 1, transform: 'translateX(0)' })),
@@ -42,8 +43,8 @@ export class Contacts {
   }
 
   deleteContact(id: string): void {
-    this.contactService.deleteContact(id);
     this.selectedContact.set(null);
+    this.contactService.deleteContact(id);
   }
 
   getLetters(): string[] {

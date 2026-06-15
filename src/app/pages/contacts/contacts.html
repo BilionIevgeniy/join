@@ -1,9 +1,9 @@
-<div class="contacts" [class.contacts--detail-open]="selectedContact()">
+<div class="contacts-page" [class.contacts--detail-open]="selectedContact()">
   <!-- LEFT PANEL — scrollable contact list -->
-  <div class="contacts__list">
-    <div class="contacts__groups">
-      <div class="contacts__add-btn-wrapper">
-        <button class="contacts__add-btn" (click)="openAddModal()">
+  <div class="contacts-page__list">
+    <div class="contacts-page__groups">
+      <div class="contacts-page__add-btn-wrapper">
+        <button class="contacts-page__add-btn" (click)="openAddModal()">
           Add new contact
           <svg
             viewBox="0 0 24 24"
@@ -21,22 +21,22 @@
         </button>
       </div>
       @for (letter of getLetters(); track letter) {
-        <div class="contacts__group">
-          <span class="contacts__letter">{{ letter }}</span>
-          <div class="contacts__divider"></div>
+        <div class="contacts-page__group">
+          <span class="contacts-page__letter">{{ letter }}</span>
+          <div class="contacts-page__divider"></div>
 
           @for (contact of groupedContacts()[letter]; track contact.id) {
             <div
-              class="contacts__item"
-              [class.contacts__item--active]="selectedContact()?.id === contact.id"
+              class="contacts-page__item"
+              [class.contacts-page__item--active]="selectedContact()?.id === contact.id"
               (click)="selectContact(contact)"
             >
-              <div class="contacts__avatar" [style.background-color]="contact.color">
+              <div class="contacts-page__avatar" [style.background-color]="contact.color">
                 {{ contact.initials }}
               </div>
-              <div class="contacts__info">
-                <span class="contacts__name">{{ getFullName(contact) }}</span>
-                <span class="contacts__email">{{ contact.email }}</span>
+              <div class="contacts-page__info">
+                <span class="contacts-page__name">{{ getFullName(contact) }}</span>
+                <span class="contacts-page__email">{{ contact.email }}</span>
               </div>
             </div>
           }
@@ -46,10 +46,10 @@
   </div>
 
   <!-- RIGHT PANEL — detail view -->
-  <div class="contacts__detail">
+  <div class="contacts-page__detail">
     <!-- Back button — mobile only, shown when a contact is selected -->
     @if (selectedContact()) {
-      <button class="contacts__back-btn" (click)="goBack()" aria-label="Back to list">
+      <button class="contacts-page__back-btn" (click)="goBack()" aria-label="Back to list">
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -65,23 +65,23 @@
     }
 
     <!-- Always-visible header -->
-    <div class="contacts__placeholder">
-      <h1 class="contacts__title">Contacts</h1>
-      <div class="contacts__title-divider"></div>
-      <span class="contacts__subtitle">Better with a team</span>
+    <div class="contacts-page__placeholder">
+      <h1 class="contacts-page__title">Contacts</h1>
+      <div class="contacts-page__title-divider"></div>
+      <span class="contacts-page__subtitle">Better with a team</span>
     </div>
 
     <!-- Contact detail — animates on every selection change -->
     @if (selectedContact(); as contact) {
-      <div class="contacts__detail-content" [@slideIn]="contact.id">
-        <div class="contacts__detail-header">
-          <div class="contacts__detail-avatar" [style.background-color]="contact.color">
+      <div class="contacts-page__detail-content" [@slideIn]="contact.id">
+        <div class="contacts-page__detail-header">
+          <div class="contacts-page__detail-avatar" [style.background-color]="contact.color">
             {{ contact.initials }}
           </div>
-          <div class="contacts__detail-meta">
-            <h2 class="contacts__detail-name">{{ getFullName(contact) }}</h2>
-            <div class="contacts__detail-actions">
-              <button class="contacts__action-btn" (click)="editContact(contact)">
+          <div class="contacts-page__detail-meta">
+            <h2 class="contacts-page__detail-name">{{ getFullName(contact) }}</h2>
+            <div class="contacts-page__detail-actions">
+              <button class="contacts-page__action-btn" (click)="editContact(contact)">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -95,7 +95,7 @@
                 </svg>
                 Edit
               </button>
-              <button class="contacts__action-btn" (click)="deleteContact(contact.id)">
+              <button class="contacts-page__action-btn" (click)="deleteContact(contact.id)">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -115,18 +115,18 @@
           </div>
         </div>
 
-        <span class="contacts__detail-label">Contact Information</span>
+        <span class="contacts-page__detail-label">Contact Information</span>
 
-        <div class="contacts__detail-info">
-          <div class="contacts__detail-field">
-            <span class="contacts__field-label">Email</span>
-            <a class="contacts__field-email" [href]="'mailto:' + contact.email">{{
+        <div class="contacts-page__detail-info">
+          <div class="contacts-page__detail-field">
+            <span class="contacts-page__field-label">Email</span>
+            <a class="contacts-page__field-email" [href]="'mailto:' + contact.email">{{
               contact.email
             }}</a>
           </div>
-          <div class="contacts__detail-field">
-            <span class="contacts__field-label">Phone</span>
-            <span class="contacts__field-value">{{ contact.phone }}</span>
+          <div class="contacts-page__detail-field">
+            <span class="contacts-page__field-label">Phone</span>
+            <span class="contacts-page__field-value">{{ contact.phone }}</span>
           </div>
         </div>
       </div>
@@ -134,7 +134,7 @@
   </div>
 
   <!-- FAB — mobile only, always visible -->
-  <button class="contacts__fab" (click)="openAddModal()" aria-label="Add new contact">
+  <button class="contacts-page__fab" (click)="openAddModal()" aria-label="Add new contact">
     <svg
       viewBox="0 0 24 24"
       fill="none"

@@ -1,11 +1,11 @@
-.contacts {
+.contacts-page {
   --c-list-width: 350px;
   --c-avatar-sm: 42px;
   --c-avatar-lg: 120px;
   --c-list-bg: var(--inverted-bg-color);
   --c-detail-bg: var(--inverted-bg-color);
   --c-separator: var(--bg-color);
-  --c-item-hover: var(--inverted-bg-color);
+  --c-item-hover: var(rgba(166, 166, 166, 0.2));
   --c-item-active-bg: var(--bg-color);
   --c-item-active-txt: #fff;
   --c-avatar-border: rgba(255, 255, 255, 0.35);

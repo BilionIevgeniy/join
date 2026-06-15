@@ -1,6 +1,6 @@
 // Variables are defined in styles/variables/contacts.scss and imported globally.
 
-.contacts {
+.contacts-page {
   display: flex;
   height: 100%;
   overflow: hidden;
@@ -16,7 +16,6 @@
     background-color: var(--c-list-bg);
   }
 
-  // Scrollable groups — fills remaining space above the button
   &__groups {
     flex: 1;
     overflow-y: auto;
@@ -50,17 +49,20 @@
     cursor: pointer;
     transition: background-color 150ms ease;
 
-    &:hover {
+    &:hover:not(&--active) {
       background-color: var(--c-item-hover);
     }
+  }
 
-    &--active {
-      background-color: var(--c-item-active-bg);
+  &__item--active {
+    background-color: var(--c-item-active-bg);
 
-      .contacts__name,
-      .contacts__email {
-        color: var(--c-item-active-txt);
-      }
+    .contacts-page__name {
+      color: var(--c-item-active-txt);
+    }
+
+    .contacts-page__email {
+      color: var(--c-accent);
     }
   }
 
@@ -216,7 +218,7 @@
   &__detail-name {
     font-size: 47px;
     font-weight: 500;
-    color: var(--text-color);
+    color: var(--inverted-text-color);
     line-height: 1;
   }
 
@@ -231,7 +233,7 @@
     gap: 6px;
     background: transparent;
     border: none;
-    color: var(--text-color);
+    color: var(--inverted-text-color);
     font-size: var(--font-size-m);
     cursor: pointer;
     padding: 4px 0;
@@ -251,7 +253,7 @@
   &__detail-label {
     display: block;
     font-size: var(--font-size-m);
-    color: var(--text-color);
+    color: var(--inverted-text-color);
     margin: 24px 0 16px;
   }
 
@@ -270,7 +272,7 @@
   &__field-label {
     font-size: 13px;
     font-weight: 700;
-    color: var(--text-color);
+    color: var(--inverted-text-color);
   }
 
   &__field-email {
@@ -285,7 +287,7 @@
 
   &__field-value {
     font-size: var(--font-size-m);
-    color: var(--text-color);
+    color: var(--inverted-text-color);
   }
 
   // FAB — hidden on desktop, shown only on mobile
@@ -348,7 +350,7 @@
       border-radius: 50%;
       border: 2px solid var(--c-separator);
       background: transparent;
-      color: var(--text-color);
+      color: var(--inverted-text-color);
       cursor: pointer;
       transition: background-color 150ms ease;
 
