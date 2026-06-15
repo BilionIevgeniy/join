@@ -142,6 +142,14 @@
     }
   </div>
 
+  @if (isModalOpen()) {
+    <app-contact-modal
+      [mode]="modalMode()"
+      [contact]="modalContact()"
+      (closed)="closeModal()"
+    />
+  }
+
   <!-- FAB — mobile only, always visible -->
   <button class="contacts-page__fab" (click)="openAddModal()" aria-label="Add new contact">
     <svg

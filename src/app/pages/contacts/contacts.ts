@@ -4,12 +4,13 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { ContactService } from '../../core/services/contact.service';
 import { Contact } from '../../core/models/contact.model';
 import { Avatar } from '../../components/shared/avatar/avatar';
-import { Button } from "../../components/shared/button/button";
+import { Button } from '../../components/shared/button/button';
+import { ContactModal } from './contact-modal/contact-modal';
 
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [CommonModule, Avatar, Button],
+  imports: [CommonModule, Avatar, Button, ContactModal],
   templateUrl: './contacts.html',
   styleUrl: './contacts.scss',
   animations: [
@@ -27,6 +28,9 @@ export class Contacts {
   contacts = this.contactService.contacts;
   groupedContacts = this.contactService.groupedContacts;
   selectedContact = signal<Contact | null>(null);
+  modalMode = signal<'add' | 'edit'>('add');
+  modalContact = signal<Contact | null>(null);
+  isModalOpen = signal(true);
 
   selectContact(contact: Contact): void {
     this.selectedContact.set(contact);
@@ -37,11 +41,19 @@ export class Contacts {
   }
 
   editContact(contact: Contact): void {
-    console.log('edit', contact);
+    this.modalMode.set('edit');
+    this.modalContact.set(contact);
+    this.isModalOpen.set(true);
   }
 
   openAddModal(): void {
-    console.log('open add modal');
+    this.modalMode.set('add');
+    this.modalContact.set(null);
+    this.isModalOpen.set(true);
+  }
+
+  closeModal(): void {
+    this.isModalOpen.set(false);
   }
 
   deleteContact(id: string): void {
