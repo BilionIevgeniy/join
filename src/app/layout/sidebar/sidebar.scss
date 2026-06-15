@@ -5,6 +5,7 @@
   padding: 50px 0;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 100vh;
   overflow-y: auto;
 }
@@ -21,8 +22,7 @@
 
 // Navigation Bereich
 .sidebar__nav {
-  flex: 1;
-  padding: 0;  
+  padding: 0;
 }
 
 .nav-list {
@@ -134,23 +134,20 @@
   }
 
   .nav-item {
-
     a {
       width: 76px;
       height: 76px;
-      flex-direction: column;  // Icon über Text
+      flex-direction: column; // Icon über Text
       justify-content: center;
       gap: 4px;
       padding: 8px 4px;
       font-size: 16px;
-      
+
       &:hover {
         background-color: var(--nav-active-bg);
         border-radius: 16px;
       }
     }
-
-    
   }
 
   // Icons etwas kleiner
