@@ -1,6 +1,6 @@
 // Global CSS variables for font sizes and families
 :root {
-  --font-family: var(--font-family-main);
+  --font-family-main: Inter, sans-serif;
 
   /* Default font family */
   --font-size-m: 16px;
@@ -10,9 +10,9 @@
   --font-m: var(--font-size-m) / var(--font-line-m) var(--font-family-main);
 
   /* Base font size in em */
-  --font-size-l: 24px;
+  --font-size-l: 20px;
   /* Larger font size */
-  --font-line-l: 32px;
+  --font-line-l: 28px;
   /* Larger line height */
   --font-l: var(--font-size-l) / var(--font-line-l) var(--font-family-main);
 

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ContactService } from '../../core/services/contact.service';
 import { Contact } from '../../core/models/contact.model';
+import { Avatar } from '../../components/shared/avatar/avatar';
 
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Avatar],
   templateUrl: './contacts.html',
   styleUrl: './contacts.scss',
   animations: [
@@ -22,7 +23,7 @@ import { Contact } from '../../core/models/contact.model';
 })
 export class Contacts {
   private contactService = inject(ContactService);
-
+  contacts = this.contactService.contacts;
   groupedContacts = this.contactService.groupedContacts;
   selectedContact = signal<Contact | null>(null);
 
@@ -52,8 +53,6 @@ export class Contacts {
   }
 
   getFullName(contact: Contact): string {
-    return contact.last_name
-      ? `${contact.first_name} ${contact.last_name}`
-      : contact.first_name;
+    return contact.last_name ? `${contact.first_name} ${contact.last_name}` : contact.first_name;
   }
 }

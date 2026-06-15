@@ -5,9 +5,7 @@
 @use './styles/themes/normal.scss' as *;
 @use './styles/themes/dark.scss' as *;
 
-
 .app {
-  font-family: var(--font-family-main);
   font: var(--font-m);
   color: var(--primary-color);
   background-color: var(--bg-color);

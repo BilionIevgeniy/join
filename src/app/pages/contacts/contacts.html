@@ -20,26 +20,39 @@
           </svg>
         </button>
       </div>
-      @for (letter of getLetters(); track letter) {
-        <div class="contacts-page__group">
-          <span class="contacts-page__letter">{{ letter }}</span>
-          <div class="contacts-page__divider"></div>
+      @if (contacts().length > 0) {
+        @for (letter of getLetters(); track letter) {
+          <div class="contacts-page__group">
+            <span class="contacts-page__letter">{{ letter }}</span>
+            <div class="contacts-page__divider"></div>
 
-          @for (contact of groupedContacts()[letter]; track contact.id) {
-            <div
-              class="contacts-page__item"
-              [class.contacts-page__item--active]="selectedContact()?.id === contact.id"
-              (click)="selectContact(contact)"
-            >
-              <div class="contacts-page__avatar" [style.background-color]="contact.color">
-                {{ contact.initials }}
+            @for (contact of groupedContacts()[letter]; track contact.id) {
+              <div
+                class="contacts-page__item"
+                [class.contacts-page__item--active]="selectedContact()?.id === contact.id"
+                (click)="selectContact(contact)"
+              >
+                <app-avatar
+                  size="small"
+                  [initials]="contact.initials"
+                  [color]="contact.color"
+                  [border]="
+                    selectedContact()?.id === contact.id
+                      ? '2px solid var(--c-avatar-border-color)'
+                      : 'none'
+                  "
+                ></app-avatar>
+                <div class="contacts-page__info">
+                  <span class="contacts-page__name">{{ getFullName(contact) }}</span>
+                  <span class="contacts-page__email">{{ contact.email }}</span>
+                </div>
               </div>
-              <div class="contacts-page__info">
-                <span class="contacts-page__name">{{ getFullName(contact) }}</span>
-                <span class="contacts-page__email">{{ contact.email }}</span>
-              </div>
-            </div>
-          }
+            }
+          </div>
+        }
+      } @else {
+        <div class="contacts-page__empty">
+          <p>No contacts found</p>
         </div>
       }
     </div>
@@ -75,9 +88,12 @@
     @if (selectedContact(); as contact) {
       <div class="contacts-page__detail-content" [@slideIn]="contact.id">
         <div class="contacts-page__detail-header">
-          <div class="contacts-page__detail-avatar" [style.background-color]="contact.color">
-            {{ contact.initials }}
-          </div>
+          <app-avatar
+            [size]="'large'"
+            [initials]="contact.initials"
+            [color]="contact.color"
+            [border]="'2px solid var(--c-avatar-border-color)'"
+          ></app-avatar>
           <div class="contacts-page__detail-meta">
             <h2 class="contacts-page__detail-name">{{ getFullName(contact) }}</h2>
             <div class="contacts-page__detail-actions">
@@ -95,7 +111,7 @@
                 </svg>
                 Edit
               </button>
-              <button class="contacts-page__action-btn" (click)="deleteContact(contact.id)">
+              <button class="contacts-page__action-btn" (click)="deleteContact(contact.id!)">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
