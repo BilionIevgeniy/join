@@ -24,6 +24,7 @@
   flex: 1;
   overflow-y: auto;
   background-color: var(--main-bg-color);
+  z-index: 1;
 }
 
 // === RESPONSIVE ab 1024px ===

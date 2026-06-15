@@ -13,7 +13,9 @@ import { Avatar } from '../../components/shared/avatar/avatar';
   styleUrl: './contacts.scss',
   animations: [
     trigger('slideIn', [
+      // :leave - when element is removed from DOM
       transition(':leave', []),
+      // * => * - when element is added to DOM or changes
       transition('* => *', [
         style({ opacity: 0, transform: 'translateX(60px)' }),
         animate('240ms ease-out', style({ opacity: 1, transform: 'translateX(0)' })),
