@@ -5,7 +5,7 @@ import { ContactService } from '../../core/services/contact.service';
 import { Contact } from '../../core/models/contact.model';
 import { Avatar } from '../../components/shared/avatar/avatar';
 import { Button } from '../../components/shared/button/button';
-import { ContactModal } from './contact-modal/contact-modal';
+import { ContactModal } from '../../components/contact/contact-modal/contact-modal';
 
 @Component({
   selector: 'app-contacts',
@@ -30,7 +30,7 @@ export class Contacts {
   selectedContact = signal<Contact | null>(null);
   modalMode = signal<'add' | 'edit'>('add');
   modalContact = signal<Contact | null>(null);
-  isModalOpen = signal(true);
+  isModalOpen = signal(false);
 
   selectContact(contact: Contact): void {
     this.selectedContact.set(contact);

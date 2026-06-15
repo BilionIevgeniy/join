@@ -1,4 +1,4 @@
-<button class="btn btn--{{ variant }} btn--{{ size }} btn--{{ weight }} btn--font-{{ fontSize }}" [disabled]="disabled" [class.btn--full-width]="fullWidth">
+<button class="btn btn--{{ variant }} btn--{{ size }} btn--weight-{{ weight }} btn--font-{{ fontSize }}" [disabled]="disabled" [class.btn--full-width]="fullWidth">
   {{ label }}
   @if (icon) {
     <img class="btn__icon" [src]="'/assets/icons/' + icon" [alt]="label" />

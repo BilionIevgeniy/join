@@ -2,8 +2,8 @@ import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Contact } from '../../../core/models/contact.model';
 import { ContactService } from '../../../core/services/contact.service';
-import { Avatar } from '../../../components/shared/avatar/avatar';
-import { Button } from '../../../components/shared/button/button';
+import { Avatar } from '../../shared/avatar/avatar';
+import { Button } from '../../shared/button/button';
 
 @Component({
   selector: 'app-contact-modal',
@@ -77,7 +77,7 @@ export class ContactModal implements OnInit {
 
     try {
       if (this.mode === 'add') {
-        await this.contactService.createContact({
+        await this.contactService.addContact({
           first_name,
           last_name,
           email: this.emailControl.value ?? '',
@@ -92,6 +92,8 @@ export class ContactModal implements OnInit {
         });
       }
       this.closed.emit();
+    } catch (err) {
+      console.error(err);
     } finally {
       this.isLoading = false;
     }
@@ -103,6 +105,8 @@ export class ContactModal implements OnInit {
     try {
       await this.contactService.deleteContact(this.contact.id);
       this.closed.emit();
+    } catch (err) {
+      console.error(err);
     } finally {
       this.isLoading = false;
     }

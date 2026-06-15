@@ -11,6 +11,7 @@
           label="Add new contact"
           icon="person_add.svg"
           [fullWidth]="true"
+          (click)="openAddModal()"
         />
       </div>
       @if (contacts().length > 0) {
