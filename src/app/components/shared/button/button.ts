@@ -14,4 +14,5 @@ export class Button {
   @Input() size: 'small' | 'medium' | 'large' = 'medium';
   @Input() weight: 'regular' | 'medium' | 'bold' = 'bold';
   @Input() fontSize: 'small' | 'medium' | 'large' = 'medium';
+  @Input() fullWidth: boolean = false;
 }
