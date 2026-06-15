@@ -3,18 +3,19 @@
 // ============================================================
 
 export interface Contact {
-  id: string;
-  name: string;
+  id?: string;
+  first_name: string;
+  last_name?: string;
   email: string;
   phone: string;
-  avatarColor: string;   // hex color of the avatar circle with initials, generated on the frontend
-  initials: string;      // "AM" from "Anton Mayer"
+  color: string; // hex color of the avatar circle with initials, generated on the frontend
+  initials: string; // "AM" from "Anton Mayer"
 }
 
 // ============================================================
 //  DTO
 // ============================================================
 
-export type CreateContactDto = Omit<Contact, 'id' | 'initials' | 'avatarColor'>;
+export type CreateContactDto = Omit<Contact, 'id' | 'initials' | 'color'>;
 
 export type UpdateContactDto = Partial<CreateContactDto>;

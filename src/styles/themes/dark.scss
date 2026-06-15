@@ -1,20 +1,24 @@
 .app.dark {
-  --bg-color: #2A3647;
-  --inverted-bg-color: #34495e;
+  --bg-color: #2a3647;
+  --inverted-bg-color: white;
+  --main-bg-color: #f6f7f8;
+
   --text-color: #ecf0f1;
-  --primary-color: #3498db;
-  --inverted-primary-color: #2980b9;
+  --inverted-text-color: #2a3647;
+
+  --primary-color: #29abe2;
+  --inverted-primary-color: #2c3e50;
+
   --secondary-color: #2ecc71;
   --inverted-secondary-color: #27ae60;
 
-  --dropdown-bg: #2A3647;
-  --dropdown-text: #CDCDCD;
-  --hover-color: #2A3D59;
+  --dropdown-bg: #2a3647;
+  --dropdown-text: #cdcdcd;
+  --hover-color: #2a3d59;
 
-  --header-bg: white;
   --header-border: white;
-  --header-button-hover: #2A3D59;
+  --header-button-hover: #2a3d59;
 
   --nav-active-bg: #091931;
-  --nav-footer-link-hover: #29ABE2;
+  --nav-footer-link-hover: #29abe2;
 }

@@ -8,26 +8,31 @@
 
     <!-- Benutzer Sektion rechts -->
     @if (isLoggedIn()) {
-    <div class="header__user">
-      <!-- Hilfenachricht -->
-      <button class="help-button" title="Help"></button>
+      <div class="header__user">
+        <!-- Hilfenachricht -->
+        <button class="help-button" title="Help"></button>
 
-      <!-- Benutzer Dropdown -->
-      <div class="user-dropdown">
-        <button class="user-button" (click)="toggleDropdown()">
-          <app-avatar [initials]="userInitials()" [color]="userColor()"></app-avatar>
-        </button>
+        <!-- Benutzer Dropdown -->
+        <div class="user-dropdown">
+          <button class="user-button" (click)="toggleDropdown()">
+            <app-avatar
+              [size]="'medium'"
+              [initials]="userInitials()"
+              [color]="userColor()"
+              [border]="'2px solid var(--bg-color)'"
+            ></app-avatar>
+          </button>
 
-        <!-- Dropdown Menü -->
-        @if (isDropdownOpen()) {
-        <div class="dropdown-menu">
-          <a href="#" class="dropdown-item">Legal Notice</a>
-          <a href="#" class="dropdown-item">Privacy Policy</a>
-          <a href="#" class="dropdown-item">Log out</a>
+          <!-- Dropdown Menü -->
+          @if (isDropdownOpen()) {
+            <div class="dropdown-menu">
+              <a href="#" class="dropdown-item">Legal Notice</a>
+              <a href="#" class="dropdown-item">Privacy Policy</a>
+              <a href="#" class="dropdown-item">Log out</a>
+            </div>
+          }
         </div>
-        }
       </div>
-    </div>
     }
   </div>
 </header>

@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { RoutesEnum } from '../../core/models/routes.enum';
-
-interface NavItem {
-  label: string;
-  route: string;
-  icon: string;
-}
+import { NavItem, RoutesEnum } from '../../core/models/routes.model';
 
 @Component({
   selector: 'app-sidebar',

@@ -1,3 +1,20 @@
+/**
+ * ContactService — CRUD over Supabase `contacts` table.
+ *
+ * Supabase query-builder cheatsheet (used in this file):
+ *
+ *  .from('table')          — select the target table
+ *  .select('*')            — SELECT; '*' = all columns; or specify 'id, name'
+ *  .insert(payload)        — INSERT a single row or an array of rows
+ *  .update(patch)          — UPDATE; always chain .eq() to avoid updating the entire table
+ *  .delete()               — DELETE; always chain .eq() to avoid deleting the entire table
+ *  .eq('col', value)       — WHERE col = value (row filter)
+ *  .select() after mutation — returns the persisted rows (otherwise data is null)
+ *  .single()               — unwraps [{...}] → {...}; throws if row count is not exactly 1
+ *
+ * All methods return Promise<{ data, error }>.
+ * If error !== null the request failed and data should not be trusted.
+ */
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Contact, CreateContactDto, UpdateContactDto } from '../models/contact.model';
@@ -7,78 +24,119 @@ export class ContactService {
   private supabase = inject(SupabaseService);
   private contactsMap = signal<Record<string, Contact>>({});
   isLoading = signal(false);
-
   contacts = computed(() => Object.values(this.contactsMap()));
-
-  // Alphabetical sort — for the Contacts page
   sortedContacts = computed(() =>
-    [...this.contacts()].sort((a, b) => a.name.localeCompare(b.name)),
+    [...this.contacts()].sort((a, b) => a.first_name.localeCompare(b.first_name)),
   );
-
-  // Grouped by first letter — { A: [...], B: [...] }
   groupedContacts = computed(() => {
     const groups: Record<string, Contact[]> = {};
     this.sortedContacts().forEach((contact) => {
-      const letter = contact.name[0].toUpperCase();
+      const letter = contact.first_name[0].toUpperCase();
       if (!groups[letter]) groups[letter] = [];
       groups[letter].push(contact);
     });
     return groups;
   });
 
-  // Get contact by ID — used to render avatars on task cards
   getById(id: string): Contact | undefined {
     return this.contactsMap()[id];
   }
 
-  // ─── CRUD ──────────────
+  // ─── CRUD ──────────────────────────────────────────────────────
   async getAll(): Promise<void> {
     this.isLoading.set(true);
-    const { data, error } = await this.supabase.db.from('contacts').select('*');
-    if (error) {
-      console.error('Error loading contacts:', error);
-    } else {
-      data.forEach((contact: Contact) => this.upsert(contact));
+    try {
+      const { data, error } = await this.supabase.db.from('contacts').select('*');
+      if (error) throw error;
+      const map: Record<string, Contact> = {};
+      data.forEach((c: Contact) => {
+        if (c.id) map[c.id] = c;
+      });
+      this.contactsMap.set(map);
+    } catch (err) {
+      console.error('getAll contacts failed:', err);
+    } finally {
+      this.isLoading.set(false);
     }
-
-    this.isLoading.set(false);
   }
 
-  addContact(dto: CreateContactDto): void {
-    const contact: Contact = {
+  async addContact(dto: CreateContactDto): Promise<Contact | null> {
+    const payload = {
       ...dto,
-      id: this.generateId(),
-      initials: this.generateInitials(dto.name),
-      avatarColor: this.generateAvatarColor(dto.name),
+      initials: this.generateInitials(dto.first_name),
+      color: this.generateAvatarColor(dto.first_name),
     };
-    this.upsert(contact);
+
+    this.isLoading.set(true);
+    try {
+      const { data, error } = await this.supabase.db
+        .from('contacts')
+        .insert(payload)
+        .select()
+        .single();
+      if (error) throw error;
+      this.setOne(data);
+      return data;
+    } catch (err) {
+      console.error('addContact failed:', err);
+      return null;
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 
-  updateContact(id: string, dto: UpdateContactDto): void {
+  async updateContact(id: string, dto: UpdateContactDto): Promise<Contact | null> {
     const existing = this.contactsMap()[id];
-    if (!existing) return;
+    if (!existing) return null;
 
-    // Recalculate initials if name changed
-    const updated: Contact = {
-      ...existing,
+    const patch = {
       ...dto,
-      initials: dto.name ? this.generateInitials(dto.name) : existing.initials,
+      ...(dto.first_name && { initials: this.generateInitials(dto.first_name) }),
     };
-    this.upsert(updated);
+
+    this.isLoading.set(true);
+    try {
+      const { data, error } = await this.supabase.db
+        .from('contacts')
+        .update(patch)
+        .eq('id', id)
+        .select()
+        .single();
+      if (error) throw error;
+      this.setOne(data);
+      return data;
+    } catch (err) {
+      console.error('updateContact failed:', err);
+      return null;
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 
-  deleteContact(id: string): void {
-    this.contactsMap.update((map) => {
-      const next = { ...map };
-      delete next[id];
-      return next;
-    });
+  async deleteContact(id: string): Promise<boolean> {
+    this.isLoading.set(true);
+    try {
+      const { error } = await this.supabase.db.from('contacts').delete().eq('id', id);
+      if (error) throw error;
+      this.contactsMap.update((map) => {
+        const next = { ...map };
+        delete next[id];
+        return next;
+      });
+      return true;
+    } catch (err) {
+      console.error('deleteContact failed:', err);
+      return false;
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 
-  // ─── PRIVATE ──────────────────────────────────────────────────
+  // ─── PRIVATE ───────────────────────────────────────────────────
 
-  private upsert(contact: Contact): void {
-    this.contactsMap.update((map) => ({ ...map, [contact.id]: contact }));
+  private setOne(contact: Contact): void {
+    if (!contact.id) return;
+    this.contactsMap.update((map) => ({ ...map, [contact.id!]: contact }));
   }
 
   private generateInitials(name: string): string {
@@ -100,9 +158,5 @@ export class ContactService {
       '#FFA35E',
     ];
     return colors[name.charCodeAt(0) % colors.length];
-  }
-
-  private generateId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).slice(2);
   }
 }
