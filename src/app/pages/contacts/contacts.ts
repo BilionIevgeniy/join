@@ -4,11 +4,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { ContactService } from '../../core/services/contact.service';
 import { Contact } from '../../core/models/contact.model';
 import { Avatar } from '../../components/shared/avatar/avatar';
+import { Button } from "../../components/shared/button/button";
 
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [CommonModule, Avatar],
+  imports: [CommonModule, Avatar, Button],
   templateUrl: './contacts.html',
   styleUrl: './contacts.scss',
   animations: [

@@ -1,0 +1,6 @@
+<button class="btn btn--{{ variant }} btn--{{ size }} btn--{{ weight }} btn--font-{{ fontSize }}">
+  {{ label }}
+  @if (icon) {
+    <img class="btn__icon" [src]="'/assets/icons/' + icon" [alt]="label" />
+  }
+</button>
