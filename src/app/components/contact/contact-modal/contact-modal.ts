@@ -24,14 +24,15 @@ export class ContactModal implements OnInit {
   form = new FormGroup({
     name: new FormControl('', [
       Validators.required,
+      Validators.minLength(5),
       Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s]+$/),
     ]),
     email: new FormControl('', [
       Validators.required,
-      Validators.email,
+      Validators.pattern(/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/),
     ]),
     phone: new FormControl('', [
-      Validators.pattern(/^\+?[0-9\s]+$/),
+      Validators.pattern(/^\+?[0-9]+$/),
     ]),
   });
 

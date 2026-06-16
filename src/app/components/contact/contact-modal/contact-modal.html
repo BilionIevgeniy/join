@@ -32,6 +32,9 @@
           @if (nameControl.touched && nameControl.hasError('required')) {
             <span class="modal__error">Name is required</span>
           }
+          @if (nameControl.touched && nameControl.hasError('minlength')) {
+            <span class="modal__error">Name must be at least 5 characters</span>
+          }
           @if (nameControl.touched && nameControl.hasError('pattern')) {
             <span class="modal__error">No numbers allowed</span>
           }
