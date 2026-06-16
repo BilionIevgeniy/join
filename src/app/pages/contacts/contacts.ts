@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { trigger, transition, style, animate } from '@angular/animations';
 import { ContactService } from '../../core/services/contact.service';
 import { Contact } from '../../core/models/contact.model';
 import { Avatar } from '../../components/shared/avatar/avatar';
@@ -13,15 +12,6 @@ import { ContactModal } from '../../components/contact/contact-modal/contact-mod
   imports: [CommonModule, Avatar, Button, ContactModal],
   templateUrl: './contacts.html',
   styleUrl: './contacts.scss',
-  animations: [
-    trigger('slideIn', [
-      transition(':leave', []),
-      transition('* => *', [
-        style({ opacity: 0, transform: 'translateX(60px)' }),
-        animate('240ms ease-out', style({ opacity: 1, transform: 'translateX(0)' })),
-      ]),
-    ]),
-  ],
 })
 export class Contacts {
   private contactService = inject(ContactService);

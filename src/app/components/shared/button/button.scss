@@ -1,5 +1,6 @@
 .btn {
   display: flex;
+  gap: 16px;
   align-items: center;
   justify-content: center;
   gap: 8px;
@@ -8,11 +9,16 @@
   font-weight: 700;
   cursor: pointer;
   border: none;
+  border-radius: 8px;
   transition: all 0.2s ease;
 
   &--xsmall { padding: 8px 0px;}
   &--small  { padding: 8px 16px; }
-  &--medium { padding: 12px 24px; }
+
+  &--medium {
+    padding: 12px 24px;
+    font-weight: 500;
+  }
   &--large  { padding: 15.5px 64px; }
 
   &--weight-regular { font-weight: 400; }
@@ -47,8 +53,8 @@
   }
 
   &--primary {
-    background: var(--btn-primary-bg);
     color: var(--btn-primary-text);
+    background: var(--btn-primary-bg);
 
     &:hover {
       background: var(--btn-primary-hover);
@@ -60,8 +66,8 @@
   }
 
   &--secondary {
-    background: var(--btn-secondary-bg);
     color: var(--btn-secondary-text);
+    background: var(--btn-secondary-bg);
 
     &:hover {
       background: var(--btn-secondary-hover);
@@ -73,24 +79,24 @@
   }
 
   &--outline {
-    background: transparent;
     color: var(--btn-outline-text);
+    background: transparent;
     border: 1px solid var(--btn-outline-border);
 
     &:hover {
-      border-color: var(--btn-outline-hover-border);
       color: var(--btn-outline-hover-text);
+      border-color: var(--btn-outline-hover-border);
     }
 
     &:active {
-      border-color: var(--btn-outline-active-border);
       color: var(--btn-outline-active-text);
+      border-color: var(--btn-outline-active-border);
     }
   }
 
   &--text {
-    background: transparent;
     color: var(--btn-text-color);
+    background: transparent;
     border: none;
   flex-direction: row-reverse;
 

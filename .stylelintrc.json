@@ -1,0 +1,72 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-recess-order"
+  ],
+  "plugins": ["stylelint-scss"],
+  "rules": {
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true,
+    "scss/load-partial-extension": null,
+
+    "no-empty-source": [true, { "severity": "warning" }],
+    "no-duplicate-selectors": true,
+    "declaration-block-no-duplicate-properties": [
+      true,
+      { "ignore": ["consecutive-duplicates-with-different-syntaxes"] }
+    ],
+
+    "selector-class-pattern": [
+      "^([a-z][a-z0-9]*)(-[a-z0-9]+)*(__[a-z0-9]+(-[a-z0-9]+)*)?(--[a-z0-9]+(-[a-z0-9]+)*)?$",
+      { "message": "Selector must follow BEM naming: block__element--modifier" }
+    ],
+
+    "color-hex-length": "short",
+    "color-named": null,
+    "color-function-alias-notation": null,
+
+    "font-family-name-quotes": null,
+    "value-keyword-case": ["lower", {
+      "camelCaseSvgKeywords": true,
+      "ignoreKeywords": ["Inter", "Bold", "Regular", "Light", "Medium", "SemiBold", "ExtraBold", "Black"]
+    }],
+
+    "custom-property-empty-line-before": null,
+    "comment-empty-line-before": null,
+    "media-feature-range-notation": null,
+
+    "property-no-vendor-prefix": true,
+    "value-no-vendor-prefix": true,
+    "selector-no-vendor-prefix": true,
+
+    "selector-pseudo-element-colon-notation": "double",
+    "selector-pseudo-class-no-unknown": [
+      true,
+      { "ignorePseudoClasses": ["global", "local", "host"] }
+    ],
+
+    "unit-no-unknown": true,
+
+    "max-nesting-depth": [
+      3,
+      {
+        "ignore": ["blockless-at-rules", "pseudo-classes"],
+        "ignoreAtRules": ["media", "supports", "include", "each", "for", "while"]
+      }
+    ],
+
+    "shorthand-property-no-redundant-values": true,
+
+    "comment-no-empty": true,
+    "block-no-empty": true,
+
+    "scss/no-duplicate-dollar-variables": [
+      true,
+      { "ignoreInsideAtRules": ["if", "else", "mixin", "each", "for", "while"] }
+    ],
+    "scss/dollar-variable-no-missing-interpolation": true,
+    "scss/selector-no-redundant-nesting-selector": true,
+    "scss/no-global-function-names": true
+  },
+  "ignoreFiles": ["node_modules/**", "dist/**", "**/*.css"]
+}
