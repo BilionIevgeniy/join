@@ -1,13 +1,13 @@
 .sidebar {
-  width: 232px;
-  background: var(--bg-color);
-  color: white;
-  padding: 50px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 232px;
   height: 100vh;
+  padding: 50px 0;
   overflow-y: auto;
+  color: white;
+  background: var(--bg-color);
 }
 
 // Logo Bereich
@@ -26,28 +26,28 @@
 }
 
 .nav-list {
-  list-style: none;
   padding: 0;
   margin: 0;
+  list-style: none;
 }
 
 .nav-item {
   margin-bottom: 0;
 
   a {
+    box-sizing: border-box;
     display: flex;
+    gap: 12px;
     align-items: center;
     justify-content: flex-start;
-    gap: 12px;
-    padding: 8px 60px;
     height: 46px;
-    border-radius: 0;
-    color: white;
-    text-decoration: none;
-    transition: all 0.2s ease;
+    padding: 8px 60px;
     font-size: 16px;
     font-weight: 400;
-    box-sizing: border-box;
+    color: white;
+    text-decoration: none;
+    border-radius: 0;
+    transition: all 0.2s ease;
 
     &:hover {
       background: var(--hover-color);
@@ -64,30 +64,30 @@
 
 // Icons
 .nav-icon {
+  flex-shrink: 0;
   width: 24px;
   height: 24px;
-  flex-shrink: 0;
 }
 
 .nav-text {
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 // Footer Bereich (unten)
 .sidebar__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: flex-end;
   width: 100%;
   height: 232px;
   padding: 24px 77px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 8px;
   font-size: 12px;
 
   a {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgb(255 255 255 / 60%);
     text-decoration: none;
     transition: color 0.2s ease;
 
@@ -98,16 +98,16 @@
 }
 
 // === RESPONSIVE: Bottom-Navigation ab 1024px ===
-@media (max-width: 1025px) {
+@media (width <= 1025px) {
   .sidebar {
-    width: 100%;
-    height: auto;
-    flex-direction: row;
-    padding: 0;
     position: fixed;
     bottom: 0;
     left: 0;
     z-index: 100;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    padding: 0;
   }
 
   // Logo in der Sidebar ausblenden (wandert in Header)
@@ -129,17 +129,17 @@
 
   .nav-list {
     display: flex;
-    justify-content: space-around;
     align-items: center;
+    justify-content: space-around;
   }
 
   .nav-item {
     a {
+      flex-direction: column; // Icon über Text
+      gap: 4px;
+      justify-content: center;
       width: 76px;
       height: 76px;
-      flex-direction: column; // Icon über Text
-      justify-content: center;
-      gap: 4px;
       padding: 8px 4px;
       font-size: 16px;
 
