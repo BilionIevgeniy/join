@@ -11,6 +11,7 @@
 .modal {
   display: flex;
   width: 100%;
+  margin: 25px;
   max-width: 1400px;
   height: 594px;
   border-radius: 24px;
@@ -22,12 +23,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     width: 467px;
     flex-shrink: 0;
     background: var(--dropdown-bg);
     padding: 40px 32px;
-    
     gap: 16px;
   }
 
@@ -36,7 +36,7 @@
   }
 
   &__title {
-    font-size: var( --font-h2);
+    font-size: var( --font-h2-xl);
     font-weight: 700;
     color: white;
     line-height: 1.1;
@@ -45,14 +45,15 @@
 
   &__subtitle {
     color: rgba(255, 255, 255, 0.7);
-    font-size: var(--font-xl);
+    font-size: var(--font-size-l);
   }
 
   &__underline {
-    width: 48px;
+    width: 90px;
     height: 3px;
-    background: var(--btn-primary-bg);
+    background: #29ABE2;
     border-radius: 2px;
+    flex-shrink: 0;
   }
 
   &__right {
@@ -73,18 +74,29 @@
   }
 
   &__close {
-    position: absolute;
-    top: 40px;
-    right: 40px;
     background: none;
     border: none;
-    font-size: 20px;
     cursor: pointer;
-    color: #333;
+    padding: 0;
     line-height: 1;
 
-    &:hover {
-      color: var(--btn-primary-bg);
+    &--desktop {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+    }
+
+    &--mobile {
+      display: none;
+    }
+  }
+
+  &__close-icon {
+    width: 24px;
+    height: 24px;
+
+    &--desktop:hover {
+      content: url('/assets/icons/x-grey-icon.svg');
     }
   }
 
@@ -145,8 +157,78 @@
 
   &__actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 12px;
     margin-top: 8px;
+  }
+}
+
+@media (max-width: 1025px) {
+  .modal {
+    position: relative;
+    flex-direction: column;
+    max-width: 400px;
+    height: auto;
+    margin: 25px;
+    overflow: visible;
+
+    &__left {
+      width: 100%;
+      height: auto;
+      align-items: flex-start;
+      padding: 32px 24px 80px 24px;
+      border-radius: 24px 24px 0 0;
+      overflow: visible;
+    }
+
+    &__logo {
+      display: none;
+    }
+
+    &__subtitle {
+    
+    }
+
+    &__close--desktop {
+      display: none;
+    }
+
+    &__close--mobile {
+      display: block;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+    }
+
+    &__right {
+      padding: 0 24px 32px 24px;
+      overflow: visible;
+    }
+
+    &__content {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__avatar {
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      margin-top: -65px;
+      margin-bottom: 24px;
+    }
+
+    &__form {
+      width: 100%;
+    }
+
+    &__actions {
+      justify-content: center;
+      padding-bottom: 30px;
+
+      .btn-cancel {
+        display: none;
+      }
+    }
   }
 }

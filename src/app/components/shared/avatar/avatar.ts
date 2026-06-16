@@ -4,14 +4,23 @@ import { Component, Input } from '@angular/core';
   selector: 'app-avatar',
   standalone: true,
   template: `
-    <div class="user-avatar"
-      [class.small]="size === 'small'"
-      [class.medium]="size === 'medium'"
-      [class.large]="size === 'large'"
-      [style.background]="color"
-      [style.border]="border">
-      {{ initials }}
-    </div>
+    @if (initials) {
+      <div class="user-avatar"
+        [class.small]="size === 'small'"
+        [class.medium]="size === 'medium'"
+        [class.large]="size === 'large'"
+        [style.background]="color"
+        [style.border]="border">
+        {{ initials }}
+      </div>
+    } @else {
+      <div class="user-avatar user-avatar--default"
+        [class.small]="size === 'small'"
+        [class.medium]="size === 'medium'"
+        [class.large]="size === 'large'">
+        <img src="/assets/icons/person.svg" alt="avatar" class="user-avatar__icon" />
+      </div>
+    }
   `,
   styleUrl: './avatar.scss',
 })

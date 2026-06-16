@@ -1,6 +1,14 @@
-<button class="btn btn--{{ variant }} btn--{{ size }} btn--weight-{{ weight }} btn--font-{{ fontSize }}" [disabled]="disabled" [class.btn--full-width]="fullWidth">
+<button class="btn btn--{{ variant }} btn--{{ size }} btn--weight-{{ weight }} btn--font-{{ fontSize }}"
+  [disabled]="disabled"
+  [class.btn--full-width]="fullWidth"
+  [class.btn--icon-left]="iconPosition === 'left'">
   {{ label }}
   @if (icon) {
-    <img class="btn__icon" [src]="'/assets/icons/' + icon" [alt]="label" />
+    <img class="btn__icon"
+      [src]="'/assets/icons/' + icon"
+      [alt]="label"
+      [style.--hover-icon]="hoverIcon ? 'url(/assets/icons/' + hoverIcon + ')' : null"
+      [class.btn__icon--hoverable]="hoverIcon" />
   }
+  <ng-content></ng-content>
 </button>

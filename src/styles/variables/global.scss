@@ -15,10 +15,13 @@
   --font-line-l: 28px;
   /* Larger line height */
   --font-l: var(--font-size-l) / var(--font-line-l) var(--font-family-main);
-  /* Modal overlay Title h2*/ 
-  --font-h2:61px;
-  /*Subtitel Modal overlay*/
+  /* DISPLAY Modal overlay Title h2*/ 
+  --font-h2-xxl:61px;
+  /* MOBILE Modal overlay Title h2*/ 
+  --font-h2-xl:47px;
+  /*Display Subtitel Modal overlay*/
   --font-xl:27px;
+ 
 
   // Header
   --header-height: 50px;
