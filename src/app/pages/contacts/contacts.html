@@ -78,8 +78,8 @@
     </div>
 
     <!-- Contact detail — animates on every selection change -->
-    @if (selectedContact(); as contact) {
-      <div class="contacts-page__detail-content" [@slideIn]="contact.id">
+    @for (contact of selectedContact() ? [selectedContact()!] : []; track contact.id) {
+      <div class="contacts-page__detail-content">
         <div class="contacts-page__detail-header">
           <app-avatar
             [size]="'large'"
