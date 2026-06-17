@@ -1,7 +1,6 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Contact } from '../../../core/models/contact.model';
-import { ContactService } from '../../../core/services/contact.service';
 import { Avatar } from '../../shared/avatar/avatar';
 import { Button } from '../../shared/button/button';
 
@@ -15,14 +14,16 @@ import { Button } from '../../shared/button/button';
 export class ContactModal implements OnInit {
   @Input() mode: 'add' | 'edit' = 'add';
   @Input() contact: Contact | null = null;
-
-  contactService = inject(ContactService);
+  @Input() isLoading: boolean = false;
+  @Output() closed = new EventEmitter<void>();
+  @Output() save = new EventEmitter<{ first_name: string; email: string; phone: string }>();
+  @Output() delete = new EventEmitter<string>();
 
   form = new FormGroup({
     name: new FormControl('', [
       Validators.required,
-      Validators.minLength(5),
-      Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s]+$/),
+      Validators.minLength(2),
+      Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s\-]+$/),
     ]),
     email: new FormControl('', [
       Validators.required,
@@ -35,11 +36,8 @@ export class ContactModal implements OnInit {
 
   ngOnInit(): void {
     if (this.mode === 'edit' && this.contact) {
-      const fullName = this.contact.last_name
-        ? `${this.contact.first_name} ${this.contact.last_name}`
-        : this.contact.first_name;
       this.form.setValue({
-        name: fullName,
+        name: this.contact.first_name,
         email: this.contact.email,
         phone: this.contact.phone ?? '',
       });
@@ -56,45 +54,24 @@ export class ContactModal implements OnInit {
     return this.contact?.color ?? 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)';
   }
 
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-
-    const first_name = (this.getField('name').value ?? '').trim();
-
-    try {
-      if (this.mode === 'add') {
-        await this.contactService.addContact({
-          first_name,
-          email: this.getField('email').value ?? '',
-          phone: this.getField('phone').value ?? '',
-        });
-      } else if (this.contact?.id) {
-        await this.contactService.updateContact(this.contact.id, {
-          first_name,
-          email: this.getField('email').value ?? '',
-          phone: this.getField('phone').value ?? '',
-        });
-      }
-      this.close();
-    } catch (err) {
-      console.error(err);
-    }
+    this.save.emit({
+      first_name: (this.getField('name').value ?? '').trim(),
+      email: this.getField('email').value ?? '',
+      phone: this.getField('phone').value ?? '',
+    });
   }
 
-  async onDelete(): Promise<void> {
+  onDelete(): void {
     if (!this.contact?.id) return;
-    try {
-      await this.contactService.deleteContact(this.contact.id);
-      this.close();
-    } catch (err) {
-      console.error(err);
-    }
+    this.delete.emit(this.contact.id);
   }
 
   close(): void {
-    this.contactService.closeModal();
+    this.closed.emit();
   }
 }

@@ -24,20 +24,6 @@ export class ContactService {
   private supabase = inject(SupabaseService);
   private contactsMap = signal<Record<string, Contact>>({});
   isLoading = signal(false);
-  isModalOpen = signal(false);
-  modalMode = signal<'add' | 'edit'>('add');
-  modalContact = signal<Contact | null>(null);
-
-  openModal(mode: 'add' | 'edit', contact: Contact | null = null): void {
-    this.modalMode.set(mode);
-    this.modalContact.set(contact);
-    this.isModalOpen.set(true);
-  }
-
-  closeModal(): void {
-    this.isModalOpen.set(false);
-    this.modalContact.set(null);
-  }
   contacts = computed(() => Object.values(this.contactsMap()));
   sortedContacts = computed(() =>
     [...this.contacts()].sort((a, b) => a.first_name.localeCompare(b.first_name)),

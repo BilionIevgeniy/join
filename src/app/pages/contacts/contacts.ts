@@ -18,9 +18,9 @@ export class Contacts {
   contacts = this.contactService.contacts;
   groupedContacts = this.contactService.groupedContacts;
   selectedContact = signal<Contact | null>(null);
-  isModalOpen = this.contactService.isModalOpen;
-  modalMode = this.contactService.modalMode;
-  modalContact = this.contactService.modalContact;
+  isModalOpen = signal(false);
+  modalMode = signal<'add' | 'edit'>('add');
+  modalContact = signal<Contact | null>(null);
 
   selectContact(contact: Contact): void {
     this.selectedContact.set(contact);
@@ -31,16 +31,37 @@ export class Contacts {
   }
 
   editContact(contact: Contact): void {
-    this.contactService.openModal('edit', contact);
+    this.modalMode.set('edit');
+    this.modalContact.set(contact);
+    this.isModalOpen.set(true);
   }
 
   openAddModal(): void {
-    this.contactService.openModal('add');
+    this.modalMode.set('add');
+    this.modalContact.set(null);
+    this.isModalOpen.set(true);
   }
 
-  deleteContact(id: string): void {
+  closeModal(): void {
+    this.isModalOpen.set(false);
+    this.modalContact.set(null);
+  }
+
+  isLoading = this.contactService.isLoading;
+
+  async saveContact(data: { first_name: string; email: string; phone: string }): Promise<void> {
+    if (this.modalMode() === 'add') {
+      await this.contactService.addContact(data);
+    } else if (this.modalContact()?.id) {
+      await this.contactService.updateContact(this.modalContact()!.id!, data);
+    }
+    this.closeModal();
+  }
+
+  async deleteContact(id: string): Promise<void> {
     this.selectedContact.set(null);
-    this.contactService.deleteContact(id);
+    await this.contactService.deleteContact(id);
+    this.closeModal();
   }
 
   getLetters(): string[] {

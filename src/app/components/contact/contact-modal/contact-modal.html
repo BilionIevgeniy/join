@@ -27,36 +27,39 @@
 
         <!-- Name -->
         <div class="modal__field">
+          @let nameField = getField('name');
           <input class="modal__input" formControlName="name" placeholder="Name" type="text" />
           <img class="modal__input-icon" src="/assets/icons/person-dark-icon.svg" alt="" />
-          @if (getField('name').touched && getField('name').hasError('required')) {
+          @if (nameField.touched && nameField.hasError('required')) {
             <span class="modal__error">Name is required</span>
           }
-          @if (getField('name').touched && getField('name').hasError('minlength')) {
-            <span class="modal__error">Name must be at least 5 characters</span>
+          @if (nameField.touched && nameField.hasError('minlength')) {
+            <span class="modal__error">Name must be at least 2 characters</span>
           }
-          @if (getField('name').touched && getField('name').hasError('pattern')) {
-            <span class="modal__error">No numbers allowed</span>
+          @if (nameField.touched && nameField.hasError('pattern')) {
+            <span class="modal__error">Only letters, spaces and hyphens allowed</span>
           }
         </div>
 
         <!-- Email -->
         <div class="modal__field">
+          @let emailField = getField('email');
           <input class="modal__input" formControlName="email" placeholder="Email" type="email" />
           <img class="modal__input-icon" src="/assets/icons/mail-dark-icon.svg" alt="" />
-          @if (getField('email').touched && getField('email').hasError('required')) {
+          @if (emailField.touched && emailField.hasError('required')) {
             <span class="modal__error">Email is required</span>
           }
-          @if (getField('email').touched && getField('email').hasError('pattern')) {
+          @if (emailField.touched && emailField.hasError('pattern')) {
             <span class="modal__error">Invalid email address</span>
           }
         </div>
 
         <!-- Phone -->
         <div class="modal__field">
+          @let phoneField = getField('phone');
           <input class="modal__input" formControlName="phone" placeholder="Phone" type="tel" />
           <img class="modal__input-icon" src="/assets/icons/phone-dark-icon.svg" alt="" />
-          @if (getField('phone').touched && getField('phone').hasError('pattern')) {
+          @if (phoneField.touched && phoneField.hasError('pattern')) {
             <span class="modal__error">Only numbers and + allowed</span>
           }
         </div>
@@ -66,7 +69,7 @@
           @if (mode === 'edit') {
             <app-button variant="outline" size="medium" weight="bold" fontSize="medium"
               label="Delete" icon="delete-icon.svg" hoverIcon="delete-blue.svg"
-              [disabled]="contactService.isLoading()" (click)="onDelete()" />
+              [disabled]="isLoading" (click)="onDelete()" />
           } @else {
             <span class="btn-cancel">
               <app-button variant="outline" size="medium" weight="bold" fontSize="medium"
@@ -81,7 +84,7 @@
           <app-button variant="primary" size="medium" weight="bold" fontSize="medium"
             [label]="mode === 'edit' ? 'Save' : 'Create contact'"
             icon="check.svg"
-            [disabled]="contactService.isLoading()"
+            [disabled]="isLoading"
             (click)="onSubmit()" />
         </div>
 
