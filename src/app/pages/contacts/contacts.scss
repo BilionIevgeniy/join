@@ -141,7 +141,6 @@
   &__detail {
     position: relative;
     flex: 1;
-    min-width: 620px;
     padding: var(--c-detail-pad);
     overflow-y: auto;
 
@@ -186,16 +185,19 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      min-width: 0;
+      padding-right: 24px;
     }
 
     &-name {
       font-size: 47px;
       font-weight: 500;
-      line-height: 1;
+      line-height: 1.1;
       color: var(--inverted-text-color);
+      overflow-wrap: break-word;
 
       @media (width <= 1280px) {
-        font-size: 40px;
+        font-size: 30px;
       }
 
       @media (width <= 768px) {
