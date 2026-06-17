@@ -5,14 +5,14 @@
 }
 
 .sidebar {
-  width: 232px;
   flex-shrink: 0;
+  width: 232px;
 }
 
 .layout__content {
   display: flex;
-  flex-direction: column;
   flex: 1;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -27,7 +27,7 @@
 }
 
 // === RESPONSIVE ab 1024px ===
-@media (max-width: 1025px) {
+@media (width <= 1025px) {
   .layout {
     flex-direction: column;
   }

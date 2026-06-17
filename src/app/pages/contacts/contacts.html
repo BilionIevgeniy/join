@@ -11,6 +11,7 @@
           label="Add new contact"
           icon="person_add.svg"
           [fullWidth]="true"
+          (click)="openAddModal()"
         />
       </div>
       @if (contacts().length > 0) {
@@ -56,17 +57,7 @@
     <!-- Back button — mobile only, shown when a contact is selected -->
     @if (selectedContact()) {
       <button class="contacts-page__back-btn" (click)="goBack()" aria-label="Back to list">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <line x1="19" y1="12" x2="5" y2="12" />
-          <polyline points="12 19 5 12 12 5" />
-        </svg>
+        <img src="assets/icons/arrow-left-icon.svg" alt="Back" />
       </button>
     }
 
@@ -78,8 +69,8 @@
     </div>
 
     <!-- Contact detail — animates on every selection change -->
-    @if (selectedContact(); as contact) {
-      <div class="contacts-page__detail-content" [@slideIn]="contact.id">
+    @for (contact of selectedContact() ? [selectedContact()!] : []; track contact.id) {
+      <div class="contacts-page__detail-content">
         <div class="contacts-page__detail-header">
           <app-avatar
             [size]="'large'"
@@ -90,36 +81,12 @@
           <div class="contacts-page__detail-meta">
             <h2 class="contacts-page__detail-name">{{ getFullName(contact) }}</h2>
             <div class="contacts-page__detail-actions">
-              <button class="contacts-page__action-btn" (click)="editContact(contact)">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-                Edit
-              </button>
-              <button class="contacts-page__action-btn" (click)="deleteContact(contact.id!)">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="3 6 5 6 21 6" />
-                  <path
-                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                  />
-                </svg>
-                Delete
-              </button>
+              <app-button variant="text" size="xsmall" weight="regular" fontSize="medium"
+                label="Edit" icon="edit-icon.svg" hoverIcon="edit-blue.svg"
+                (click)="editContact(contact)" />
+              <app-button variant="text" size="xsmall" weight="regular" fontSize="medium"
+                label="Delete" icon="delete-icon.svg" hoverIcon="delete-blue.svg"
+                (click)="deleteContact(contact.id!)" />
             </div>
           </div>
         </div>
@@ -142,20 +109,49 @@
     }
   </div>
 
+  @if (isModalOpen()) {
+    <app-contact-modal
+      [mode]="modalMode()"
+      [contact]="modalContact()"
+      [isLoading]="isLoading()"
+      (closed)="closeModal()"
+      (save)="saveContact($event)"
+      (delete)="deleteContact($event)"
+    />
+  }
+
   <!-- FAB — mobile only, always visible -->
-  <button class="contacts-page__fab" (click)="openAddModal()" aria-label="Add new contact">
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <line x1="19" y1="8" x2="19" y2="14" />
-      <line x1="22" y1="11" x2="16" y2="11" />
-    </svg>
+  <button
+    class="contacts-page__fab"
+    (click)="selectedContact() ? editContact(selectedContact()!) : openAddModal()"
+    aria-label="Add new contact"
+  >
+    @if (selectedContact()) {
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+      </svg>
+    } @else {
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <line x1="19" y1="8" x2="19" y2="14" />
+        <line x1="22" y1="11" x2="16" y2="11" />
+      </svg>
+    }
   </button>
 </div>
