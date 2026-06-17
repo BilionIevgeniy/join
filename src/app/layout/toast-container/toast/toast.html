@@ -1,0 +1,19 @@
+<div
+  class="toast"
+  [class.toast--success]="toast().type === 'success'"
+  [class.toast--error]="toast().type === 'error'"
+>
+  <div class="toast__icon">
+    @if (toast().type === 'success') {
+      <img src="assets/icons/check.svg" alt="success" />
+    } @else {
+      <img src="assets/icons/x-black-icon.svg" alt="error" />
+    }
+  </div>
+
+  <span class="toast__message">{{ toast().message }}</span>
+
+  <button class="toast__close" (click)="handleClose()">
+    <img src="assets/icons/x-black-icon.svg" alt="close" />
+  </button>
+</div>
