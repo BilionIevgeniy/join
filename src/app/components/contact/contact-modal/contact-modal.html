@@ -84,8 +84,8 @@
           <app-button variant="primary" size="medium" weight="bold" fontSize="medium"
             [label]="mode === 'edit' ? 'Save' : 'Create contact'"
             icon="check.svg"
-            [disabled]="isLoading"
-            (click)="onSubmit()" />
+            type="submit"
+            [disabled]="isLoading" />
         </div>
 
         </form>
