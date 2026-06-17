@@ -18,9 +18,9 @@ export class Contacts {
   contacts = this.contactService.contacts;
   groupedContacts = this.contactService.groupedContacts;
   selectedContact = signal<Contact | null>(null);
-  modalMode = signal<'add' | 'edit'>('add');
-  modalContact = signal<Contact | null>(null);
-  isModalOpen = signal(false);
+  isModalOpen = this.contactService.isModalOpen;
+  modalMode = this.contactService.modalMode;
+  modalContact = this.contactService.modalContact;
 
   selectContact(contact: Contact): void {
     this.selectedContact.set(contact);
@@ -31,19 +31,11 @@ export class Contacts {
   }
 
   editContact(contact: Contact): void {
-    this.modalMode.set('edit');
-    this.modalContact.set(contact);
-    this.isModalOpen.set(true);
+    this.contactService.openModal('edit', contact);
   }
 
   openAddModal(): void {
-    this.modalMode.set('add');
-    this.modalContact.set(null);
-    this.isModalOpen.set(true);
-  }
-
-  closeModal(): void {
-    this.isModalOpen.set(false);
+    this.contactService.openModal('add');
   }
 
   deleteContact(id: string): void {

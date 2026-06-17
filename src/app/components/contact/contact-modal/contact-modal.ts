@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Contact } from '../../../core/models/contact.model';
 import { ContactService } from '../../../core/services/contact.service';
@@ -15,11 +15,8 @@ import { Button } from '../../shared/button/button';
 export class ContactModal implements OnInit {
   @Input() mode: 'add' | 'edit' = 'add';
   @Input() contact: Contact | null = null;
-  @Output() closed = new EventEmitter<void>();
 
-  private contactService = inject(ContactService);
-
-  isLoading = false;
+  contactService = inject(ContactService);
 
   form = new FormGroup({
     name: new FormControl('', [
@@ -49,16 +46,10 @@ export class ContactModal implements OnInit {
     }
   }
 
-  get nameControl() { return this.form.get('name')!; }
-  get emailControl() { return this.form.get('email')!; }
-  get phoneControl() { return this.form.get('phone')!; }
+  getField(name: string) { return this.form.get(name)!; }
 
   getInitials(): string {
-    const name = this.nameControl.value?.trim() ?? '';
-    const parts = name.split(' ').filter(Boolean);
-    if (parts.length === 0) return '';
-    if (parts.length === 1) return parts[0][0].toUpperCase();
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return this.mode === 'edit' ? this.contact?.initials ?? '' : '';
   }
 
   getAvatarColor(): string {
@@ -71,49 +62,39 @@ export class ContactModal implements OnInit {
       return;
     }
 
-    this.isLoading = true;
-    const parts = (this.nameControl.value ?? '').trim().split(' ').filter(Boolean);
-    const first_name = parts[0] ?? '';
-    const last_name = parts.slice(1).join(' ') || undefined;
+    const first_name = (this.getField('name').value ?? '').trim();
 
     try {
       if (this.mode === 'add') {
         await this.contactService.addContact({
           first_name,
-          last_name,
-          email: this.emailControl.value ?? '',
-          phone: this.phoneControl.value ?? '',
+          email: this.getField('email').value ?? '',
+          phone: this.getField('phone').value ?? '',
         });
       } else if (this.contact?.id) {
         await this.contactService.updateContact(this.contact.id, {
           first_name,
-          last_name,
-          email: this.emailControl.value ?? '',
-          phone: this.phoneControl.value ?? '',
+          email: this.getField('email').value ?? '',
+          phone: this.getField('phone').value ?? '',
         });
       }
-      this.closed.emit();
+      this.close();
     } catch (err) {
       console.error(err);
-    } finally {
-      this.isLoading = false;
     }
   }
 
   async onDelete(): Promise<void> {
     if (!this.contact?.id) return;
-    this.isLoading = true;
     try {
       await this.contactService.deleteContact(this.contact.id);
-      this.closed.emit();
+      this.close();
     } catch (err) {
       console.error(err);
-    } finally {
-      this.isLoading = false;
     }
   }
 
   close(): void {
-    this.closed.emit();
+    this.contactService.closeModal();
   }
 }
