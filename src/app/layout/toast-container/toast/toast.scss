@@ -1,0 +1,85 @@
+.toast {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-width: 280px;
+  max-width: 400px;
+  padding: 16px 20px;
+  font-family: var(--font-family-main);
+  background-color: var(--bg-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+
+  // Entry animation — slides in from the right while fading in
+  animation: slideInFade 250ms ease-out;
+
+  &--success {
+    border-left: 4px solid #2ecc71;
+
+    .toast__icon img {
+      filter: invert(45%) sepia(85%) saturate(500%) hue-rotate(100deg);
+    }
+  }
+
+  &--error {
+    border-left: 4px solid #e74c3c;
+
+    .toast__icon img {
+      filter: invert(40%) sepia(80%) saturate(2000%) hue-rotate(330deg);
+    }
+  }
+
+  &__icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__message {
+    flex: 1;
+    font-size: var(--font-size-m);
+    color: var(--text-color);
+  }
+
+  &__close {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: unset;
+    opacity: 0.5;
+    transition: opacity 100ms ease;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+// Slide in from the right + fade in
+@keyframes slide-in-fade {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
