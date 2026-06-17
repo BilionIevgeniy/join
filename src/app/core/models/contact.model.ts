@@ -19,3 +19,5 @@ export interface Contact {
 export type CreateContactDto = Omit<Contact, 'id' | 'initials' | 'color'>;
 
 export type UpdateContactDto = Partial<CreateContactDto>;
+
+export type ContactMode = 'add' | 'edit';
