@@ -1,14 +1,14 @@
 .header {
+  padding: 16px 32px;
   background: var(--inverted-bg-color);
   border-bottom: 1px solid var(--header-border);
-  padding: 16px 32px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgb(0 0 0 / 10%);
 }
 
 .header__content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   max-width: 100%;
 }
 
@@ -18,21 +18,21 @@
 
 .header__user {
   display: flex;
-  align-items: center;
   gap: 15px;
+  align-items: center;
 }
 
 // Hilfe Button
 .help-button {
   width: 32px;
   height: 32px;
-  background-image: url(/assets/icons/help-icon.svg);
-  background-size: contain;
+  padding: 8px;
+  cursor: pointer;
+  background-image: url("/assets/icons/help-icon.svg");
   background-repeat: no-repeat;
   background-position: center;
+  background-size: contain;
   border: none;
-  cursor: pointer;
-  padding: 8px;
   border-radius: 4px;
 
   &:hover {
@@ -47,26 +47,26 @@
 }
 
 .user-button {
+  position: relative;
   display: flex;
   align-items: center;
+  padding: 0;
+  cursor: pointer;
   background: transparent;
   border: none;
-  cursor: pointer;
-  padding: 0;
   border-radius: 50%;
-  position: relative;
 
   &::after {
-    content: '';
     position: absolute;
     inset: 0;
-    border-radius: 50%;
+    content: '';
     background: transparent;
+    border-radius: 50%;
     transition: background 0.2s ease;
   }
 
   &:hover::after {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgb(0 0 0 / 10%);
   }
 }
 
@@ -80,30 +80,30 @@
   position: absolute;
   top: calc(100% + 17px);
   right: -15px;
-  background: var(--dropdown-bg);
-  border-radius: 16px 0 16px 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  width: var(--dropdown-width);
-  height: var(--dropdown-height);
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: var(--dropdown-width);
+  height: var(--dropdown-height);
   padding: 8px 5px;
-  z-index: 1000;
+  background: var(--dropdown-bg);
+  border-radius: 16px 0 16px 16px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
 }
 
 .dropdown-item {
   display: block;
   width: 100%;
   padding: 10px 15px;
+  font-size: 16px;
+  color: var(--dropdown-text);
   text-align: left;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
   background: none;
   border: none;
-  color: var(--dropdown-text);
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 16px;
-  white-space: nowrap;
 
   &:hover {
     background: var(--hover-color);
@@ -115,7 +115,7 @@
   height: 40px;
 }
 
-@media (max-width: 1025px) {
+@media (width <= 1025px) {
   .header__logo {
     display: block;
   }
