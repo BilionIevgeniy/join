@@ -11,6 +11,7 @@
           label="Add new contact"
           icon="person_add.svg"
           [fullWidth]="true"
+          (click)="openAddModal()"
         />
       </div>
       @if (contacts().length > 0) {
@@ -80,36 +81,12 @@
           <div class="contacts-page__detail-meta">
             <h2 class="contacts-page__detail-name">{{ getFullName(contact) }}</h2>
             <div class="contacts-page__detail-actions">
-              <button class="contacts-page__action-btn" (click)="editContact(contact)">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-                Edit
-              </button>
-              <button class="contacts-page__action-btn" (click)="deleteContact(contact.id!)">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="3 6 5 6 21 6" />
-                  <path
-                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                  />
-                </svg>
-                Delete
-              </button>
+              <app-button variant="text" size="xsmall" weight="regular" fontSize="medium"
+                label="Edit" icon="edit-icon.svg" hoverIcon="edit-blue.svg"
+                (click)="editContact(contact)" />
+              <app-button variant="text" size="xsmall" weight="regular" fontSize="medium"
+                label="Delete" icon="delete-icon.svg" hoverIcon="delete-blue.svg"
+                (click)="deleteContact(contact.id!)" />
             </div>
           </div>
         </div>
@@ -131,6 +108,17 @@
       </div>
     }
   </div>
+
+  @if (isModalOpen()) {
+    <app-contact-modal
+      [mode]="modalMode()"
+      [contact]="modalContact()"
+      [isLoading]="isLoading()"
+      (closed)="closeModal()"
+      (save)="saveContact($event)"
+      (delete)="deleteContact($event)"
+    />
+  }
 
   <!-- FAB — mobile only, always visible -->
   <button
