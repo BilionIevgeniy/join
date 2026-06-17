@@ -1,0 +1,11 @@
+// ============================================================
+//  TOAST — notification entity
+// ============================================================
+
+export type ToastType = 'success' | 'error';
+
+export interface Toast {
+  id: string;
+  message: string;
+  type: ToastType;
+}

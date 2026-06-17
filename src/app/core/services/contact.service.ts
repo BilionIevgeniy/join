@@ -17,11 +17,13 @@
  */
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
+import { ToastService } from './toast.service';
 import { Contact, CreateContactDto, UpdateContactDto } from '../models/contact.model';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
   private supabase = inject(SupabaseService);
+  private toast = inject(ToastService);
   private contactsMap = signal<Record<string, Contact>>({});
   isLoading = signal(false);
   contacts = computed(() => Object.values(this.contactsMap()));
@@ -55,6 +57,7 @@ export class ContactService {
       this.contactsMap.set(map);
     } catch (err) {
       console.error('getAll contacts failed:', err);
+      this.toast.error('Failed to load contacts.');
     } finally {
       this.isLoading.set(false);
     }
@@ -76,9 +79,11 @@ export class ContactService {
         .single();
       if (error) throw error;
       this.setOne(data);
+      this.toast.success('Contact added successfully.');
       return data;
     } catch (err) {
       console.error('addContact failed:', err);
+      this.toast.error('Failed to add contact.');
       return null;
     } finally {
       this.isLoading.set(false);
@@ -104,9 +109,11 @@ export class ContactService {
         .single();
       if (error) throw error;
       this.setOne(data);
+      this.toast.success('Contact updated successfully.');
       return data;
     } catch (err) {
       console.error('updateContact failed:', err);
+      this.toast.error('Failed to update contact.');
       return null;
     } finally {
       this.isLoading.set(false);
@@ -123,9 +130,11 @@ export class ContactService {
         delete next[id];
         return next;
       });
+      this.toast.success('Contact deleted successfully.');
       return true;
     } catch (err) {
       console.error('deleteContact failed:', err);
+      this.toast.error('Failed to delete contact.');
       return false;
     } finally {
       this.isLoading.set(false);
