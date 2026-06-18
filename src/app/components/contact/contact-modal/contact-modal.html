@@ -1,5 +1,5 @@
-<div class="modal-overlay" (click)="close()">
-  <div class="modal" (click)="$event.stopPropagation()">
+<div class="modal-overlay" [class.modal-overlay--closing]="isClosing()" (click)="close()">
+  <div class="modal" [class.modal--closing]="isClosing()" (click)="$event.stopPropagation()">
 
     <!-- LEFT PANEL -->
     <div class="modal__left">

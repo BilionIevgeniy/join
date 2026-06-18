@@ -1,4 +1,4 @@
-import { Component, input, output, OnInit } from '@angular/core';
+import { Component, input, output, signal, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Contact, ContactMode, CreateContactDto } from '../../../core/models/contact.model';
 import { Avatar } from '../../shared/avatar/avatar';
@@ -18,6 +18,8 @@ export class ContactModal implements OnInit {
   closed = output<void>();
   save = output<CreateContactDto>();
   delete = output<string>();
+
+  isClosing = signal(false);
 
   form = new FormGroup({
     name: new FormControl('', [
@@ -74,6 +76,10 @@ export class ContactModal implements OnInit {
   }
 
   close(): void {
-    this.closed.emit();
+    this.isClosing.set(true);
+    setTimeout(() => {
+      this.isClosing.set(false);
+      this.closed.emit();
+    }, 300);
   }
 }
