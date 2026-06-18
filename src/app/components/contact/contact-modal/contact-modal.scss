@@ -48,7 +48,8 @@
   width: 100%;
   margin: 25px;
   max-width: 1400px;
-  height: 594px;
+  min-height: 594px;
+  height: auto;
   border-radius: 24px;
   overflow: hidden;
   background: white;
@@ -102,6 +103,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
   }
 
   &__content {
@@ -142,6 +145,7 @@
 
   &__avatar {
     display: flex;
+    flex-shrink: 0;
     justify-content: center;
     align-items: center;
     padding-bottom: 100px;
@@ -154,6 +158,12 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+  }
+
+  &__name-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
   }
 
   &__field {
@@ -200,6 +210,23 @@
     justify-content: flex-start;
     gap: 12px;
     margin-top: 8px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .modal {
+    &__avatar {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    &__right {
+      padding: 32px 24px;
+    }
+
+    &__content {
+      gap: 16px;
+    }
   }
 }
 
@@ -259,7 +286,7 @@
       display: flex;
       justify-content: center;
       padding: 0;
-      margin-top: -65px;
+      margin-top: -40px;
       margin-bottom: 24px;
     }
 
