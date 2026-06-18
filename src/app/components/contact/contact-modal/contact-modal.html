@@ -25,36 +25,20 @@
 
         <form class="modal__form" [formGroup]="form" (ngSubmit)="onSubmit()">
 
-        <!-- Name row -->
-        <div class="modal__name-row">
-          <div class="modal__field">
-            @let firstNameField = getField('first_name');
-            <input class="modal__input" formControlName="first_name" placeholder="First name" type="text" />
-            <img class="modal__input-icon" src="/assets/icons/person-dark-icon.svg" alt="" />
-            @if (firstNameField.touched && firstNameField.hasError('required')) {
-              <span class="modal__error">First name is required</span>
-            }
-            @if (firstNameField.touched && firstNameField.hasError('minlength')) {
-              <span class="modal__error">At least 2 characters</span>
-            }
-            @if (firstNameField.touched && firstNameField.hasError('pattern')) {
-              <span class="modal__error">Only letters, spaces and hyphens</span>
-            }
-          </div>
-          <div class="modal__field">
-            @let lastNameField = getField('last_name');
-            <input class="modal__input" formControlName="last_name" placeholder="Last name" type="text" />
-            <img class="modal__input-icon" src="/assets/icons/person-dark-icon.svg" alt="" />
-            @if (lastNameField.touched && lastNameField.hasError('required')) {
-              <span class="modal__error">Last name is required</span>
-            }
-            @if (lastNameField.touched && lastNameField.hasError('minlength')) {
-              <span class="modal__error">At least 2 characters</span>
-            }
-            @if (lastNameField.touched && lastNameField.hasError('pattern')) {
-              <span class="modal__error">Only letters, spaces and hyphens</span>
-            }
-          </div>
+        <!-- Name -->
+        <div class="modal__field">
+          @let nameField = getField('name');
+          <input class="modal__input" formControlName="name" placeholder="Name" type="text" />
+          <img class="modal__input-icon" src="/assets/icons/person-dark-icon.svg" alt="" />
+          @if (nameField.touched && nameField.hasError('required')) {
+            <span class="modal__error">Name is required</span>
+          }
+          @if (nameField.touched && nameField.hasError('minlength')) {
+            <span class="modal__error">Name must be at least 2 characters</span>
+          }
+          @if (nameField.touched && nameField.hasError('pattern')) {
+            <span class="modal__error">Only letters, spaces and hyphens allowed</span>
+          }
         </div>
 
         <!-- Email -->
@@ -91,7 +75,7 @@
               [disabled]="isLoading()" (click)="onDelete()" />
           } @else {
             <span class="btn-cancel">
-              <app-button variant="outline" size="medium" weight="regular" fontSize="medium"
+              <app-button variant="outline" size="medium" weight="bold" fontSize="medium"
                 label="Cancel" (click)="close()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />

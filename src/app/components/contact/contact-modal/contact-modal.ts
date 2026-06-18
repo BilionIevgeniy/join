@@ -22,12 +22,7 @@ export class ContactModal implements OnInit {
   isClosing = signal(false);
 
   form = new FormGroup({
-    first_name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s\-]+$/),
-    ]),
-    last_name: new FormControl('', [
+    name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
       Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s\-]+$/),
@@ -43,8 +38,7 @@ export class ContactModal implements OnInit {
     const contact = this.contact();
     if (this.mode() === 'edit' && contact) {
       this.form.setValue({
-        first_name: contact.first_name,
-        last_name: contact.last_name ?? '',
+        name: contact.first_name,
         email: contact.email,
         phone: contact.phone ?? '',
       });
@@ -69,8 +63,7 @@ export class ContactModal implements OnInit {
       return;
     }
     this.save.emit({
-      first_name: (this.getField('first_name').value ?? '').trim(),
-      last_name: (this.getField('last_name').value ?? '').trim(),
+      first_name: (this.getField('name').value ?? '').trim(),
       email: this.getField('email').value ?? '',
       phone: this.getField('phone').value ?? '',
     });
