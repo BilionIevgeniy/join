@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContactService } from '../../core/services/contact.service';
-import { Contact, ContactMode } from '../../core/models/contact.model';
+import { Contact, ContactMode, CreateContactDto } from '../../core/models/contact.model';
 import { Avatar } from '../../components/shared/avatar/avatar';
 import { Button } from '../../components/shared/button/button';
 import { ContactModal } from '../../components/contact/contact-modal/contact-modal';
@@ -49,7 +49,7 @@ export class Contacts {
 
   isLoading = this.contactService.isLoading;
 
-  async saveContact(data: { first_name: string; email: string; phone: string }): Promise<void> {
+  async saveContact(data: CreateContactDto): Promise<void> {
     if (this.modalMode() === 'add') {
       await this.contactService.addContact(data);
     } else if (this.modalContact()?.id) {
