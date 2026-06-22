@@ -1,0 +1,57 @@
+// Board is fixed light-mode by design (dark mode comes later) — colors are
+// intentionally hardcoded here instead of using the global theme variables.
+.board-column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 252px;
+  gap: 16px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: var(--font-size-m);
+    font-weight: 700;
+    color: #2a3647;
+  }
+
+  &__add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    font-size: var(--font-size-s);
+    color: #2a3647;
+    opacity: 0.5;
+    background: #e0e0e0;
+    border: 1px dashed #e0e0e0;
+    border-radius: 12px;
+  }
+}

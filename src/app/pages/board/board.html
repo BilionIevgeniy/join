@@ -1,0 +1,51 @@
+<div class="board-page">
+  <div class="board-page__header">
+    <h1 class="board-page__title">Board</h1>
+    <div class="board-page__actions">
+      <app-search-input placeholder="Find Task" (searchChange)="onSearchChange($event)" />
+      <app-button
+        variant="primary"
+        size="medium"
+        weight="bold"
+        fontSize="large"
+        label="Add task"
+        icon="add-plus-icon-default.svg"
+        (click)="onAddTask('todo')"
+      />
+    </div>
+  </div>
+
+  <div class="board-page__columns">
+    <app-board-column
+      title="To do"
+      status="todo"
+      [tasks]="todoTasks()"
+      [contacts]="contacts()"
+      [showAddIcon]="true"
+      (addTask)="onAddTask($event)"
+    />
+    <app-board-column
+      title="In progress"
+      status="inProgress"
+      [tasks]="inProgressTasks()"
+      [contacts]="contacts()"
+      [showAddIcon]="true"
+      (addTask)="onAddTask($event)"
+    />
+    <app-board-column
+      title="Awaiting feedback"
+      status="awaitingFeedback"
+      [tasks]="awaitingFeedbackTasks()"
+      [contacts]="contacts()"
+      [showAddIcon]="true"
+      (addTask)="onAddTask($event)"
+    />
+    <app-board-column
+      title="Done"
+      status="done"
+      [tasks]="doneTasks()"
+      [contacts]="contacts()"
+      [showAddIcon]="false"
+    />
+  </div>
+</div>

@@ -1,0 +1,36 @@
+// Board is fixed light-mode by design (dark mode comes later) — colors are
+// intentionally hardcoded here instead of using the global theme variables.
+.board-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+  padding: 32px;
+  background: #f6f7f8;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  &__title {
+    font-size: 61px;
+    font-weight: 700;
+    color: #2a3647;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  &__columns {
+    display: flex;
+    flex: 1;
+    gap: 24px;
+    overflow-x: auto;
+  }
+}

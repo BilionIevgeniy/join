@@ -22,10 +22,10 @@ export const routes: Routes = [
         path: 'summary',
         loadComponent: () => import('./pages/summary/summary').then((m) => m.Summary),
       },
-      // {
-      //   path: 'board',
-      //   loadComponent: () => import('./pages/board/board').then((m) => m.Board),
-      // },
+      {
+        path: 'board',
+        loadComponent: () => import('./pages/board/board').then((m) => m.Board),
+      },
       // {
       //   path: 'add-task',
       //   loadComponent: () =>

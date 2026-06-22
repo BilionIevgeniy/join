@@ -1,0 +1,25 @@
+<div class="board-column">
+  <div class="board-column__header">
+    <h2 class="board-column__title">{{ title() }}</h2>
+    @if (showAddIcon()) {
+      <button
+        type="button"
+        class="board-column__add-btn"
+        (click)="addTask.emit(status())"
+        aria-label="Add task"
+      >
+        <img src="/assets/icons/add-plus-icon-default.svg" alt="" />
+      </button>
+    }
+  </div>
+
+  <div class="board-column__list">
+    @if (tasks().length > 0) {
+      @for (task of tasks(); track task.id) {
+        <app-task-card [task]="task" [contacts]="contacts()" (opened)="taskOpened.emit($event)" />
+      }
+    } @else {
+      <div class="board-column__empty">No tasks in {{ title() }}</div>
+    }
+  </div>
+</div>

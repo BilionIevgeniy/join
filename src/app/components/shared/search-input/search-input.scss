@@ -1,0 +1,51 @@
+// Board is fixed light-mode by design (dark mode comes later) — colors are
+// intentionally hardcoded here instead of using the global theme variables.
+.search-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 312px;
+  height: 38px;
+  padding: 0 12px;
+  background: #fff;
+  border: 2px solid #2a3647;
+  border-radius: 10px;
+
+  &--focused {
+    border-color: #29abe2;
+  }
+
+  &__field {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-family-main);
+    font-size: var(--font-size-s);
+    color: #2a3647;
+    background: transparent;
+    border: none;
+    outline: none;
+
+    &::placeholder {
+      color: #2a3647;
+      opacity: 0.5;
+    }
+  }
+
+  &__icon-btn {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 0 8px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-left: 1px solid #2a3647;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

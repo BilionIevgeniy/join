@@ -1,0 +1,19 @@
+.checkbox-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+
+  &__icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  &__label {
+    font-family: var(--font-family-main);
+    font-size: var(--font-size-s);
+    color: var(--text-color);
+  }
+}
