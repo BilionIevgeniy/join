@@ -78,6 +78,16 @@
 }
 
 // Dropdown Menü
+@keyframes dropdown-open {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+@keyframes dropdown-close {
+  from { transform: scaleY(1); }
+  to   { transform: scaleY(0); }
+}
+
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 17px);
@@ -92,6 +102,12 @@
   background: var(--dropdown-bg);
   border-radius: 16px 0 16px 16px;
   box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+  transform-origin: top;
+  animation: dropdown-open 200ms ease-out forwards;
+
+  &--closing {
+    animation: dropdown-close 200ms ease-in forwards;
+  }
 }
 
 .dropdown-item {

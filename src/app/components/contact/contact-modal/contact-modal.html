@@ -25,20 +25,36 @@
 
         <form class="modal__form" [formGroup]="form" (ngSubmit)="onSubmit()">
 
-        <!-- Name -->
-        <div class="modal__field">
-          @let nameField = getField('name');
-          <input class="modal__input" formControlName="name" placeholder="Name" type="text" />
-          <img class="modal__input-icon" src="/assets/icons/person-dark-icon.svg" alt="" />
-          @if (nameField.touched && nameField.hasError('required')) {
-            <span class="modal__error">Name is required</span>
-          }
-          @if (nameField.touched && nameField.hasError('minlength')) {
-            <span class="modal__error">Name must be at least 2 characters</span>
-          }
-          @if (nameField.touched && nameField.hasError('pattern')) {
-            <span class="modal__error">Only letters, spaces and hyphens allowed</span>
-          }
+        <!-- Name row -->
+        <div class="modal__name-row">
+          <div class="modal__field">
+            @let firstNameField = getField('first_name');
+            <input class="modal__input" formControlName="first_name" placeholder="First name" type="text" />
+            <img class="modal__input-icon" src="/assets/icons/person-dark-icon.svg" alt="" />
+            <span class="modal__error">
+              @if (firstNameField.touched && firstNameField.hasError('required')) {
+                First name is required
+              } @else if (firstNameField.touched && firstNameField.hasError('minlength')) {
+                At least 2 characters
+              } @else if (firstNameField.touched && firstNameField.hasError('pattern')) {
+                Only letters, spaces and hyphens
+              }
+            </span>
+          </div>
+          <div class="modal__field">
+            @let lastNameField = getField('last_name');
+            <input class="modal__input" formControlName="last_name" placeholder="Last name" type="text" />
+            <img class="modal__input-icon" src="/assets/icons/person-dark-icon.svg" alt="" />
+            <span class="modal__error">
+              @if (lastNameField.touched && lastNameField.hasError('required')) {
+                Last name is required
+              } @else if (lastNameField.touched && lastNameField.hasError('minlength')) {
+                At least 2 characters
+              } @else if (lastNameField.touched && lastNameField.hasError('pattern')) {
+                Only letters, spaces and hyphens
+              }
+            </span>
+          </div>
         </div>
 
         <!-- Email -->
@@ -46,12 +62,13 @@
           @let emailField = getField('email');
           <input class="modal__input" formControlName="email" placeholder="Email" type="email" />
           <img class="modal__input-icon" src="/assets/icons/mail-dark-icon.svg" alt="" />
-          @if (emailField.touched && emailField.hasError('required')) {
-            <span class="modal__error">Email is required</span>
-          }
-          @if (emailField.touched && emailField.hasError('pattern')) {
-            <span class="modal__error">Invalid email address</span>
-          }
+          <span class="modal__error">
+            @if (emailField.touched && emailField.hasError('required')) {
+              Email is required
+            } @else if (emailField.touched && emailField.hasError('pattern')) {
+              Invalid email address
+            }
+          </span>
         </div>
 
         <!-- Phone -->
@@ -59,12 +76,13 @@
           @let phoneField = getField('phone');
           <input class="modal__input" formControlName="phone" placeholder="Phone" type="tel" />
           <img class="modal__input-icon" src="/assets/icons/phone-dark-icon.svg" alt="" />
-          @if (phoneField.touched && phoneField.hasError('required')) {
-            <span class="modal__error">Phone is required</span>
-          }
-          @if (phoneField.touched && phoneField.hasError('pattern')) {
-            <span class="modal__error">Only numbers and + allowed</span>
-          }
+          <span class="modal__error">
+            @if (phoneField.touched && phoneField.hasError('required')) {
+              Phone is required
+            } @else if (phoneField.touched && phoneField.hasError('pattern')) {
+              Only numbers and + allowed
+            }
+          </span>
         </div>
 
         <!-- Buttons -->
@@ -75,7 +93,7 @@
               [disabled]="isLoading()" (click)="onDelete()" />
           } @else {
             <span class="btn-cancel">
-              <app-button variant="outline" size="medium" weight="bold" fontSize="medium"
+              <app-button variant="outline" size="medium" weight="regular" fontSize="medium"
                 label="Cancel" (click)="close()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />

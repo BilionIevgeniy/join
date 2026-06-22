@@ -28,17 +28,34 @@
   to   { opacity: 0; }
 }
 
-.modal-overlay {
+:host {
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 1440px;
+  height: 100%;
+  z-index: 2000;
+}
+
+.modal-overlay {
+  position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
-  animation: fade-in 300ms ease-out forwards;
 
-  &--closing {
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    content: '';
+    background: rgba(0, 0, 0, 0.4);
+    animation: fade-in 300ms ease-out forwards;
+  }
+
+  &--closing::before {
     animation: fade-out 300ms ease-in forwards;
   }
 }
@@ -47,8 +64,9 @@
   display: flex;
   width: 100%;
   margin: 25px;
-  max-width: 1400px;
-  height: 594px;
+  max-width: 1200px;
+  min-height: 594px;
+  height: auto;
   border-radius: 24px;
   overflow: hidden;
   background: white;
@@ -102,6 +120,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
   }
 
   &__content {
@@ -142,6 +162,7 @@
 
   &__avatar {
     display: flex;
+    flex-shrink: 0;
     justify-content: center;
     align-items: center;
     padding-bottom: 100px;
@@ -154,6 +175,12 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+  }
+
+  &__name-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
   }
 
   &__field {
@@ -190,9 +217,12 @@
   }
 
   &__error {
-    font-size: 12px;
-    color: #e74c3c;
+    display: block;
+    height: 14px;
     padding-left: 4px;
+    font-size: 12px;
+    line-height: 14px;
+    color: #e74c3c;
   }
 
   &__actions {
@@ -200,6 +230,23 @@
     justify-content: flex-start;
     gap: 12px;
     margin-top: 8px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .modal {
+    &__avatar {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    &__right {
+      padding: 32px 24px;
+    }
+
+    &__content {
+      gap: 16px;
+    }
   }
 }
 
@@ -259,7 +306,7 @@
       display: flex;
       justify-content: center;
       padding: 0;
-      margin-top: -65px;
+      margin-top: -40px;
       margin-bottom: 24px;
     }
 
