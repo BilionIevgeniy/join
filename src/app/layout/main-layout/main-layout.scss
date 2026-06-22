@@ -1,7 +1,12 @@
 .layout {
+  position: relative;
   display: flex;
+  width: 100%;
+  max-width: 1440px;
   height: 100vh;
   overflow: hidden;
+  border-right: 1px solid var(--header-border);
+  box-shadow: 4px 0 4px rgb(0 0 0 / 10%);
 }
 
 .sidebar {
@@ -17,10 +22,14 @@
 }
 
 .header {
+  position: relative;
+  z-index: 5;
   flex-shrink: 0;
 }
 
 .main {
+  position: relative;
+  z-index: 1;
   flex: 1;
   overflow-y: auto;
   background-color: var(--main-bg-color);

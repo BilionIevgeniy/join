@@ -81,12 +81,26 @@
           <div class="contacts-page__detail-meta">
             <h2 class="contacts-page__detail-name">{{ getFullName(contact) }}</h2>
             <div class="contacts-page__detail-actions">
-              <app-button variant="text" size="xsmall" weight="regular" fontSize="medium"
-                label="Edit" icon="edit-icon.svg" hoverIcon="edit-blue.svg"
-                (click)="editContact(contact)" />
-              <app-button variant="text" size="xsmall" weight="regular" fontSize="medium"
-                label="Delete" icon="delete-icon.svg" hoverIcon="delete-blue.svg"
-                (click)="deleteContact(contact.id!)" />
+              <app-button
+                variant="text"
+                size="xsmall"
+                weight="regular"
+                fontSize="medium"
+                label="Edit"
+                icon="edit-icon.svg"
+                hoverIcon="edit-blue.svg"
+                (click)="openEditModal(contact)"
+              />
+              <app-button
+                variant="text"
+                size="xsmall"
+                weight="regular"
+                fontSize="medium"
+                label="Delete"
+                icon="delete-icon.svg"
+                hoverIcon="delete-blue.svg"
+                (click)="deleteContact(contact.id!)"
+              />
             </div>
           </div>
         </div>
@@ -123,7 +137,7 @@
   <!-- FAB — mobile only, always visible -->
   <button
     class="contacts-page__fab"
-    (click)="selectedContact() ? editContact(selectedContact()!) : openAddModal()"
+    (click)="selectedContact() ? openEditModal(selectedContact()!) : openAddModal()"
     aria-label="Add new contact"
   >
     @if (selectedContact()) {

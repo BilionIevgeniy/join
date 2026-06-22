@@ -1,6 +1,6 @@
-import { Component, input, output, OnInit } from '@angular/core';
+import { Component, input, output, signal, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Contact } from '../../../core/models/contact.model';
+import { Contact, ContactMode, CreateContactDto } from '../../../core/models/contact.model';
 import { Avatar } from '../../shared/avatar/avatar';
 import { Button } from '../../shared/button/button';
 
@@ -12,15 +12,22 @@ import { Button } from '../../shared/button/button';
   styleUrl: './contact-modal.scss',
 })
 export class ContactModal implements OnInit {
-  mode = input<'add' | 'edit'>('add');
+  mode = input<ContactMode>('add');
   contact = input<Contact | null>(null);
   isLoading = input<boolean>(false);
   closed = output<void>();
-  save = output<{ first_name: string; email: string; phone: string }>();
+  save = output<CreateContactDto>();
   delete = output<string>();
 
+  isClosing = signal(false);
+
   form = new FormGroup({
-    name: new FormControl('', [
+    first_name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s\-]+$/),
+    ]),
+    last_name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
       Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s\-]+$/),
@@ -29,27 +36,27 @@ export class ContactModal implements OnInit {
       Validators.required,
       Validators.pattern(/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/),
     ]),
-    phone: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^\+?[0-9]+$/),
-    ]),
+    phone: new FormControl('', [Validators.required, Validators.pattern(/^\+?[0-9]+$/)]),
   });
 
   ngOnInit(): void {
     const contact = this.contact();
     if (this.mode() === 'edit' && contact) {
       this.form.setValue({
-        name: contact.first_name,
+        first_name: contact.first_name,
+        last_name: contact.last_name ?? '',
         email: contact.email,
         phone: contact.phone ?? '',
       });
     }
   }
 
-  getField(name: string) { return this.form.get(name)!; }
+  getField(name: string) {
+    return this.form.get(name)!;
+  }
 
   getInitials(): string {
-    return this.mode() === 'edit' ? this.contact()?.initials ?? '' : '';
+    return this.mode() === 'edit' ? (this.contact()?.initials ?? '') : '';
   }
 
   getAvatarColor(): string {
@@ -62,7 +69,8 @@ export class ContactModal implements OnInit {
       return;
     }
     this.save.emit({
-      first_name: (this.getField('name').value ?? '').trim(),
+      first_name: (this.getField('first_name').value ?? '').trim(),
+      last_name: (this.getField('last_name').value ?? '').trim(),
       email: this.getField('email').value ?? '',
       phone: this.getField('phone').value ?? '',
     });
@@ -75,6 +83,10 @@ export class ContactModal implements OnInit {
   }
 
   close(): void {
-    this.closed.emit();
+    this.isClosing.set(true);
+    setTimeout(() => {
+      this.isClosing.set(false);
+      this.closed.emit();
+    }, 300);
   }
 }

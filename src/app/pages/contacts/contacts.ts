@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContactService } from '../../core/services/contact.service';
-import { Contact } from '../../core/models/contact.model';
+import { Contact, ContactMode } from '../../core/models/contact.model';
 import { Avatar } from '../../components/shared/avatar/avatar';
 import { Button } from '../../components/shared/button/button';
 import { ContactModal } from '../../components/contact/contact-modal/contact-modal';
@@ -19,7 +19,7 @@ export class Contacts {
   groupedContacts = this.contactService.groupedContacts;
   selectedContact = signal<Contact | null>(null);
   isModalOpen = signal(false);
-  modalMode = signal<'add' | 'edit'>('add');
+  modalMode = signal<ContactMode>('add');
   modalContact = signal<Contact | null>(null);
 
   selectContact(contact: Contact): void {
@@ -30,7 +30,7 @@ export class Contacts {
     this.selectedContact.set(null);
   }
 
-  editContact(contact: Contact): void {
+  openEditModal(contact: Contact): void {
     this.modalMode.set('edit');
     this.modalContact.set(contact);
     this.isModalOpen.set(true);

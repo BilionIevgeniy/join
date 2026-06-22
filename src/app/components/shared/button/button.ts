@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, ViewEncapsulation, input } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -6,6 +6,7 @@ import { Component, input } from '@angular/core';
   imports: [],
   templateUrl: './button.html',
   styleUrl: './button.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class Button {
   label = input<string>('');
