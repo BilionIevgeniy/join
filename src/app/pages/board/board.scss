@@ -1,11 +1,9 @@
-// Board is fixed light-mode by design (dark mode comes later) — colors are
-// intentionally hardcoded here instead of using the global theme variables.
 .board-page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 48px;
   height: 100%;
-  padding: 32px;
+  padding: 80px 64px;
   background: #f6f7f8;
 
   &__header {
@@ -29,8 +27,14 @@
 
   &__columns {
     display: flex;
+    justify-content: space-between;
     flex: 1;
     gap: 24px;
     overflow-x: auto;
+  }
+
+  &__add-task-btn .btn__icon {
+    width: 32px;
+    height: 32px;
   }
 }

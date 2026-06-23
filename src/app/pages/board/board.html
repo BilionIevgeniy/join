@@ -4,12 +4,13 @@
     <div class="board-page__actions">
       <app-search-input placeholder="Find Task" (searchChange)="onSearchChange($event)" />
       <app-button
+        class="board-page__add-task-btn"
         variant="primary"
-        size="medium"
+        size="small"
         weight="bold"
         fontSize="large"
         label="Add task"
-        icon="add-plus-icon-default.svg"
+        icon="add-plus-white-icon.svg"
         (click)="onAddTask('todo')"
       />
     </div>
