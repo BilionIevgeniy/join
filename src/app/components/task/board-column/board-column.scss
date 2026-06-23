@@ -2,8 +2,8 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  min-width: 252px;
   gap: 16px;
+  min-width: 252px;
 
   &__header {
     display: flex;
@@ -36,8 +36,8 @@
   &__list {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     gap: 16px;
+    align-items: flex-start;
   }
 
   &__empty {
@@ -49,15 +49,15 @@
     padding: 10px;
     font-size: var(--font-size-s);
     color: #2a3647;
-    opacity: 0.5;
     background: #e7e7e7;
-    border: 1px solid transparent;
-    border-radius: 10px;
     background-image:
       linear-gradient(#e7e7e7, #e7e7e7),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='none' stroke='%23A8A8A8' stroke-width='1' stroke-dasharray='2,4' rx='10' ry='10'/%3E%3C/svg%3E");
-    background-origin: border-box;
     background-clip: padding-box, border-box;
+    background-origin: border-box;
+    border: 1px solid transparent;
+    border-radius: 10px;
     box-shadow: 0 0 4px rgb(0 0 0 / 16%);
+    opacity: 0.5;
   }
 }

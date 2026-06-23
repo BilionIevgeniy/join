@@ -8,9 +8,9 @@
 
   &__header {
     display: flex;
+    gap: 24px;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
   }
 
   &__title {
@@ -21,15 +21,15 @@
 
   &__actions {
     display: flex;
-    align-items: center;
     gap: 24px;
+    align-items: center;
   }
 
   &__columns {
     display: flex;
-    justify-content: space-between;
     flex: 1;
     gap: 24px;
+    justify-content: space-between;
     overflow-x: auto;
   }
 

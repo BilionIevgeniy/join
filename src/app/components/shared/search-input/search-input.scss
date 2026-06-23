@@ -20,9 +20,9 @@
     font-family: var(--font-family-main);
     font-size: var(--font-size-l);
     color: black;
+    outline: none;
     background: transparent;
     border: none;
-    outline: none;
 
     &::placeholder {
       color: #A8A8A8;
