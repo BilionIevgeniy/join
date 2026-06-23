@@ -25,14 +25,6 @@
     align-items: center;
   }
 
-  &__columns {
-    display: flex;
-    flex: 1;
-    gap: 24px;
-    justify-content: space-between;
-    overflow-x: auto;
-  }
-
   &__add-task-btn .btn__icon {
     width: 32px;
     height: 32px;

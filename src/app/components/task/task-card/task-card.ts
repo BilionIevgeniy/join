@@ -1,6 +1,5 @@
 import { Component, computed, input, output } from '@angular/core';
-import { Task } from '../../../core/models/task.model';
-import { Contact } from '../../../core/models/contact.model';
+import { getTaskContacts, Task } from '../../../core/models/task.model';
 import { Avatar } from '../../shared/avatar/avatar';
 
 @Component({
@@ -12,15 +11,11 @@ import { Avatar } from '../../shared/avatar/avatar';
 })
 export class TaskCard {
   task = input.required<Task>();
-  contacts = input<Contact[]>([]);
   opened = output<Task>();
 
   private readonly maxVisibleAvatars = 4;
 
-  assignedContacts = computed(() => {
-    const ids = this.task().assignedTo;
-    return this.contacts().filter((c) => c.id && ids.includes(c.id));
-  });
+  assignedContacts = computed(() => getTaskContacts(this.task()));
 
   visibleContacts = computed(() => this.assignedContacts().slice(0, this.maxVisibleAvatars));
   remainingContactsCount = computed(() =>

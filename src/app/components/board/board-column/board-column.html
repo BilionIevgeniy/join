@@ -16,7 +16,7 @@
   <div class="board-column__list">
     @if (tasks().length > 0) {
       @for (task of tasks(); track task.id) {
-        <app-task-card [task]="task" [contacts]="contacts()" (opened)="taskOpened.emit($event)" />
+        <app-task-card [task]="task" (opened)="taskOpened.emit($event)" />
       }
     } @else {
       <div class="board-column__empty">No tasks in {{ title() }}</div>

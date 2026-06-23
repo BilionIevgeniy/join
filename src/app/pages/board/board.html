@@ -16,37 +16,5 @@
     </div>
   </div>
 
-  <div class="board-page__columns">
-    <app-board-column
-      title="To do"
-      status="todo"
-      [tasks]="todoTasks()"
-      [contacts]="contacts()"
-      [showAddIcon]="true"
-      (addTask)="onAddTask($event)"
-    />
-    <app-board-column
-      title="In progress"
-      status="inProgress"
-      [tasks]="inProgressTasks()"
-      [contacts]="contacts()"
-      [showAddIcon]="true"
-      (addTask)="onAddTask($event)"
-    />
-    <app-board-column
-      title="Awaiting feedback"
-      status="awaitingFeedback"
-      [tasks]="awaitingFeedbackTasks()"
-      [contacts]="contacts()"
-      [showAddIcon]="true"
-      (addTask)="onAddTask($event)"
-    />
-    <app-board-column
-      title="Done"
-      status="done"
-      [tasks]="doneTasks()"
-      [contacts]="contacts()"
-      [showAddIcon]="false"
-    />
-  </div>
+  <app-board [columns]="columns()" (addTask)="onAddTask($event)" (taskOpened)="onTaskOpened($event)" />
 </div>

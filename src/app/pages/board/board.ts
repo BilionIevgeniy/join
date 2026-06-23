@@ -1,23 +1,20 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
-import { ContactService } from '../../core/services/contact.service';
-import { TaskStatus } from '../../core/models/task.model';
+import { BoardColumnConfig, STATUS_LABELS, Task, TaskStatus } from '../../core/models/task.model';
 import { Button } from '../../components/shared/button/button';
 import { SearchInput } from '../../components/shared/search-input/search-input';
-import { BoardColumn } from '../../components/task/board-column/board-column';
+import { Board as BoardComponent } from '../../components/board/board';
 
 @Component({
-  selector: 'app-board',
+  selector: 'app-board-page',
   standalone: true,
-  imports: [Button, SearchInput, BoardColumn],
+  imports: [Button, SearchInput, BoardComponent],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
 export class Board {
   private taskService = inject(TaskService);
-  private contactService = inject(ContactService);
 
-  contacts = this.contactService.contacts;
   searchQuery = signal('');
 
   private matchesSearch = (title: string, description: string) => {
@@ -39,11 +36,32 @@ export class Board {
   awaitingFeedbackTasks = this.byStatus('awaitingFeedback');
   doneTasks = this.byStatus('done');
 
+  columns = computed<BoardColumnConfig[]>(() => [
+    { title: STATUS_LABELS.todo, status: 'todo', tasks: this.todoTasks(), showAddIcon: true },
+    {
+      title: STATUS_LABELS.inProgress,
+      status: 'inProgress',
+      tasks: this.inProgressTasks(),
+      showAddIcon: true,
+    },
+    {
+      title: STATUS_LABELS.awaitingFeedback,
+      status: 'awaitingFeedback',
+      tasks: this.awaitingFeedbackTasks(),
+      showAddIcon: true,
+    },
+    { title: STATUS_LABELS.done, status: 'done', tasks: this.doneTasks(), showAddIcon: false },
+  ]);
+
   onSearchChange(query: string): void {
     this.searchQuery.set(query);
   }
 
   onAddTask(status: TaskStatus): void {
     // Opens the add-task flow — wired up once the add-task page/modal exists
+  }
+
+  onTaskOpened(task: Task): void {
+    // Opens the task detail view — wired up once the detail page/modal exists
   }
 }
