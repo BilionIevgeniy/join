@@ -1,0 +1,369 @@
+$border-color: #d1d7e0;
+$error-color: #ff3d00;
+$radius: 8px;
+
+@mixin input-base {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: var(--font-family-main);
+  font-size: 16px;
+  color: var(--text-color);
+  outline: none;
+  background: transparent;
+  border: 1.5px solid $border-color;
+  border-radius: $radius;
+  transition: border-color 100ms ease;
+
+  &:focus {
+    border-color: var(--primary-color);
+  }
+
+  &--error {
+    border-color: $error-color;
+  }
+}
+
+.add-task {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: var(--font-family-main);
+
+  &__title {
+    flex-shrink: 0;
+    padding: 32px 40px 24px;
+    font-size: 47px;
+    font-weight: 700;
+    color: var(--text-color);
+  }
+
+  &__form {
+    flex: 1;
+    padding: 0 40px 32px;
+    overflow-y: auto;
+  }
+
+  // ─── TWO COLUMN GRID (desktop) ────────────────────────────
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 40px;
+    align-items: start;
+  }
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  // ─── FIELDS ───────────────────────────────────────────────
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+  }
+
+  &__required {
+    color: $error-color;
+  }
+
+  &__input {
+    @include input-base;
+  }
+
+  &__textarea {
+    @include input-base;
+
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  &__select {
+    @include input-base;
+
+    padding-right: 40px;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+
+  &__error {
+    font-size: 12px;
+    color: $error-color;
+  }
+
+  &__hint {
+    display: block;
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text-color);
+  }
+
+  // ─── PRIORITY ─────────────────────────────────────────────
+  &__priority {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  // ─── DROPDOWN ─────────────────────────────────────────────
+  &__dropdown-wrapper {
+    position: relative;
+  }
+
+  &__dropdown-trigger {
+    position: relative;
+    cursor: pointer;
+  }
+
+  &__dropdown-arrow {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    color: var(--text-color);
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    left: 0;
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--bg-color);
+    border: 1.5px solid $border-color;
+    border-radius: $radius;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  }
+
+  &__dropdown-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 100ms ease;
+
+    &:hover {
+      background: var(--inverted-bg-color);
+    }
+
+    &--selected {
+      background: var(--inverted-bg-color);
+    }
+
+    input[type='checkbox'] {
+      flex-shrink: 0;
+      margin-left: auto;
+      cursor: pointer;
+    }
+  }
+
+  // ─── AVATAR ───────────────────────────────────────────────
+  &__avatar {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    border-radius: 50%;
+  }
+
+  &__selected-avatars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  // ─── SUBTASKS ─────────────────────────────────────────────
+  &__subtask-input-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__subtask-add {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    cursor: pointer;
+    background: transparent;
+    border: 1.5px solid $border-color;
+    border-radius: $radius;
+    transition: border-color 100ms ease;
+
+    &:hover {
+      border-color: var(--primary-color);
+    }
+  }
+
+  &__subtask-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 200px;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    list-style: none;
+  }
+
+  &__subtask-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: $radius;
+
+    &:hover .add-task__subtask-actions {
+      opacity: 1;
+    }
+  }
+
+  &__subtask-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: var(--text-color);
+    white-space: nowrap;
+  }
+
+  &__subtask-edit {
+    flex: 1;
+  }
+
+  &__subtask-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 100ms ease;
+  }
+
+  &__subtask-btn {
+    padding: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    background: transparent;
+    border: unset;
+    border-radius: 4px;
+    transition: background 100ms ease;
+
+    &:hover {
+      background: var(--inverted-bg-color);
+    }
+
+    &--delete:hover {
+      color: $error-color;
+    }
+  }
+
+  // ─── ACTIONS (sticky bottom) ──────────────────────────────
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 40px;
+    border-top: 1px solid $border-color;
+  }
+
+  &__action-buttons {
+    display: flex;
+    gap: 16px;
+  }
+
+  &__btn-clear {
+    padding: 12px 24px;
+    font-family: var(--font-family-main);
+    font-size: 16px;
+    cursor: pointer;
+    background: transparent;
+    border: 1.5px solid $border-color;
+    border-radius: $radius;
+    transition: border-color 100ms ease;
+
+    &:hover {
+      border-color: var(--primary-color);
+    }
+  }
+
+  &__btn-save {
+    padding: 12px 24px;
+    font-family: var(--font-family-main);
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    background: var(--primary-color);
+    border: unset;
+    border-radius: $radius;
+    transition: background 100ms ease;
+
+    &:hover:not(:disabled) {
+      background: var(--inverted-primary-color);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  // ─── MOBILE ───────────────────────────────────────────────
+  @media (max-width: 768px) {
+    overflow: hidden; // ensure flex children don't overflow
+
+    &__title {
+      padding: 16px 16px 12px;
+      font-size: 32px;
+    }
+
+    &__form {
+      padding: 0 16px 16px;
+    }
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+
+    &__actions {
+      justify-content: flex-end;
+      padding: 12px 16px;
+    }
+
+    &__hint {
+      display: none;
+    }
+
+    &__action-buttons {
+      width: 100%;
+    }
+
+    &__btn-clear,
+    &__btn-save {
+      flex: 1;
+    }
+  }
+}
