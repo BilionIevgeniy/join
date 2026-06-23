@@ -1,0 +1,7 @@
+<app-add-task-component
+  [contacts]="filteredContacts()"
+  [isLoading]="isLoading()"
+  (save)="onSave($event)"
+  (cancel)="onCancel()"
+  (search)="onSearch($event)"
+/>
