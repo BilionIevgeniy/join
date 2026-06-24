@@ -1,0 +1,12 @@
+<button
+  type="button"
+  class="checkbox-button"
+  (click)="toggle()"
+  (mouseenter)="isHovered.set(true)"
+  (mouseleave)="isHovered.set(false)"
+>
+  <img [src]="'/assets/icons/' + icon" alt="" class="checkbox-button__icon" />
+  @if (label()) {
+    <span class="checkbox-button__label">{{ label() }}</span>
+  }
+</button>
