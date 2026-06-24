@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, DestroyRef } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
 import { BoardColumnConfig, STATUS_LABELS, Task, TaskStatus } from '../../core/models/task.model';
 import { Button } from '../../components/shared/button/button';
@@ -14,8 +14,18 @@ import { Board as BoardComponent } from '../../components/board/board';
 })
 export class Board {
   private taskService = inject(TaskService);
+  private destroyRef = inject(DestroyRef);
 
   searchQuery = signal('');
+
+  private mobileQuery = window.matchMedia('(width <= 1025px)');
+  isMobile = signal(this.mobileQuery.matches);
+
+  constructor() {
+    const onChange = (e: MediaQueryListEvent) => this.isMobile.set(e.matches);
+    this.mobileQuery.addEventListener('change', onChange);
+    this.destroyRef.onDestroy(() => this.mobileQuery.removeEventListener('change', onChange));
+  }
 
   private matchesSearch = (title: string, description: string) => {
     const q = this.searchQuery().toLowerCase().trim();

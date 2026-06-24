@@ -6,6 +6,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  font-family: var(--font-family-main);
+}
+
 input,
 textarea,
 select,
