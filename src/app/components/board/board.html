@@ -1,0 +1,12 @@
+<div class="board">
+  @for (column of columns(); track column.title) {
+    <app-board-column
+      [title]="column.title"
+      [status]="column.status"
+      [tasks]="column.tasks"
+      [showAddIcon]="column.showAddIcon"
+      (addTask)="addTask.emit($event)"
+      (taskOpened)="taskOpened.emit($event)"
+    />
+  }
+</div>

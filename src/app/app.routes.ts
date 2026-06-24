@@ -23,9 +23,16 @@ export const routes: Routes = [
         path: RoutesEnum.SUMMARY,
         loadComponent: () => import('./pages/summary/summary').then((m) => m.Summary),
       },
+      {
+        path: 'board',
+        loadComponent: () => import('./pages/board/board').then((m) => m.Board),
+      },
       // {
-      //   path: 'board',
-      //   loadComponent: () => import('./pages/board/board').then((m) => m.Board),
+      //   path: 'add-task',
+      //   loadComponent: () =>
+      //     import('./pages/task/add-task-page/add-task-page').then(
+      //       (m) => m.AddTaskPageComponent,
+      //     ),
       // },
       {
         path: RoutesEnum.ADD_TASK,

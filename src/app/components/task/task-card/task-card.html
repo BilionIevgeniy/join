@@ -1,0 +1,27 @@
+<div class="task-card" (click)="onOpen()">
+  <span class="task-card__category" [class]="categoryClass()">{{ task().category }}</span>
+
+  <h3 class="task-card__title">{{ task().title }}</h3>
+  <p class="task-card__description">{{ task().description }}</p>
+
+  @if (totalSubtasks() > 0) {
+    <div class="task-card__subtasks">
+      <div class="task-card__progress-bar">
+        <div class="task-card__progress-fill" [style.width.%]="subtaskProgress()"></div>
+      </div>
+      <span class="task-card__subtasks-label">{{ doneSubtasks() }}/{{ totalSubtasks() }} Subtasks</span>
+    </div>
+  }
+
+  <div class="task-card__footer">
+    <div class="task-card__avatars">
+      @for (contact of visibleContacts(); track contact.id) {
+        <app-avatar size="small" [initials]="contact.initials" [color]="contact.color" />
+      }
+      @if (remainingContactsCount() > 0) {
+        <span class="task-card__avatars-more">+{{ remainingContactsCount() }}</span>
+      }
+    </div>
+    <img class="task-card__priority" [src]="'/assets/icons/' + priorityIcon()" alt="priority" />
+  </div>
+</div>

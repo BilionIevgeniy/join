@@ -60,8 +60,8 @@
   }
 
   &__icon {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
 
     &--hoverable {
       .btn:hover & {
@@ -72,8 +72,8 @@
 
   svg {
     flex-shrink: 0;
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     fill: none;
     stroke: currentColor;
     transition: stroke 0.2s ease;
@@ -85,6 +85,7 @@
 
     &:hover {
       background: var(--btn-primary-hover);
+      box-shadow: 0 4px 4px rgb(0 0 0 / 40%);
     }
 
     &:active {
@@ -98,6 +99,7 @@
 
     &:hover {
       background: var(--btn-secondary-hover);
+      box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
     }
 
     &:active {
@@ -113,6 +115,7 @@
     &:hover {
       color: var(--btn-outline-hover-text);
       border-color: var(--btn-outline-hover-border);
+      box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
     }
 
     &:active {
@@ -129,6 +132,7 @@
 
     &:hover {
       color: var(--btn-text-hover);
+      box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
     }
 
     &:active {
