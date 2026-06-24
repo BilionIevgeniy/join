@@ -1,0 +1,298 @@
+<div class="add-task container">
+  <h1 class="add-task__title">Add Task</h1>
+
+  <form class="add-task__form" [formGroup]="form" (ngSubmit)="onSave()">
+    <div class="add-task__grid">
+      <!-- ─── LEFT COLUMN ─── -->
+      <div class="add-task__col">
+        <!-- Title -->
+        <div class="add-task__field">
+          <label class="add-task__label" for="title">
+            Title <span class="add-task__required">*</span>
+          </label>
+          <input
+            id="title"
+            class="add-task__input"
+            [class.add-task__input--error]="isFieldInvalid('title')"
+            formControlName="title"
+            type="text"
+            placeholder="Enter a title"
+          />
+          @if (isFieldInvalid('title')) {
+            <span class="add-task__error">This field is required</span>
+          }
+        </div>
+
+        <!-- Description -->
+        <div class="add-task__field">
+          <label class="add-task__label" for="description">Description</label>
+          <textarea
+            id="description"
+            class="add-task__textarea"
+            formControlName="description"
+            placeholder="Enter a Description"
+            rows="4"
+          ></textarea>
+        </div>
+
+        <!-- Due date -->
+        <div class="add-task__field">
+          <label class="add-task__label" for="due_date">
+            Due date <span class="add-task__required">*</span>
+          </label>
+          <input
+            id="due_date"
+            class="add-task__input"
+            [class.add-task__input--error]="isFieldInvalid('due_date')"
+            formControlName="due_date"
+            type="date"
+            placeholder="dd/mm/yyyy"
+          />
+          @if (isFieldInvalid('due_date')) {
+            <span class="add-task__error">This field is required</span>
+          }
+        </div>
+
+        <div class="add-task__col-spacer"></div>
+      </div>
+
+      <!-- ─── RIGHT COLUMN ─── -->
+      <div class="add-task__col">
+        <!-- Priority -->
+        <fieldset class="add-task__field add-task__field--fieldset">
+          <label class="add-task__label">Priority</label>
+          <div class="add-task__priority">
+            @for (p of priorities; track p) {
+              <app-priority-button
+                [priority]="p"
+                [selected]="form.get('priority')!.value === p"
+                (priorityChange)="onPriorityChange($event)"
+              />
+            }
+          </div>
+        </fieldset>
+
+        <!-- Assigned to -->
+        <div class="add-task__field">
+          <label class="add-task__label" for="assigned">Assigned to</label>
+          <div class="add-task__dropdown-wrapper">
+            <div
+              class="add-task__dropdown-trigger"
+              [class.add-task__dropdown-trigger--open]="isDropdownOpen()"
+              (click)="toggleDropdown()"
+            >
+              <input
+                id="assigned"
+                class="add-task__input"
+                type="text"
+                placeholder="Select contacts to assign"
+                (input)="onSearchChange($event)"
+              />
+              <span
+                class="add-task__dropdown-arrow"
+                (click)="openDropdown(); $event.stopPropagation()"
+                >▾</span
+              >
+            </div>
+
+            @if (isDropdownOpen()) {
+              <div class="add-task__dropdown-backdrop" (click)="closeDropdown()"></div>
+              <div class="add-task__dropdown">
+                @for (contact of contacts(); track contact.id) {
+                  <div
+                    class="add-task__dropdown-item"
+                    [class.add-task__dropdown-item--selected]="isContactSelected(contact.id!)"
+                    (click)="toggleContact(contact.id!)"
+                  >
+                    <app-avatar
+                      [initials]="contact.initials"
+                      [color]="contact.color"
+                      size="small"
+                    />
+                    <span>{{ contact.first_name }} {{ contact.last_name }}</span>
+                    <input
+                      type="checkbox"
+                      [checked]="isContactSelected(contact.id!)"
+                      (click)="toggleContact(contact.id!); $event.stopPropagation()"
+                    />
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- Selected contact avatars -->
+            @if (getSelectedContacts().length > 0) {
+              <div class="add-task__selected-avatars">
+                @for (contact of getSelectedContacts(); track contact.id) {
+                  <app-avatar [initials]="contact.initials" [color]="contact.color" size="small" />
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="add-task__field">
+          <label class="add-task__label">
+            Category <span class="add-task__required">*</span>
+          </label>
+          <div class="add-task__dropdown-wrapper">
+            <div
+              class="add-task__dropdown-trigger"
+              [class.add-task__dropdown-trigger--open]="isCategoryDropdownOpen()"
+              [class.add-task__dropdown-trigger--error]="isFieldInvalid('category')"
+              (click)="toggleCategoryDropdown()"
+            >
+              <input
+                class="add-task__input"
+                [class.add-task__input--error]="isFieldInvalid('category')"
+                type="text"
+                readonly
+                [placeholder]="getSelectedCategory() || 'Select task category'"
+                [value]="getSelectedCategory()"
+              />
+              <span class="add-task__dropdown-arrow">▾</span>
+            </div>
+
+            @if (isCategoryDropdownOpen()) {
+              <div class="add-task__dropdown-backdrop" (click)="closeCategoryDropdown()"></div>
+              <div class="add-task__dropdown">
+                @for (cat of categories; track cat) {
+                  <div
+                    class="add-task__dropdown-item add-task__dropdown-item--single"
+                    [class.add-task__dropdown-item--selected]="getSelectedCategory() === cat"
+                    (click)="selectCategory(cat)"
+                  >
+                    <span>{{ cat }}</span>
+                    @if (getSelectedCategory() === cat) {
+                      <span class="add-task__dropdown-check"
+                        ><img src="assets/icons/check-grey.svg" alt=""
+                      /></span>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+          @if (isFieldInvalid('category')) {
+            <span class="add-task__error">This field is required</span>
+          }
+        </div>
+
+        <!-- Subtasks -->
+        <div class="add-task__field">
+          <label class="add-task__label" for="subtask">Subtasks</label>
+          <div class="add-task__subtask-input-row">
+            <input
+              id="subtask"
+              class="add-task__input"
+              type="text"
+              placeholder="Add new subtask"
+              [value]="subtaskInput()"
+              (input)="subtaskInput.set($any($event.target).value)"
+              (keydown)="onSubtaskKeydown($event)"
+            />
+            <div class="subtask-buttons-wrapper">
+              @if (isSubtaskActive()) {
+                <button
+                  class="add-task__subtask-action-btn clear-btn"
+                  type="button"
+                  (click)="clearSubtask()"
+                >
+                  ✕
+                </button>
+                <button
+                  class="add-task__subtask-action-btn confirm-btn"
+                  type="button"
+                  (click)="confirmSubtask()"
+                >
+                  <img src="assets/icons/check-grey.svg" alt="" />
+                </button>
+              } @else {
+                <button
+                  class="add-task__subtask-action-btn add-btn"
+                  type="button"
+                  (click)="addSubtask()"
+                >
+                  +
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Subtask list -->
+          <ul class="add-task__subtask-list">
+            @for (subtask of subtasks(); track subtask.id) {
+              <li
+                class="add-task__subtask-item"
+                [class.add-task__subtask-item--open]="editingSubtask() === subtask.id"
+              >
+                @if (editingSubtask() === subtask.id) {
+                  <!-- Edit mode -->
+                  <input
+                    class="add-task__input add-task__subtask-edit"
+                    type="text"
+                    [value]="subtask.title"
+                    #editInput
+                  />
+                  <div class="subtask-edit__buttons-wrapper">
+                    <button
+                      type="button"
+                      class="add-task__subtask-btn"
+                      (click)="saveEditSubtask(subtask.id, editInput.value)"
+                    >
+                      <img src="assets/icons/check-grey.svg" alt="" />
+                    </button>
+                    <button
+                      type="button"
+                      class="add-task__subtask-btn add-task__subtask-btn--delete"
+                      (click)="deleteSubtask(subtask.id)"
+                    >
+                      <img src="assets/icons/delete-icon.svg" alt="" />
+                    </button>
+                  </div>
+                } @else {
+                  <!-- View mode -->
+                  <span class="add-task__subtask-title">• {{ subtask.title }}</span>
+                  <div class="add-task__subtask-actions">
+                    <button
+                      type="button"
+                      class="add-task__subtask-btn"
+                      (click)="startEditSubtask(subtask.id)"
+                    >
+                      <img src="assets/icons/edit.svg" alt="" />
+                    </button>
+                    <button
+                      type="button"
+                      class="add-task__subtask-btn add-task__subtask-btn--delete"
+                      (click)="deleteSubtask(subtask.id)"
+                    >
+                      <img src="assets/icons/delete-icon.svg" alt="" />
+                    </button>
+                  </div>
+                }
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="add-task__actions">
+    <span class="add-task__hint">
+      <span class="add-task__required">*</span> This field is required
+    </span>
+    <div class="add-task__action-buttons">
+      <button class="add-task__btn-clear" type="button" (click)="onClear()">Clear ✕</button>
+      <button
+        class="add-task__btn-save"
+        type="button"
+        [disabled]="!isFormValid() || isLoading()"
+        (click)="onSave()"
+      >
+        {{ task() ? 'Save Task' : 'Create Task' }} <img src="assets/icons/check.svg" alt="" />
+      </button>
+    </div>
+  </div>
+</div>

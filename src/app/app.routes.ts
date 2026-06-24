@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { RoutesEnum } from './core/models/routes.model';
 
 export const routes: Routes = [
   // Public routes
@@ -19,7 +20,7 @@ export const routes: Routes = [
     loadComponent: () => import('./layout/main-layout/main-layout').then((m) => m.MainLayout),
     children: [
       {
-        path: 'summary',
+        path: RoutesEnum.SUMMARY,
         loadComponent: () => import('./pages/summary/summary').then((m) => m.Summary),
       },
       {
@@ -34,14 +35,18 @@ export const routes: Routes = [
       //     ),
       // },
       {
-        path: 'contacts',
+        path: RoutesEnum.ADD_TASK,
+        loadComponent: () => import('./pages/add-task/add-task').then((m) => m.AddTaskPage),
+      },
+      {
+        path: RoutesEnum.CONTACTS,
         loadComponent: () => import('./pages/contacts/contacts').then((m) => m.Contacts),
       },
       // Redirect from root
-      { path: '', redirectTo: 'summary', pathMatch: 'full' },
+      { path: '', redirectTo: RoutesEnum.SUMMARY, pathMatch: 'full' },
     ],
   },
 
   // Fallback
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: RoutesEnum.SUMMARY },
 ];
