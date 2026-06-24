@@ -381,8 +381,6 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 40px;
-  border-top: 1px solid var(--border-color);
 }
 
 .add-task__action-buttons {
@@ -406,19 +404,21 @@
 }
 
 .add-task__btn-save {
+  display: flex;
+  gap: 8px;
+  align-items: center;
   padding: 12px 24px;
-  font-family: var(--font-family-main);
   font-size: 16px;
   font-weight: 600;
   color: #fff;
   cursor: pointer;
-  background: var(--primary-color);
+  background: var(--inverted-primary-color);
   border: unset;
   border-radius: var(--radius);
   transition: background 100ms ease;
 
   &:hover:not(:disabled) {
-    background: var(--inverted-primary-color);
+    background: var(--primary-color);
   }
 
   &:disabled {
