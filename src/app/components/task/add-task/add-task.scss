@@ -1,25 +1,25 @@
-$border-color: #d1d7e0;
-$error-color: #ff3d00;
-$radius: 8px;
-
 @mixin input-base {
   width: 100%;
   padding: 12px 16px;
-  font-family: var(--font-family-main);
-  font-size: 16px;
-  color: var(--text-color);
+  font-size: var(--font-size-l);
+  color: var(--inverted-text-color);
   outline: none;
   background: transparent;
-  border: 1.5px solid $border-color;
-  border-radius: $radius;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius);
   transition: border-color 100ms ease;
+
+  &::placeholder {
+    color: #a0aab4;
+    opacity: 1; // Firefox снижает opacity по умолчанию
+  }
 
   &:focus {
     border-color: var(--primary-color);
   }
 
   &--error {
-    border-color: $error-color;
+    border-color: var(--error-color);
   }
 }
 
@@ -27,343 +27,440 @@ $radius: 8px;
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  font-family: var(--font-family-main);
+  padding: 124px 36px 79px 96px;
+}
 
-  &__title {
-    flex-shrink: 0;
-    padding: 32px 40px 24px;
-    font-size: 47px;
-    font-weight: 700;
-    color: var(--text-color);
-  }
+.add-task__title {
+  flex-shrink: 0;
+  margin-bottom: 48px;
+  font-size: 61px;
+  font-weight: bold;
+  color: var(--inverted-text-color);
+}
 
-  &__form {
-    flex: 1;
-    padding: 0 40px 32px;
-    overflow-y: auto;
-  }
+.add-task__form {
+  flex: 1;
+  margin-bottom: 124px;
+}
 
-  // ─── TWO COLUMN GRID (desktop) ────────────────────────────
-  &__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px 40px;
-    align-items: start;
-  }
+// ─── TWO COLUMN GRID (desktop) ────────────────────────────
+.add-task__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
 
-  &__col {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+.add-task__col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 
-  // ─── FIELDS ───────────────────────────────────────────────
-  &__field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  &__label {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-color);
-  }
-
-  &__required {
-    color: $error-color;
-  }
-
-  &__input {
-    @include input-base;
-  }
-
-  &__textarea {
-    @include input-base;
-
-    min-height: 120px;
-    resize: vertical;
-  }
-
-  &__select {
-    @include input-base;
-
-    padding-right: 40px;
-    appearance: none;
-    cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-  }
-
-  &__error {
-    font-size: 12px;
-    color: $error-color;
-  }
-
-  &__hint {
-    display: block;
-    margin-top: 16px;
-    font-size: 13px;
-    color: var(--text-color);
-  }
-
-  // ─── PRIORITY ─────────────────────────────────────────────
-  &__priority {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  // ─── DROPDOWN ─────────────────────────────────────────────
-  &__dropdown-wrapper {
+  &:first-of-type {
     position: relative;
+    gap: 32px;
+    padding-right: 48px;
   }
+}
 
-  &__dropdown-trigger {
-    position: relative;
-    cursor: pointer;
-  }
+.add-task__col-spacer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  height: 110%;
+  background-color: var(--bg-color);
+  opacity: 0.15;
+}
 
-  &__dropdown-arrow {
-    position: absolute;
-    top: 50%;
-    right: 16px;
-    color: var(--text-color);
-    pointer-events: none;
-    transform: translateY(-50%);
-  }
+// ─── FIELDS ───────────────────────────────────────────────
+.add-task__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 
-  &__dropdown {
-    position: absolute;
-    top: calc(100% + 4px);
-    right: 0;
-    left: 0;
-    z-index: 10;
-    max-height: 200px;
-    overflow-y: auto;
-    background: var(--bg-color);
-    border: 1.5px solid $border-color;
-    border-radius: $radius;
-    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
-  }
-
-  &__dropdown-item {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: background 100ms ease;
-
-    &:hover {
-      background: var(--inverted-bg-color);
-    }
-
-    &--selected {
-      background: var(--inverted-bg-color);
-    }
-
-    input[type='checkbox'] {
-      flex-shrink: 0;
-      margin-left: auto;
-      cursor: pointer;
-    }
-  }
-
-  // ─── AVATAR ───────────────────────────────────────────────
-  &__avatar {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #fff;
-    border-radius: 50%;
-  }
-
-  &__selected-avatars {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  // ─── SUBTASKS ─────────────────────────────────────────────
-  &__subtask-input-row {
-    display: flex;
-    gap: 8px;
-  }
-
-  &__subtask-add {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    font-size: 20px;
-    cursor: pointer;
-    background: transparent;
-    border: 1.5px solid $border-color;
-    border-radius: $radius;
-    transition: border-color 100ms ease;
-
-    &:hover {
-      border-color: var(--primary-color);
-    }
-  }
-
-  &__subtask-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    max-height: 200px;
+  &--fieldset {
     padding: 0;
     margin: 0;
-    overflow-y: auto;
-    list-style: none;
+    border: none;
+
+    .add-task__label {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.add-task__label {
+  font-size: var(--font-size-l);
+  font-weight: 500;
+  color: var(--inverted-text-color);
+}
+
+.add-task__required {
+  color: var(--error-color);
+}
+
+.add-task__input {
+  @include input-base;
+}
+
+.add-task__textarea {
+  @include input-base;
+
+  min-height: 120px;
+  resize: vertical;
+}
+
+.add-task__error {
+  font-size: 12px;
+  color: var(--error-color);
+}
+
+.add-task__hint {
+  display: block;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--inverted-text-color);
+}
+
+// ─── PRIORITY ─────────────────────────────────────────────
+.add-task__priority {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+// ─── DROPDOWN ─────────────────────────────────────────────
+.add-task__dropdown-wrapper {
+  position: relative;
+}
+
+.add-task__dropdown-trigger {
+  position: relative;
+  cursor: pointer;
+
+  .add-task__input {
+    cursor: pointer;
+
+    &::placeholder {
+      color: var(--inverted-text-color);
+    }
   }
 
-  &__subtask-item {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    padding: 6px 8px;
-    border-radius: $radius;
+  &--open {
+    .add-task__input {
+      border-color: var(--primary-color);
+    }
 
-    &:hover .add-task__subtask-actions {
+    .add-task__dropdown-arrow {
+      transform: translateY(-50%) rotate(180deg);
+    }
+  }
+
+  &--error {
+    .add-task__input {
+      border-color: var(--error-color);
+    }
+  }
+}
+
+.add-task__dropdown-arrow {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  color: var(--inverted-text-color);
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: transform 150ms ease;
+}
+
+.add-task__dropdown-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.add-task__dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  left: 0;
+  z-index: 100;
+  max-height: 200px;
+  overflow-y: auto;
+  background: var(--inverted-bg-color);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+}
+
+.add-task__dropdown-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 16px;
+  margin-bottom: 2px;
+  cursor: pointer;
+  border: 1px;
+  border-radius: 14px;
+  transition: background 100ms ease;
+
+  &:hover:not(.add-task__dropdown-item--selected) {
+    background: var(--bg-color-lighter);
+  }
+
+  &--selected {
+    color: var(--text-color);
+    background: var(--bg-color);
+
+    input[type='checkbox'] {
+      accent-color: var(--text-color);
+    }
+  }
+
+  input[type='checkbox'] {
+    flex-shrink: 0;
+    margin-left: auto;
+    cursor: pointer;
+  }
+
+  &--single {
+    justify-content: space-between;
+
+    &:hover:not(.add-task__dropdown-item--selected) {
+      background: var(--bg-color-lighter);
+    }
+  }
+}
+
+.add-task__dropdown-check {
+  font-size: 14px;
+  color: var(--primary-color);
+}
+
+// ─── AVATAR ───────────────────────────────────────────────
+.add-task__avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.add-task__selected-avatars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+// ─── SUBTASKS ─────────────────────────────────────────────
+.add-task__subtask-input-row {
+  position: relative;
+
+  .add-task__input {
+    padding-right: 88px;
+  }
+}
+
+.subtask-buttons-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding-right: 12px;
+}
+
+.add-task__subtask-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  color: var(--inverted-text-color);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: color 100ms ease;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
+
+.clear-btn {
+  border-right: 1px solid grey;
+}
+
+.add-task__subtask-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 200px;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.add-task__subtask-item {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: var(--radius);
+
+  &:hover:not(.add-task__subtask-item--open) {
+    background-color: var(--bg-color-lighter);
+
+    .add-task__subtask-actions {
       opacity: 1;
     }
   }
+}
 
-  &__subtask-title {
+.add-task__subtask-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  color: var(--inverted-text-color);
+  white-space: nowrap;
+}
+
+.add-task__subtask-edit {
+  flex: 1;
+}
+
+.add-task__subtask-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 100ms ease;
+}
+
+.subtask-edit__buttons-wrapper {
+  position: absolute;
+  right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.add-task__subtask-btn {
+  padding: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  background: transparent;
+  border: unset;
+  border-radius: 4px;
+  transition: background 100ms ease;
+
+  &:hover {
+    background: var(--inverted-bg-color);
+  }
+
+  &--delete:hover {
+    color: var(--error-color);
+  }
+}
+
+// ─── ACTIONS (sticky bottom) ──────────────────────────────
+.add-task__actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  border-top: 1px solid var(--border-color);
+}
+
+.add-task__action-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.add-task__btn-clear {
+  padding: 12px 24px;
+  font-family: var(--font-family-main);
+  font-size: 16px;
+  cursor: pointer;
+  background: transparent;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius);
+  transition: border-color 100ms ease;
+
+  &:hover {
+    border-color: var(--primary-color);
+  }
+}
+
+.add-task__btn-save {
+  padding: 12px 24px;
+  font-family: var(--font-family-main);
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  background: var(--primary-color);
+  border: unset;
+  border-radius: var(--radius);
+  transition: background 100ms ease;
+
+  &:hover:not(:disabled) {
+    background: var(--inverted-primary-color);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+// ─── MOBILE ───────────────────────────────────────────────
+@media (max-width: 768px) {
+  .add-task {
+    overflow: hidden; // ensure flex children don't overflow}
+  }
+
+  .add-task__title {
+    padding: 16px 16px 12px;
+    font-size: 32px;
+  }
+
+  .add-task__form {
+    padding: 0 16px 16px;
+  }
+
+  .add-task__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .add-task__actions {
+    justify-content: flex-end;
+    padding: 12px 16px;
+  }
+
+  .add-task__hint {
+    display: none;
+  }
+
+  .add-task__action-buttons {
+    width: 100%;
+  }
+
+  .add-task__btn-clear,
+  .add-task__btn-save {
     flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 14px;
-    color: var(--text-color);
-    white-space: nowrap;
-  }
-
-  &__subtask-edit {
-    flex: 1;
-  }
-
-  &__subtask-actions {
-    display: flex;
-    gap: 4px;
-    opacity: 0;
-    transition: opacity 100ms ease;
-  }
-
-  &__subtask-btn {
-    padding: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    background: transparent;
-    border: unset;
-    border-radius: 4px;
-    transition: background 100ms ease;
-
-    &:hover {
-      background: var(--inverted-bg-color);
-    }
-
-    &--delete:hover {
-      color: $error-color;
-    }
-  }
-
-  // ─── ACTIONS (sticky bottom) ──────────────────────────────
-  &__actions {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 40px;
-    border-top: 1px solid $border-color;
-  }
-
-  &__action-buttons {
-    display: flex;
-    gap: 16px;
-  }
-
-  &__btn-clear {
-    padding: 12px 24px;
-    font-family: var(--font-family-main);
-    font-size: 16px;
-    cursor: pointer;
-    background: transparent;
-    border: 1.5px solid $border-color;
-    border-radius: $radius;
-    transition: border-color 100ms ease;
-
-    &:hover {
-      border-color: var(--primary-color);
-    }
-  }
-
-  &__btn-save {
-    padding: 12px 24px;
-    font-family: var(--font-family-main);
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    cursor: pointer;
-    background: var(--primary-color);
-    border: unset;
-    border-radius: $radius;
-    transition: background 100ms ease;
-
-    &:hover:not(:disabled) {
-      background: var(--inverted-primary-color);
-    }
-
-    &:disabled {
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
-  }
-
-  // ─── MOBILE ───────────────────────────────────────────────
-  @media (max-width: 768px) {
-    overflow: hidden; // ensure flex children don't overflow
-
-    &__title {
-      padding: 16px 16px 12px;
-      font-size: 32px;
-    }
-
-    &__form {
-      padding: 0 16px 16px;
-    }
-
-    &__grid {
-      grid-template-columns: 1fr;
-    }
-
-    &__actions {
-      justify-content: flex-end;
-      padding: 12px 16px;
-    }
-
-    &__hint {
-      display: none;
-    }
-
-    &__action-buttons {
-      width: 100%;
-    }
-
-    &__btn-clear,
-    &__btn-save {
-      flex: 1;
-    }
   }
 }

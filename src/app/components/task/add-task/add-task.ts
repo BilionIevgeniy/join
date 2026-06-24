@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input, output, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Contact } from '../../../core/models/contact.model';
 import {
@@ -10,11 +10,12 @@ import {
   CreateTaskDto,
 } from '../../../core/models/task.model';
 import { PriorityButton } from '../../shared/button/priority-button/priority-button';
+import { Avatar } from '../../shared/avatar/avatar';
 
 @Component({
   selector: 'app-add-task-component',
   standalone: true,
-  imports: [ReactiveFormsModule, PriorityButton],
+  imports: [ReactiveFormsModule, PriorityButton, Avatar],
   templateUrl: './add-task.html',
   styleUrl: './add-task.scss',
 })
@@ -35,8 +36,10 @@ export class AddTaskComponent implements OnInit {
   // ─── LOCAL STATE ──────────────────────────────────────────
   subtasks = signal<Subtask[]>([]);
   subtaskInput = signal('');
+  isSubtaskActive = signal(false);
   editingSubtask = signal<string | null>(null); // id of subtask being edited
   isDropdownOpen = signal(false);
+  isCategoryDropdownOpen = signal(false);
   categories: TaskCategory[] = ['User Story', 'Technical Task'];
   priorities: TaskPriority[] = ['urgent', 'medium', 'low'];
 
@@ -50,11 +53,10 @@ export class AddTaskComponent implements OnInit {
     assigned_contacts: [[] as string[]],
   });
 
-  // Form is valid only when required fields are filled
-  isFormValid = computed(() => {
+  isFormValid(): boolean {
     const { title, due_date, category } = this.form.controls;
     return title.valid && due_date.valid && category.valid;
-  });
+  }
 
   ngOnInit(): void {
     const task = this.task();
@@ -114,13 +116,44 @@ export class AddTaskComponent implements OnInit {
     this.isDropdownOpen.update((v) => !v);
   }
 
+  openDropdown(): void {
+    this.isDropdownOpen.set(true);
+  }
+
   closeDropdown(): void {
     this.isDropdownOpen.set(false);
+  }
+
+  toggleCategoryDropdown(): void {
+    this.isCategoryDropdownOpen.update((v) => !v);
+  }
+
+  closeCategoryDropdown(): void {
+    this.isCategoryDropdownOpen.set(false);
+  }
+
+  selectCategory(cat: TaskCategory): void {
+    this.form.patchValue({ category: cat });
+    this.form.get('category')!.markAsTouched();
+    this.isCategoryDropdownOpen.set(false);
+  }
+
+  getSelectedCategory(): TaskCategory | '' {
+    return (this.form.get('category')!.value as TaskCategory) ?? '';
   }
 
   // ─── SUBTASKS ─────────────────────────────────────────────
 
   addSubtask(): void {
+    this.isSubtaskActive.set(true);
+  }
+
+  clearSubtask(): void {
+    this.subtaskInput.set('');
+    this.isSubtaskActive.set(false);
+  }
+
+  confirmSubtask(): void {
     const title = this.subtaskInput().trim();
     if (!title) return;
     const subtask: Subtask = {
@@ -130,12 +163,13 @@ export class AddTaskComponent implements OnInit {
     };
     this.subtasks.update((list) => [...list, subtask]);
     this.subtaskInput.set('');
+    this.isSubtaskActive.set(false);
   }
 
   onSubtaskKeydown(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
-      event.preventDefault(); // prevent form submit
-      this.addSubtask();
+      event.preventDefault();
+      this.confirmSubtask();
     }
   }
 

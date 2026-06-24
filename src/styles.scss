@@ -5,9 +5,7 @@
 @use './styles/themes/normal.scss' as *;
 @use './styles/themes/dark.scss' as *;
 
-.app {
-  min-height: 100dvh;
-  font: var(--font-m);
-  color: var(--primary-color);
-  background-color: var(--bg-color);
+.container {
+  max-width: 1440px;
+  margin-right: auto;
 }
