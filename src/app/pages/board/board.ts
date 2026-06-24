@@ -23,18 +23,20 @@ export class Board {
     return title.toLowerCase().includes(q) || description.toLowerCase().includes(q);
   };
 
-  private byStatus = (status: TaskStatus) =>
-    computed(() =>
-      this.taskService
-        .tasks()
-        .filter((t) => t.status === status)
-        .filter((t) => this.matchesSearch(t.title, t.description)),
-    );
-
-  todoTasks = this.byStatus('todo');
-  inProgressTasks = this.byStatus('inProgress');
-  awaitingFeedbackTasks = this.byStatus('awaitingFeedback');
-  doneTasks = this.byStatus('done');
+  todoTasks = computed(() =>
+    this.taskService.todoTasks().filter((t) => this.matchesSearch(t.title, t.description)),
+  );
+  inProgressTasks = computed(() =>
+    this.taskService.inProgressTasks().filter((t) => this.matchesSearch(t.title, t.description)),
+  );
+  awaitingFeedbackTasks = computed(() =>
+    this.taskService
+      .awaitingFeedbackTasks()
+      .filter((t) => this.matchesSearch(t.title, t.description)),
+  );
+  doneTasks = computed(() =>
+    this.taskService.doneTasks().filter((t) => this.matchesSearch(t.title, t.description)),
+  );
 
   columns = computed<BoardColumnConfig[]>(() => [
     { title: STATUS_LABELS.todo, status: 'todo', tasks: this.todoTasks(), showAddIcon: true },

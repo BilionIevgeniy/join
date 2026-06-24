@@ -17,14 +17,14 @@ export class Sidebar {
       icon: '/assets/icons/summary-icon.svg',
     },
     {
-      label: 'Board',
-      route: RoutesEnum.BOARD,
-      icon: '/assets/icons/board-icon.svg',
-    },
-    {
       label: 'Add Task',
       route: RoutesEnum.ADD_TASK,
       icon: '/assets/icons/add-task-icon.svg',
+    },
+    {
+      label: 'Board',
+      route: RoutesEnum.BOARD,
+      icon: '/assets/icons/board-icon.svg',
     },
     {
       label: 'Contacts',
