@@ -3,9 +3,12 @@
   flex: 1;
   gap: 24px;
   justify-content: space-between;
+  padding: 8px;
+  padding-bottom: 80px;
+  margin: -8px;
   overflow-x: auto;
 
-  @media (width <= 1025px) {
+  @media (width <= 1415px) {
     flex-direction: column;
     align-items: stretch;
     overflow-x: visible;
