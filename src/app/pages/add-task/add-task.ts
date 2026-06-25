@@ -1,7 +1,8 @@
 import { Component, inject, signal, computed } from '@angular/core';
+import { Router } from '@angular/router';
 import { TaskService } from '../../core/services/task.service';
 import { ContactService } from '../../core/services/contact.service';
-import { CreateTaskDto, TaskStatus } from '../../core/models/task.model';
+import { CreateTaskDto } from '../../core/models/task.model';
 import { AddTaskComponent } from '../../components/task/add-task/add-task';
 
 @Component({
@@ -14,6 +15,7 @@ import { AddTaskComponent } from '../../components/task/add-task/add-task';
 export class AddTaskPage {
   private taskService = inject(TaskService);
   private contactService = inject(ContactService);
+  private router = inject(Router);
 
   // Loading state from service
   isLoading = this.taskService.isLoading;
@@ -41,7 +43,8 @@ export class AddTaskPage {
   }
 
   async onSave(dto: CreateTaskDto): Promise<void> {
-    await this.taskService.addTask(dto);
+    const result = await this.taskService.addTask(dto);
+    if (result) this.router.navigate(['/board']);
   }
 
   onCancel(): void {
