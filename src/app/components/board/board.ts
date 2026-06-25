@@ -13,4 +13,5 @@ export class Board {
   columns = input.required<BoardColumnConfig[]>();
   addTask = output<TaskStatus>();
   taskOpened = output<Task>();
+  taskMoved = output<{ taskId: string; newStatus: TaskStatus }>();
 }

@@ -76,4 +76,8 @@ export class Board {
   onTaskOpened(task: Task): void {
     // Opens the task detail view — wired up once the detail page/modal exists
   }
+
+  onTaskMoved(event: { taskId: string; newStatus: TaskStatus }): void {
+    this.taskService.moveTask(event.taskId, event.newStatus);
+  }
 }

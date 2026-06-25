@@ -1,4 +1,11 @@
-<div class="task-card" (click)="onOpen()">
+<div
+  class="task-card"
+  [class.is-dragging]="isDragging()"
+  draggable="true"
+  (click)="onOpen()"
+  (dragstart)="onDragStart($event)"
+  (dragend)="onDragEnd()"
+>
   <span class="task-card__category" [class]="categoryClass()">{{ task().category }}</span>
 
   <h3 class="task-card__title">{{ task().title }}</h3>
@@ -22,6 +29,35 @@
         <span class="task-card__avatars-more">+{{ remainingContactsCount() }}</span>
       }
     </div>
-    <img class="task-card__priority" [src]="'/assets/icons/' + priorityIcon()" alt="priority" />
+
+    <div class="task-card__right">
+      <img class="task-card__priority" [src]="'/assets/icons/' + priorityIcon()" alt="priority" />
+
+      <div class="task-card__move-wrap">
+        <button
+          class="task-card__move-btn"
+          type="button"
+          aria-label="Move task to another column"
+          (click)="toggleMoveMenu($event)"
+        >
+          <img src="/assets/icons/choice-arrow-icon.svg" alt="" />
+        </button>
+
+        @if (showMoveMenu()) {
+          <div class="task-card__move-backdrop" (click)="closeMoveMenu()"></div>
+          <div class="task-card__move-menu">
+            @for (item of otherStatuses(); track item.status) {
+              <button
+                type="button"
+                class="task-card__move-option"
+                (click)="selectStatus(item.status, $event)"
+              >
+                {{ item.label }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </div>
   </div>
 </div>

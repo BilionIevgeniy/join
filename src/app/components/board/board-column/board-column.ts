@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { Task, TaskStatus } from '../../../core/models/task.model';
 import { TaskCard } from '../../task/task-card/task-card';
 
@@ -17,4 +17,40 @@ export class BoardColumn {
 
   addTask = output<TaskStatus>();
   taskOpened = output<Task>();
+  taskMoved = output<{ taskId: string; newStatus: TaskStatus }>();
+
+  isDragOver = signal(false);
+  private dragCounter = 0;
+
+  onDragEnter(event: DragEvent): void {
+    event.preventDefault();
+    this.dragCounter++;
+    this.isDragOver.set(true);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+  }
+
+  onDragLeave(): void {
+    this.dragCounter--;
+    if (this.dragCounter === 0) {
+      this.isDragOver.set(false);
+    }
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.dragCounter = 0;
+    this.isDragOver.set(false);
+    const taskId = event.dataTransfer?.getData('text/plain');
+    if (taskId) {
+      this.taskMoved.emit({ taskId, newStatus: this.status() });
+    }
+  }
+
+  onTaskMoveTo(task: Task, newStatus: TaskStatus): void {
+    this.taskMoved.emit({ taskId: task.id, newStatus });
+  }
 }
