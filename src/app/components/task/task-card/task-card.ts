@@ -1,5 +1,5 @@
-import { Component, computed, input, output } from '@angular/core';
-import { getTaskContacts, Task } from '../../../core/models/task.model';
+import { Component, computed, input, output, signal } from '@angular/core';
+import { getTaskContacts, STATUS_LABELS, Task, TaskStatus } from '../../../core/models/task.model';
 import { Avatar } from '../../shared/avatar/avatar';
 
 @Component({
@@ -12,11 +12,14 @@ import { Avatar } from '../../shared/avatar/avatar';
 export class TaskCard {
   task = input.required<Task>();
   opened = output<Task>();
+  moveTo = output<TaskStatus>();
 
   private readonly maxVisibleAvatars = 4;
 
-  assignedContacts = computed(() => getTaskContacts(this.task()));
+  isDragging = signal(false);
+  showMoveMenu = signal(false);
 
+  assignedContacts = computed(() => getTaskContacts(this.task()));
   visibleContacts = computed(() => this.assignedContacts().slice(0, this.maxVisibleAvatars));
   remainingContactsCount = computed(() =>
     Math.max(0, this.assignedContacts().length - this.maxVisibleAvatars),
@@ -30,10 +33,43 @@ export class TaskCard {
   });
 
   categoryClass = computed(() =>
-    this.task().category === 'User Story' ? 'task-card__category--user-story' : 'task-card__category--technical-task',
+    this.task().category === 'User Story'
+      ? 'task-card__category--user-story'
+      : 'task-card__category--technical-task',
   );
 
   priorityIcon = computed(() => `${this.task().priority}-prio-icon.svg`);
+
+  otherStatuses = computed(() => {
+    const current = this.task().status;
+    const all: TaskStatus[] = ['todo', 'inProgress', 'awaitingFeedback', 'done'];
+    return all.filter((s) => s !== current).map((s) => ({ status: s, label: STATUS_LABELS[s] }));
+  });
+
+  onDragStart(event: DragEvent): void {
+    this.isDragging.set(true);
+    event.dataTransfer?.setData('text/plain', this.task().id);
+    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+  }
+
+  onDragEnd(): void {
+    this.isDragging.set(false);
+  }
+
+  toggleMoveMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    this.showMoveMenu.update((v) => !v);
+  }
+
+  selectStatus(status: TaskStatus, event: MouseEvent): void {
+    event.stopPropagation();
+    this.moveTo.emit(status);
+    this.showMoveMenu.set(false);
+  }
+
+  closeMoveMenu(): void {
+    this.showMoveMenu.set(false);
+  }
 
   onOpen(): void {
     this.opened.emit(this.task());

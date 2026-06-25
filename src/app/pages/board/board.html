@@ -16,5 +16,10 @@
     />
   </div>
 
-  <app-board [columns]="columns()" (addTask)="onAddTask($event)" (taskOpened)="onTaskOpened($event)" />
+  <app-board
+    [columns]="columns()"
+    (addTask)="onAddTask($event)"
+    (taskOpened)="onTaskOpened($event)"
+    (taskMoved)="onTaskMoved($event)"
+  />
 </div>

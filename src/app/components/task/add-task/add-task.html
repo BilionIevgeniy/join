@@ -82,11 +82,12 @@
               (click)="toggleDropdown()"
             >
               <input
+                #contactSearch
                 id="assigned"
                 class="add-task__input"
                 type="text"
                 placeholder="Select contacts to assign"
-                (input)="onSearchChange($event)"
+                (input)="onSearchChange(contactSearch.value)"
               />
               <span
                 class="add-task__dropdown-arrow"
@@ -98,7 +99,7 @@
             @if (isDropdownOpen()) {
               <div class="add-task__dropdown-backdrop" (click)="closeDropdown()"></div>
               <div class="add-task__dropdown">
-                @for (contact of contacts(); track contact.id) {
+                @for (contact of filteredContacts(); track contact.id) {
                   <div
                     class="add-task__dropdown-item"
                     [class.add-task__dropdown-item--selected]="isContactSelected(contact.id!)"
@@ -192,17 +193,17 @@
               (input)="subtaskInput.set($any($event.target).value)"
               (keydown)="onSubtaskKeydown($event)"
             />
-            <div class="subtask-buttons-wrapper">
+            <div class="add-task__subtask-buttons-wrapper">
               @if (isSubtaskActive()) {
                 <button
-                  class="add-task__subtask-action-btn clear-btn"
+                  class="add-task__subtask-action-btn add-task__subtask-action-btn--clear"
                   type="button"
                   (click)="clearSubtask()"
                 >
                   ✕
                 </button>
                 <button
-                  class="add-task__subtask-action-btn confirm-btn"
+                  class="add-task__subtask-action-btn add-task__subtask-action-btn--confirm"
                   type="button"
                   (click)="confirmSubtask()"
                 >
@@ -210,7 +211,7 @@
                 </button>
               } @else {
                 <button
-                  class="add-task__subtask-action-btn add-btn"
+                  class="add-task__subtask-action-btn add-task__subtask-action-btn--add"
                   type="button"
                   (click)="addSubtask()"
                 >
@@ -235,7 +236,7 @@
                     [value]="subtask.title"
                     #editInput
                   />
-                  <div class="subtask-edit__buttons-wrapper">
+                  <div class="add-task__subtask-edit-buttons">
                     <button
                       type="button"
                       class="add-task__subtask-btn"

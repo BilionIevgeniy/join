@@ -60,6 +60,13 @@
     flex-direction: column;
     gap: 16px;
     align-items: stretch;
+    padding: 8px;
+    margin: -8px;
+    border: 2px dashed transparent;
+    border-radius: 12px;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease;
 
     @media (width <= 1415px) {
       flex-direction: row;
@@ -67,6 +74,11 @@
       padding: 8px 8px 16px;
       margin: -8px -8px -16px;
       overflow-x: auto;
+    }
+
+    &--drop-target {
+      background: rgb(41 171 226 / 6%);
+      border-color: #29abe2;
     }
   }
 
