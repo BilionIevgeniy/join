@@ -19,7 +19,7 @@
 
     @media (width <= 1025px) {
       flex-wrap: wrap;
-    
+
       &::after {
         flex-basis: 100%;
         order: 3;
