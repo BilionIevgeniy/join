@@ -1,0 +1,50 @@
+.priority-btn {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 136px;
+  height: 56px;
+  font-size: var(--font-size-l);
+  font-weight: 500;
+  color: #2a3647;
+  cursor: pointer;
+  background: #fff;
+  border: 1.5px solid #d1d7e0;
+  border-radius: 8px;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+
+  &__icon {
+    flex-shrink: 0;
+    width: 21px;
+    height: 16px;
+    fill: none;
+    stroke: var(--priority-color);
+    transition: stroke 0.15s ease;
+  }
+
+  &:hover:not(&--selected) {
+    border-color: var(--priority-color);
+  }
+
+  &--selected {
+    font-size: 21px;
+    font-weight: bold;
+    color: #fff;
+    background: var(--priority-color);
+    border-color: var(--priority-color);
+
+    .priority-btn__icon {
+      stroke: #fff;
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 120px;
+    height: 40px;
+    font-size: var(--font-size-m);
+  }
+}

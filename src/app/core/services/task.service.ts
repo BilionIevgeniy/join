@@ -10,7 +10,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { ToastService } from './toast.service';
-import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto } from '../models/task.model';
+import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto, Subtask } from '../models/task.model';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -136,6 +136,23 @@ export class TaskService {
       this.setOne(existing);
       console.error('moveTask failed:', err);
       this.toast.error('Failed to move task.');
+    }
+  }
+
+  // Update subtasks only
+  async updateSubtasks(id: string, subtasks: Subtask[]): Promise<void> {
+    const existing = this.tasksMap()[id];
+    if (!existing) return;
+    // Optimistic update — update UI immediately before server confirms
+    this.setOne({ ...existing, subtasks });
+    try {
+      const { error } = await this.supabase.db.from('tasks').update({ subtasks }).eq('id', id);
+      if (error) throw error;
+    } catch (err) {
+      // Rollback optimistic update on error
+      this.setOne(existing);
+      console.error('updateSubtasks failed:', err);
+      this.toast.error('Failed to update subtasks.');
     }
   }
 

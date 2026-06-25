@@ -6,6 +6,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  font-family: var(--font-family-main);
+}
+
 input,
 textarea,
 select,
@@ -16,8 +20,18 @@ button {
   font-size: inherit;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  line-height: 1;
+}
+
 a {
-  color: inheri;
+  color: inherit;
   text-decoration: none;
 }
 

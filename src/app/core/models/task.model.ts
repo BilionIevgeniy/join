@@ -74,3 +74,15 @@ export const STATUS_LABELS: Record<TaskStatus, string> = {
   awaitingFeedback: 'Awaiting feedback',
   done: 'Done',
 };
+
+// ============================================================
+//  BOARD COLUMN CONFIG — one column's data, built by the Board page
+// ============================================================
+
+export interface BoardColumnConfig {
+  title: string;
+  status: TaskStatus;
+  tasks: Task[];
+  showAddIcon: boolean;
+}
+

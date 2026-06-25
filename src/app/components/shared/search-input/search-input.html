@@ -1,0 +1,19 @@
+<div class="search-input" [class.search-input--focused]="isFocused()">
+  <input
+    type="text"
+    class="search-input__field"
+    [placeholder]="placeholder()"
+    [value]="value()"
+    (input)="onInput($any($event.target).value)"
+    (focus)="isFocused.set(true)"
+    (blur)="isFocused.set(false)"
+  />
+  <button class="search-input__icon-btn" type="button" tabindex="-1" aria-label="Search">
+    <img
+      [src]="
+        '/assets/icons/' + (isFocused() ? 'search-icon-click.svg' : 'search-icon-default.svg')
+      "
+      alt=""
+    />
+  </button>
+</div>
