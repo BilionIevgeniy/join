@@ -19,10 +19,10 @@
   }
 
   &.is-dragging {
-    opacity: 0.45;
-    transform: rotate(3deg);
     cursor: grabbing;
     box-shadow: 0 8px 24px rgb(0 0 0 / 30%);
+    opacity: 0.45;
+    transform: rotate(3deg);
   }
 
   &__category {
@@ -200,8 +200,8 @@
     }
 
     &:hover {
-      background: #f0f4ff;
       color: #29abe2;
+      background: #f0f4ff;
     }
   }
 }
