@@ -1,19 +1,19 @@
 <div class="board-page">
   <div class="board-page__header">
     <h1 class="board-page__title">Board</h1>
-    <div class="board-page__actions">
+    <div class="board-page__search-wrapper">
       <app-search-input placeholder="Find Task" (searchChange)="onSearchChange($event)" />
-      <app-button
-        class="board-page__add-task-btn"
-        variant="primary"
-        size="small"
-        weight="bold"
-        fontSize="large"
-        label="Add task"
-        icon="add-plus-white-icon.svg"
-        (click)="onAddTask('todo')"
-      />
     </div>
+    <app-button
+      class="board-page__add-task-btn"
+      variant="primary"
+      [size]="isMobile() ? 'xxsmall' : 'small'"
+      weight="bold"
+      fontSize="large"
+      [label]="isMobile() ? '' : 'Add task'"
+      icon="add-plus-white-icon.svg"
+      (click)="onAddTask('todo')"
+    />
   </div>
 
   <app-board [columns]="columns()" (addTask)="onAddTask($event)" (taskOpened)="onTaskOpened($event)" />

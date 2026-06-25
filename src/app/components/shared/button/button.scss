@@ -10,6 +10,10 @@
   border-radius: 8px;
   transition: all 0.2s ease;
 
+  &--xxsmall {
+    padding: 10px;
+  }
+
   &--xsmall {
     padding: 8px 0;
   }

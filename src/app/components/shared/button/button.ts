@@ -13,7 +13,7 @@ export class Button {
   variant = input<'primary' | 'secondary' | 'outline' | 'text'>('primary');
   icon = input<string>('');
   hoverIcon = input<string>('');
-  size = input<'xsmall' | 'small' | 'medium' | 'large'>('medium');
+  size = input<'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large'>('medium');
   iconPosition = input<'left' | 'right'>('right');
   weight = input<'regular' | 'medium' | 'bold'>('bold');
   fontSize = input<'small' | 'medium' | 'large'>('medium');
