@@ -4,12 +4,13 @@ import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
 import { ContactService } from '../../core/services/contact.service';
 import { Loader } from '../../components/shared/loader/loader';
+import { Modal } from '../../components/shared/modal/modal';
 import { TaskService } from '../../core/services/task.service';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [RouterOutlet, Sidebar, Header, Loader],
+  imports: [RouterOutlet, Sidebar, Header, Loader, Modal],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
 })

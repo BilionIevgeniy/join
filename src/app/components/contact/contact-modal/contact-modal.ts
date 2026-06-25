@@ -1,6 +1,7 @@
-import { Component, input, output, signal, OnInit } from '@angular/core';
+import { Component, inject, input, output, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Contact, ContactMode, CreateContactDto } from '../../../core/models/contact.model';
+import { ModalService } from '../../../core/services/modal.service';
 import { Avatar } from '../../shared/avatar/avatar';
 import { Button } from '../../shared/button/button';
 
@@ -12,14 +13,13 @@ import { Button } from '../../shared/button/button';
   styleUrl: './contact-modal.scss',
 })
 export class ContactModal implements OnInit {
+  private modalService = inject(ModalService);
+
   mode = input<ContactMode>('add');
   contact = input<Contact | null>(null);
   isLoading = input<boolean>(false);
-  closed = output<void>();
   save = output<CreateContactDto>();
   delete = output<string>();
-
-  isClosing = signal(false);
 
   form = new FormGroup({
     first_name: new FormControl('', [
@@ -83,10 +83,6 @@ export class ContactModal implements OnInit {
   }
 
   close(): void {
-    this.isClosing.set(true);
-    setTimeout(() => {
-      this.isClosing.set(false);
-      this.closed.emit();
-    }, 300);
+    this.modalService.close();
   }
 }

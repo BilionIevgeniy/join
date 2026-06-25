@@ -1,7 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, Injector, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContactService } from '../../core/services/contact.service';
-import { Contact, ContactMode } from '../../core/models/contact.model';
+import { Contact, ContactMode, CreateContactDto } from '../../core/models/contact.model';
+import { ModalService } from '../../core/services/modal.service';
 import { Avatar } from '../../components/shared/avatar/avatar';
 import { Button } from '../../components/shared/button/button';
 import { ContactModal } from '../../components/contact/contact-modal/contact-modal';
@@ -9,18 +10,17 @@ import { ContactModal } from '../../components/contact/contact-modal/contact-mod
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [CommonModule, Avatar, Button, ContactModal],
+  imports: [CommonModule, Avatar, Button],
   templateUrl: './contacts.html',
   styleUrl: './contacts.scss',
 })
 export class Contacts {
   private contactService = inject(ContactService);
+  private modalService = inject(ModalService);
+  private injector = inject(Injector);
   contacts = this.contactService.contacts;
   groupedContacts = this.contactService.groupedContacts;
   selectedContact = signal<Contact | null>(null);
-  isModalOpen = signal(false);
-  modalMode = signal<ContactMode>('add');
-  modalContact = signal<Contact | null>(null);
 
   selectContact(contact: Contact): void {
     this.selectedContact.set(contact);
@@ -31,37 +31,53 @@ export class Contacts {
   }
 
   openEditModal(contact: Contact): void {
-    this.modalMode.set('edit');
-    this.modalContact.set(contact);
-    this.isModalOpen.set(true);
+    this.openModal('edit', contact);
   }
 
   openAddModal(): void {
-    this.modalMode.set('add');
-    this.modalContact.set(null);
-    this.isModalOpen.set(true);
+    this.openModal('add', null);
   }
 
-  closeModal(): void {
-    this.isModalOpen.set(false);
-    this.modalContact.set(null);
+  private openModal(mode: ContactMode, contact: Contact | null): void {
+    const ref = this.modalService.open(ContactModal, {
+      mode,
+      contact,
+      isLoading: this.isLoading(),
+    });
+    ref.instance.save.subscribe((data: CreateContactDto) => this.saveContact(mode, contact, data));
+    ref.instance.delete.subscribe((id: string) => this.deleteContact(id));
+
+    const syncLoading = effect(
+      () => {
+        if (!this.modalService.isOpen()) {
+          syncLoading.destroy();
+          return;
+        }
+        ref.setInput('isLoading', this.isLoading());
+      },
+      { injector: this.injector },
+    );
   }
 
   isLoading = this.contactService.isLoading;
 
-  async saveContact(data: { first_name: string; email: string; phone: string }): Promise<void> {
-    if (this.modalMode() === 'add') {
+  private async saveContact(
+    mode: ContactMode,
+    contact: Contact | null,
+    data: { first_name: string; email: string; phone: string },
+  ): Promise<void> {
+    if (mode === 'add') {
       await this.contactService.addContact(data);
-    } else if (this.modalContact()?.id) {
-      await this.contactService.updateContact(this.modalContact()!.id!, data);
+    } else if (contact?.id) {
+      await this.contactService.updateContact(contact.id, data);
     }
-    this.closeModal();
+    this.modalService.close();
   }
 
   async deleteContact(id: string): Promise<void> {
     this.selectedContact.set(null);
     await this.contactService.deleteContact(id);
-    this.closeModal();
+    this.modalService.close();
   }
 
   getLetters(): string[] {
