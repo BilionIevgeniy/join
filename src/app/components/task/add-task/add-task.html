@@ -82,11 +82,12 @@
               (click)="toggleDropdown()"
             >
               <input
+                #contactSearch
                 id="assigned"
                 class="add-task__input"
                 type="text"
                 placeholder="Select contacts to assign"
-                (input)="onSearchChange($event)"
+                (input)="onSearchChange(contactSearch.value)"
               />
               <span
                 class="add-task__dropdown-arrow"
@@ -98,7 +99,7 @@
             @if (isDropdownOpen()) {
               <div class="add-task__dropdown-backdrop" (click)="closeDropdown()"></div>
               <div class="add-task__dropdown">
-                @for (contact of contacts(); track contact.id) {
+                @for (contact of filteredContacts(); track contact.id) {
                   <div
                     class="add-task__dropdown-item"
                     [class.add-task__dropdown-item--selected]="isContactSelected(contact.id!)"

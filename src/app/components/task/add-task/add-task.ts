@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input, output, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Contact } from '../../../core/models/contact.model';
 import {
@@ -25,13 +25,11 @@ export class AddTaskComponent implements OnInit {
   // ─── INPUTS ───────────────────────────────────────────────
   initialStatus = input<TaskStatus>('todo');
   task = input<Task | null>(null); // null = create, Task = edit
-  contacts = input.required<Contact[]>(); // filtered by parent
+  contacts = input.required<Contact[]>();
   isLoading = input<boolean>(false);
 
   // ─── OUTPUTS ──────────────────────────────────────────────
   save = output<CreateTaskDto>();
-  cancel = output<void>();
-  search = output<string>(); // for filtering contacts in parent
 
   // ─── LOCAL STATE ──────────────────────────────────────────
   subtasks = signal<Subtask[]>([]);
@@ -42,6 +40,18 @@ export class AddTaskComponent implements OnInit {
   isCategoryDropdownOpen = signal(false);
   categories: TaskCategory[] = ['User Story', 'Technical Task'];
   priorities: TaskPriority[] = ['urgent', 'medium', 'low'];
+  // Search query for filtering contacts in dropdown
+  searchQuery = signal('');
+  // Filtered contacts passed down to AddTask
+  filteredContacts = computed(() => {
+    const q = this.searchQuery().toLowerCase().trim();
+    if (!q) return this.contacts();
+    return this.contacts().filter(
+      (c) =>
+        c.first_name.toLowerCase().includes(q) ||
+        (c.last_name && c.last_name.toLowerCase().includes(q)),
+    );
+  });
 
   // ─── FORM ─────────────────────────────────────────────────
   form = this.fb.group({
@@ -107,9 +117,8 @@ export class AddTaskComponent implements OnInit {
     return this.contacts().filter((c) => ids.includes(c.id!));
   }
 
-  onSearchChange(event: Event): void {
-    const query = (event.target as HTMLInputElement).value;
-    this.search.emit(query);
+  onSearchChange(query: string): void {
+    this.searchQuery.set(query);
   }
 
   toggleDropdown(): void {
@@ -208,7 +217,7 @@ export class AddTaskComponent implements OnInit {
     this.form.reset({ priority: 'medium', assigned_contacts: [] });
     this.subtasks.set([]);
     this.subtaskInput.set('');
-    this.cancel.emit();
+    this.searchQuery.set('');
   }
 
   isFieldInvalid(field: string): boolean {
