@@ -13,10 +13,21 @@
     }
   </div>
 
-  <div class="board-column__list">
+  <div
+    class="board-column__list"
+    [class.board-column__list--drop-target]="isDragOver()"
+    (dragenter)="onDragEnter($event)"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)"
+  >
     @if (tasks().length > 0) {
       @for (task of tasks(); track task.id) {
-        <app-task-card [task]="task" (opened)="taskOpened.emit($event)" />
+        <app-task-card
+          [task]="task"
+          (opened)="taskOpened.emit($event)"
+          (moveTo)="onTaskMoveTo(task, $event)"
+        />
       }
     } @else {
       <div class="board-column__empty">No tasks in {{ title() }}</div>
