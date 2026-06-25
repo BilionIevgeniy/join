@@ -3,9 +3,7 @@
   flex-shrink: 0;
   flex-direction: column;
   gap: 12px;
-  width: 100%;
-  min-width: 150px;
-  max-width: 252px;
+  width: 252px;
   padding: 16px;
   cursor: grab;
   background: #fff;
@@ -15,13 +13,6 @@
     box-shadow 0.2s ease,
     transform 0.15s ease,
     opacity 0.15s ease;
-
-  @media (width <= 1025px) {
-    width: 252px;
-    min-width: 0;
-    max-width: none;
-    cursor: pointer;
-  }
 
   &:hover {
     box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
