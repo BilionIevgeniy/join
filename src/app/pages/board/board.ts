@@ -1,9 +1,12 @@
 import { Component, computed, inject, signal, DestroyRef } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
-import { BoardColumnConfig, STATUS_LABELS, Task, TaskStatus } from '../../core/models/task.model';
+import { ContactService } from '../../core/services/contact.service';
+import { ModalService } from '../../core/services/modal.service';
+import { BoardColumnConfig, CreateTaskDto, STATUS_LABELS, Task, TaskStatus } from '../../core/models/task.model';
 import { Button } from '../../components/shared/button/button';
 import { SearchInput } from '../../components/shared/search-input/search-input';
 import { Board as BoardComponent } from '../../components/board/board';
+import { AddTaskComponent } from '../../components/task/add-task/add-task';
 
 @Component({
   selector: 'app-board-page',
@@ -14,6 +17,8 @@ import { Board as BoardComponent } from '../../components/board/board';
 })
 export class Board {
   private taskService = inject(TaskService);
+  private contactService = inject(ContactService);
+  private modalService = inject(ModalService);
   private destroyRef = inject(DestroyRef);
 
   searchQuery = signal('');
@@ -70,11 +75,25 @@ export class Board {
   }
 
   onAddTask(status: TaskStatus): void {
-    // Opens the add-task flow — wired up once the add-task page/modal exists
+    this.modalService.open(AddTaskComponent, {
+      inputs: {
+        initialStatus: status,
+        contacts: this.contactService.contacts(),
+        isModal: true,
+      },
+      syncInputs: { isLoading: this.taskService.isLoading },
+      actions: {
+        save: async (dto: CreateTaskDto) => {
+          await this.taskService.addTask(dto);
+          this.modalService.close();
+        },
+        cancel: () => this.modalService.close(),
+      },
+    });
   }
 
-  onTaskOpened(task: Task): void {
-    // Opens the task detail view — wired up once the detail page/modal exists
+  onTaskOpened(_task: Task): void {
+    // Opens the task detail view — wired up once the detail modal exists
   }
 
   onTaskMoved(event: { taskId: string; newStatus: TaskStatus }): void {

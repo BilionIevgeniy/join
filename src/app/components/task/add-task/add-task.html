@@ -1,4 +1,9 @@
-<div class="add-task container">
+<div class="add-task container" [class.add-task--modal]="isModal()">
+  @if (isModal()) {
+    <button class="add-task__close" type="button" (click)="onCancel()">
+      <img src="/assets/icons/x-black-icon.svg" alt="close" />
+    </button>
+  }
   <h1 class="add-task__title">Add Task</h1>
 
   <form class="add-task__form" [formGroup]="form" (ngSubmit)="onSave()">
