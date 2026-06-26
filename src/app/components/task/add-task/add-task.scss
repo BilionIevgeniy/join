@@ -35,20 +35,41 @@
   }
 
   // ─── MODAL VARIANT ────────────────────────────────────────
+  // Header (title + X) and footer (actions) are fixed.
+  // Only the form scrolls. This works because the container is already
+  // a flex column — we just cap its height and let the form flex-grow + scroll.
   &--modal {
-    width: min(1000px, 95vw);
+    width: min(1100px, 95vw);
     max-height: 90vh;
     padding: 48px 48px 36px;
     margin: 0 auto;
-    overflow-y: auto;
+    overflow: hidden; // container clips — only .add-task__form scrolls inside
     background: var(--inverted-bg-color);
     border-radius: 20px;
+
+    // Form takes all remaining height between title and actions, then scrolls.
+    // min-height: 0 is required — without it a flex child won't shrink
+    // below its content size and will overflow instead of scrolling.
+    .add-task__form {
+      flex: 1;
+      min-height: 0;
+      padding-right: 4px; // breathing room next to the scrollbar
+      margin-bottom: 24px;
+      overflow-y: auto;
+    }
+
+    // Override the mobile `position: fixed` so actions stay
+    // at the bottom of the card, not the bottom of the viewport.
+    .add-task__actions {
+      position: static;
+      padding: 0;
+      background: transparent;
+    }
 
     @media (max-width: 768px) {
       width: 92vw;
       max-height: 85vh;
       padding: 32px 20px 24px;
-      overflow: auto;
     }
   }
 }
@@ -73,8 +94,8 @@
   }
 
   img {
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
   }
 }
 
