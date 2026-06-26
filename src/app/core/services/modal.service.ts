@@ -190,6 +190,7 @@ export class ModalService {
     this.hostElement.set(ref.location.nativeElement);
     this.isClosing.set(false);
     this.isOpen.set(true);
+    this.lockScroll();
 
     // If any syncInputs provided, create a reactive effect that keeps them in sync.
     // runInInjectionContext lets us call effect() outside of a component constructor.
@@ -221,6 +222,7 @@ export class ModalService {
       this.destroyCurrent();
       this.isOpen.set(false);
       this.isClosing.set(false);
+      this.unlockScroll();
     }, CLOSE_ANIMATION_MS);
   }
 
@@ -231,5 +233,16 @@ export class ModalService {
     this.componentRef?.destroy();
     this.componentRef = null;
     this.hostElement.set(null);
+  }
+
+  private lockScroll(): void {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+  }
+
+  private unlockScroll(): void {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
   }
 }
