@@ -66,6 +66,29 @@
       background: transparent;
     }
 
+    // ─── Compact spacing (match mobile feel) ──────────────────
+    .add-task__title {
+      margin-bottom: 24px;
+      font-size: 46px;
+    }
+
+    .add-task__grid {
+      gap: 24px;
+    }
+
+    .add-task__col {
+      gap: 16px;
+
+      &:first-of-type {
+        gap: 16px;
+        padding-right: 24px;
+      }
+    }
+
+    .add-task__field--fieldset .add-task__label {
+      margin-bottom: 4px;
+    }
+
     @media (max-width: 768px) {
       width: 92vw;
       max-height: 85vh;
