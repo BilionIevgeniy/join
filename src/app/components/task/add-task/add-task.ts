@@ -27,9 +27,13 @@ export class AddTaskComponent implements OnInit {
   task = input<Task | null>(null); // null = create, Task = edit
   contacts = input.required<Contact[]>();
   isLoading = input<boolean>(false);
+  /** When true, renders as a floating card with close button instead of a full page. */
+  isModal = input<boolean>(false);
 
   // ─── OUTPUTS ──────────────────────────────────────────────
   save = output<CreateTaskDto>();
+  /** Emitted when the user clicks the X close button (modal mode only). */
+  cancel = output<void>();
 
   // ─── LOCAL STATE ──────────────────────────────────────────
   subtasks = signal<Subtask[]>([]);
@@ -218,6 +222,10 @@ export class AddTaskComponent implements OnInit {
     this.subtasks.set([]);
     this.subtaskInput.set('');
     this.searchQuery.set('');
+  }
+
+  onCancel(): void {
+    this.cancel.emit();
   }
 
   isFieldInvalid(field: string): boolean {
