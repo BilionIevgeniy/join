@@ -1,7 +1,6 @@
 import { Component, computed, inject, input, output } from '@angular/core';
-import { getTaskContacts, Task, TaskPriority } from '../../../core/models/task.model';
+import { getTaskContacts, Subtask, Task, TaskPriority } from '../../../core/models/task.model';
 import { ModalService } from '../../../core/services/modal.service';
-import { TaskService } from '../../../core/services/task.service';
 import { Avatar } from '../../shared/avatar/avatar';
 import { Button } from '../../shared/button/button';
 import { CheckboxButton } from '../../shared/checkbox-button/checkbox-button';
@@ -20,11 +19,11 @@ const PRIORITY_LABELS: Record<TaskPriority, string> = {
   styleUrl: './task-modal.scss',
 })
 export class TaskModal {
-  private taskService = inject(TaskService);
   private modalService = inject(ModalService);
 
   task = input.required<Task>();
 
+  subtaskToggled = output<{ taskId: string; subtasks: Subtask[] }>();
   edit = output<Task>();
   delete = output<string>();
 
@@ -42,7 +41,7 @@ export class TaskModal {
   toggleSubtask(subtaskId: string): void {
     const task = this.task();
     const updated = task.subtasks.map((s) => (s.id === subtaskId ? { ...s, done: !s.done } : s));
-    this.taskService.updateSubtasks(task.id, updated);
+    this.subtaskToggled.emit({ taskId: task.id, subtasks: updated });
   }
 
   onEdit(): void {

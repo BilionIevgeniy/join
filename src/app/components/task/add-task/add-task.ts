@@ -24,11 +24,13 @@ export class AddTaskComponent implements OnInit {
 
   // ─── INPUTS ───────────────────────────────────────────────
   initialStatus = input<TaskStatus>('todo');
-  task = input<Task | null>(null); // null = create, Task = edit
+  task = input<Task | null>(null);
   contacts = input.required<Contact[]>();
   isLoading = input<boolean>(false);
   /** When true, renders as a floating card with close button instead of a full page. */
   isModal = input<boolean>(false);
+  /** When true, the form is prefilled and styled for editing an existing task. */
+  isEdit = input<boolean>(false);
 
   // ─── OUTPUTS ──────────────────────────────────────────────
   save = output<CreateTaskDto>();

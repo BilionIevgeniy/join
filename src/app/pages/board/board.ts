@@ -2,7 +2,7 @@ import { Component, computed, inject, signal, DestroyRef } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
 import { ContactService } from '../../core/services/contact.service';
 import { ModalService } from '../../core/services/modal.service';
-import { BoardColumnConfig, CreateTaskDto, STATUS_LABELS, Task, TaskStatus } from '../../core/models/task.model';
+import { BoardColumnConfig, CreateTaskDto, STATUS_LABELS, Subtask, Task, TaskStatus } from '../../core/models/task.model';
 import { Button } from '../../components/shared/button/button';
 import { SearchInput } from '../../components/shared/search-input/search-input';
 import { Board as BoardComponent } from '../../components/board/board';
@@ -99,6 +99,8 @@ export class Board {
       inputs: { task },
       syncInputs: { task: liveTask },
       actions: {
+        subtaskToggled: ({ taskId, subtasks }: { taskId: string; subtasks: Subtask[] }) =>
+          this.taskService.updateSubtasks(taskId, subtasks),
         edit: (t: Task) => this.onEditTask(t),
         delete: async (id: string) => {
           await this.taskService.deleteTask(id);
@@ -114,6 +116,7 @@ export class Board {
         task,
         contacts: this.contactService.contacts(),
         isModal: true,
+        isEdit: true,
       },
       syncInputs: { isLoading: this.taskService.isLoading },
       actions: {
