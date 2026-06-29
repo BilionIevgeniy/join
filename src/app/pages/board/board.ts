@@ -7,6 +7,7 @@ import { Button } from '../../components/shared/button/button';
 import { SearchInput } from '../../components/shared/search-input/search-input';
 import { Board as BoardComponent } from '../../components/board/board';
 import { AddTaskComponent } from '../../components/task/add-task/add-task';
+import { TaskModal } from '../../components/task/task-modal/task-modal';
 
 @Component({
   selector: 'app-board-page',
@@ -92,8 +93,37 @@ export class Board {
     });
   }
 
-  onTaskOpened(_task: Task): void {
-    // Opens the task detail view — wired up once the detail modal exists
+  onTaskOpened(task: Task): void {
+    const liveTask = computed(() => this.taskService.tasks().find((t) => t.id === task.id) ?? task);
+    this.modalService.open(TaskModal, {
+      inputs: { task },
+      syncInputs: { task: liveTask },
+      actions: {
+        edit: (t: Task) => this.onEditTask(t),
+        delete: async (id: string) => {
+          await this.taskService.deleteTask(id);
+          this.modalService.close();
+        },
+      },
+    });
+  }
+
+  private onEditTask(task: Task): void {
+    this.modalService.open(AddTaskComponent, {
+      inputs: {
+        task,
+        contacts: this.contactService.contacts(),
+        isModal: true,
+      },
+      syncInputs: { isLoading: this.taskService.isLoading },
+      actions: {
+        save: async (dto: CreateTaskDto) => {
+          await this.taskService.updateTask(task.id, dto);
+          this.modalService.close();
+        },
+        cancel: () => this.modalService.close(),
+      },
+    });
   }
 
   onTaskMoved(event: { taskId: string; newStatus: TaskStatus }): void {
