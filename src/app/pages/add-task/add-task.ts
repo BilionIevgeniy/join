@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { TaskService } from '../../core/services/task.service';
 import { ContactService } from '../../core/services/contact.service';
 import { CreateTaskDto } from '../../core/models/task.model';
-import { AddTaskComponent } from '../../components/task/add-task/add-task';
+import { AddTaskComponent } from '../../components/add-task/add-task';
 
 @Component({
   selector: 'app-add-task',

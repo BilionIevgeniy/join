@@ -17,3 +17,10 @@
     </main>
   </div>
 </div>
+
+<app-modal
+  [isOpen]="modalService.isOpen()"
+  [isClosing]="modalService.isClosing()"
+  [hostElement]="modalService.hostElement()"
+  (backdropClicked)="modalService.close()"
+/>

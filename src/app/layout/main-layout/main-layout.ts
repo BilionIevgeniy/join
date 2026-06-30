@@ -4,18 +4,21 @@ import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
 import { ContactService } from '../../core/services/contact.service';
 import { Loader } from '../../components/shared/loader/loader';
+import { Modal } from '../../components/shared/modal/modal';
+import { ModalService } from '../../core/services/modal.service';
 import { TaskService } from '../../core/services/task.service';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [RouterOutlet, Sidebar, Header, Loader],
+  imports: [RouterOutlet, Sidebar, Header, Loader, Modal],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
 })
 export class MainLayout implements OnInit {
   private contactService = inject(ContactService);
   private taskService = inject(TaskService);
+  modalService = inject(ModalService);
   isLoading = computed(() => this.contactService.isLoading() || this.taskService.isLoading());
 
   ngOnInit(): void {

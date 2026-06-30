@@ -123,17 +123,6 @@
     }
   </div>
 
-  @if (isModalOpen()) {
-    <app-contact-modal
-      [mode]="modalMode()"
-      [contact]="modalContact()"
-      [isLoading]="isLoading()"
-      (closed)="closeModal()"
-      (save)="saveContact($event)"
-      (delete)="deleteContact($event)"
-    />
-  }
-
   <!-- FAB — mobile only, always visible -->
   <button
     class="contacts-page__fab"

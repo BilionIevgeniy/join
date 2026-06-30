@@ -1,6 +1,6 @@
 import { Component, OnInit, computed, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Contact } from '../../../core/models/contact.model';
+import { Contact } from '../../core/models/contact.model';
 import {
   Task,
   TaskPriority,
@@ -8,9 +8,9 @@ import {
   TaskCategory,
   Subtask,
   CreateTaskDto,
-} from '../../../core/models/task.model';
-import { PriorityButton } from '../../shared/button/priority-button/priority-button';
-import { Avatar } from '../../shared/avatar/avatar';
+} from '../../core/models/task.model';
+import { PriorityButton } from '../shared/button/priority-button/priority-button';
+import { Avatar } from '../shared/avatar/avatar';
 
 @Component({
   selector: 'app-add-task-component',
@@ -24,12 +24,18 @@ export class AddTaskComponent implements OnInit {
 
   // ─── INPUTS ───────────────────────────────────────────────
   initialStatus = input<TaskStatus>('todo');
-  task = input<Task | null>(null); // null = create, Task = edit
+  task = input<Task | null>(null);
   contacts = input.required<Contact[]>();
   isLoading = input<boolean>(false);
+  /** When true, renders as a floating card with close button instead of a full page. */
+  isModal = input<boolean>(false);
+  /** When true, the form is prefilled and styled for editing an existing task. */
+  isEdit = input<boolean>(false);
 
   // ─── OUTPUTS ──────────────────────────────────────────────
   save = output<CreateTaskDto>();
+  /** Emitted when the user clicks the X close button (modal mode only). */
+  cancel = output<void>();
 
   // ─── LOCAL STATE ──────────────────────────────────────────
   subtasks = signal<Subtask[]>([]);
@@ -218,6 +224,10 @@ export class AddTaskComponent implements OnInit {
     this.subtasks.set([]);
     this.subtaskInput.set('');
     this.searchQuery.set('');
+  }
+
+  onCancel(): void {
+    this.cancel.emit();
   }
 
   isFieldInvalid(field: string): boolean {

@@ -33,6 +33,99 @@
     padding: 48px 16px 0;
     overflow: hidden;
   }
+
+  // ─── MODAL VARIANT ────────────────────────────────────────
+  // Header (title + X) and footer (actions) are fixed.
+  // Only the form scrolls. This works because the container is already
+  // a flex column — we just cap its height and let the form flex-grow + scroll.
+  &--modal {
+    width: min(1100px, 95vw);
+    max-height: 90vh;
+    padding: 48px 48px 36px;
+    margin: 0 auto;
+    overflow: hidden; // container clips — only .add-task__form scrolls inside
+    background: var(--inverted-bg-color);
+    border-radius: 20px;
+
+    // Form takes all remaining height between title and actions, then scrolls.
+    // min-height: 0 is required — without it a flex child won't shrink
+    // below its content size and will overflow instead of scrolling.
+    .add-task__form {
+      flex: 1;
+      min-height: 0;
+      padding-right: 4px; // breathing room next to the scrollbar
+      margin-bottom: 24px;
+      overflow-y: auto;
+    }
+
+    // Override the mobile `position: fixed` so actions stay
+    // at the bottom of the card, not the bottom of the viewport.
+    .add-task__actions {
+      position: static;
+      padding: 0;
+      background: transparent;
+    }
+
+    // ─── Compact spacing (match mobile feel) ──────────────────
+    .add-task__title {
+      margin-bottom: 24px;
+      font-size: 46px;
+    }
+
+    .add-task__grid {
+      gap: 24px;
+    }
+
+    .add-task__col {
+      gap: 16px;
+
+      &:first-of-type {
+        gap: 16px;
+        padding-right: 24px;
+      }
+    }
+
+    .add-task__field--fieldset .add-task__label {
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 768px) {
+      width: 92vw;
+      max-height: 85vh;
+      padding: 32px 20px 24px;
+    }
+  }
+
+  // ─── EDIT VARIANT ─────────────────────────────────────────
+  // Placeholder for edit-specific styling (size, actions) — to be defined
+  // once the compact edit-modal design is finalized.
+  &--edit {
+  }
+}
+
+.add-task__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  transition: background 100ms ease;
+
+  &:hover {
+    background: var(--bg-color-lighter);
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .add-task__title {

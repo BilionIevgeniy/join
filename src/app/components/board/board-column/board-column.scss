@@ -3,11 +3,10 @@
   flex: 1;
   flex-direction: column;
   gap: 16px;
-  min-width: 150px;
-  max-width: 252px;
+  width: 252px;
 
-  @media (width <= 1025px) {
-    max-width: none;
+  @media (width <= 1415px) {
+    width: 100%;
   }
 
   &__header {
@@ -16,10 +15,6 @@
     justify-content: space-between;
     width: 100%;
     min-height: 24px;
-
-    @media (width <= 1250px) {
-      min-height: 40px;
-    }
 
     @media (width <= 1025px) {
       min-height: 30px;
@@ -30,10 +25,6 @@
     font-size: var(--font-size-l);
     font-weight: 700;
     color: #2a3647;
-
-    @media (width <= 1250px) {
-      font-size: 16px;
-    }
 
     @media (width <= 1025px) {
       font-size: var(--font-xl);
@@ -49,11 +40,6 @@
     cursor: pointer;
     background: transparent;
     border: none;
-
-    @media (width <= 1025px) {
-      width: 30px;
-      height: 30px;
-    }
 
     img {
       width: 100%;
@@ -74,8 +60,12 @@
       border-color 0.15s ease,
       background-color 0.15s ease;
 
-    @media (width <= 1025px) {
-      max-width: 252px;
+    @media (width <= 1415px) {
+      flex-direction: row;
+      align-items: flex-start;
+      padding: 8px 8px 16px;
+      margin: -8px -8px -16px;
+      overflow-x: auto;
     }
 
     &--drop-target {

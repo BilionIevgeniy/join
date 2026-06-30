@@ -8,7 +8,9 @@
   background: #f6f7f8;
 
   @media (width <= 1025px) {
-    padding: 48px 16px;
+    gap: 40px;
+    height: auto;
+    padding: 48px 16px 50px;
   }
 
   &__header {
@@ -17,7 +19,6 @@
 
     @media (width <= 1025px) {
       flex-wrap: wrap;
-      gap: 24px;
 
       &::after {
         flex-basis: 100%;

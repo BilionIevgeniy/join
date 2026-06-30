@@ -1,98 +1,6 @@
-@keyframes slide-in-right {
-  from {
-    transform: translateX(100%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes slide-out-right {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(100%);
-  }
-}
-
-@keyframes slide-in-up {
-  from {
-    transform: translateY(100%);
-  }
-
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes slide-out-down {
-  from {
-    transform: translateY(0);
-  }
-
-  to {
-    transform: translateY(100%);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-out {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-:host {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 2000;
-  width: 100%;
-  max-width: 1440px;
-  height: 100%;
-}
-
-.modal-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &::before {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    content: '';
-    background: rgb(0 0 0 / 40%);
-    animation: fade-in 300ms ease-out forwards;
-  }
-
-  &--closing::before {
-    animation: fade-out 300ms ease-in forwards;
-  }
-}
-
 .modal {
   display: flex;
-  width: 100%;
+  width: calc(100% - 50px);
   max-width: 1200px;
   height: auto;
   min-height: 594px;
@@ -101,11 +9,6 @@
   background: white;
   border-radius: 24px;
   box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
-  animation: slide-in-right 300ms ease-out forwards;
-
-  &--closing {
-    animation: slide-out-right 300ms ease-in forwards;
-  }
 
   &__left {
     display: flex;
@@ -288,11 +191,6 @@
     height: auto;
     margin: 25px;
     overflow: visible;
-    animation: slide-in-up 300ms ease-out forwards;
-
-    &--closing {
-      animation: slide-out-down 300ms ease-in forwards;
-    }
 
     &__left {
       align-items: flex-start;

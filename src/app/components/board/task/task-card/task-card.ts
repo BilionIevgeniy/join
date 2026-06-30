@@ -1,6 +1,11 @@
 import { Component, computed, input, output, signal } from '@angular/core';
-import { getTaskContacts, STATUS_LABELS, Task, TaskStatus } from '../../../core/models/task.model';
-import { Avatar } from '../../shared/avatar/avatar';
+import {
+  getTaskContacts,
+  STATUS_LABELS,
+  Task,
+  TaskStatus,
+} from '../../../../core/models/task.model';
+import { Avatar } from '../../../shared/avatar/avatar';
 
 @Component({
   selector: 'app-task-card',
@@ -50,6 +55,16 @@ export class TaskCard {
     this.isDragging.set(true);
     event.dataTransfer?.setData('text/plain', this.task().id);
     if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+
+    const el = event.currentTarget as HTMLElement;
+    const clone = el.cloneNode(true) as HTMLElement;
+    clone.style.cssText = `
+      position: fixed; top: -9999px; left: -9999px;
+      width: ${el.offsetWidth}px; pointer-events: none;
+    `;
+    document.body.appendChild(clone);
+    event.dataTransfer?.setDragImage(clone, el.offsetWidth / 2, el.offsetHeight / 2);
+    setTimeout(() => document.body.removeChild(clone), 0);
   }
 
   onDragEnd(): void {

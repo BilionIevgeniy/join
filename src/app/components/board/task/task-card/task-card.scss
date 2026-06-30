@@ -3,9 +3,8 @@
   flex-shrink: 0;
   flex-direction: column;
   gap: 12px;
-  width: 100%;
-  min-width: 150px;
-  max-width: 252px;
+  width: 252px;
+  min-height: 150px;
   padding: 16px;
   cursor: grab;
   background: #fff;
@@ -16,22 +15,15 @@
     transform 0.15s ease,
     opacity 0.15s ease;
 
-  @media (width <= 1025px) {
-    width: 252px;
-    min-width: 0;
-    max-width: none;
-    cursor: pointer;
-  }
-
   &:hover {
     box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
   }
 
   &.is-dragging {
-    opacity: 0.45;
-    transform: rotate(3deg);
     cursor: grabbing;
     box-shadow: 0 8px 24px rgb(0 0 0 / 30%);
+    opacity: 0.45;
+    transform: rotate(3deg);
   }
 
   &__category {
@@ -209,8 +201,8 @@
     }
 
     &:hover {
-      background: #f0f4ff;
       color: #29abe2;
+      background: #f0f4ff;
     }
   }
 }
