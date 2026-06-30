@@ -4,9 +4,11 @@
   flex-direction: column;
   gap: 16px;
   width: 252px;
+  height: 100%;
 
   @media (width <= 1415px) {
     width: 100%;
+    height: auto;
   }
 
   &__header {
@@ -52,6 +54,7 @@
     flex-direction: column;
     gap: 16px;
     align-items: stretch;
+    height: 100%;
     padding: 8px;
     margin: -8px;
     border: 2px dashed transparent;
@@ -63,6 +66,8 @@
     @media (width <= 1415px) {
       flex-direction: row;
       align-items: flex-start;
+      width: 100%;
+      height: auto;
       padding: 8px 8px 16px;
       margin: -8px -8px -16px;
       overflow-x: auto;
