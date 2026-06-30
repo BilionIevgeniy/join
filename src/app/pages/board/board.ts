@@ -106,6 +106,7 @@ export class Board {
           await this.taskService.deleteTask(id);
           this.modalService.close();
         },
+        closed: () => this.modalService.close(),
       },
     });
   }

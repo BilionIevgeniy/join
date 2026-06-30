@@ -18,4 +18,9 @@
   </div>
 </div>
 
-<app-modal />
+<app-modal
+  [isOpen]="modalService.isOpen()"
+  [isClosing]="modalService.isClosing()"
+  [hostElement]="modalService.hostElement()"
+  (backdropClicked)="modalService.close()"
+/>

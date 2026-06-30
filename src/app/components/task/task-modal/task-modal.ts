@@ -1,6 +1,5 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { getTaskContacts, Subtask, Task, TaskPriority } from '../../../core/models/task.model';
-import { ModalService } from '../../../core/services/modal.service';
 import { Avatar } from '../../shared/avatar/avatar';
 import { Button } from '../../shared/button/button';
 import { CheckboxButton } from '../../shared/checkbox-button/checkbox-button';
@@ -19,13 +18,12 @@ const PRIORITY_LABELS: Record<TaskPriority, string> = {
   styleUrl: './task-modal.scss',
 })
 export class TaskModal {
-  private modalService = inject(ModalService);
-
   task = input.required<Task>();
 
   subtaskToggled = output<{ taskId: string; subtasks: Subtask[] }>();
   edit = output<Task>();
   delete = output<string>();
+  closed = output<void>();
 
   assignedContacts = computed(() => getTaskContacts(this.task()));
 
@@ -53,6 +51,6 @@ export class TaskModal {
   }
 
   close(): void {
-    this.modalService.close();
+    this.closed.emit();
   }
 }
