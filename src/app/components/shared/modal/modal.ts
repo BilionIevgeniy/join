@@ -1,27 +1,30 @@
 import {
   Component,
   ElementRef,
-  inject,
   ViewChild,
   ViewEncapsulation,
   effect,
+  input,
+  output,
 } from '@angular/core';
-import { ModalService } from '../../../core/services/modal.service';
 
 /**
  * Modal — the visual shell that wraps any dynamically created modal component.
  *
- * Place this once in the main layout: <app-modal />
+ * Place this once in the main layout: <app-modal [isOpen]="..." [isClosing]="..."
+ * [hostElement]="..." (backdropClicked)="..." />
  * Do NOT put content inside it — content is injected by ModalService automatically.
+ *
+ * This shell is a dumb component — it knows nothing about ModalService. The
+ * parent (main layout) injects ModalService and passes its state down as
+ * inputs, then reacts to (backdropClicked) to close the modal.
  *
  * --- HOW IT WORKS ---
  *
  * ModalService.open() creates a component in memory and stores its DOM node
- * in the `hostElement` signal. This shell watches that signal via effect()
- * and physically appends the node into the #host div, making it appear on screen.
- *
- * When ModalService.close() is called, hostElement becomes null, the node is
- * removed, and the overlay fades out via CSS (--closing modifier).
+ * in the `hostElement` signal. This shell watches the `hostElement` input via
+ * effect() and physically appends the node into the #host div, making it
+ * appear on screen.
  *
  * --- WHY ViewEncapsulation.None ---
  *
@@ -39,7 +42,11 @@ import { ModalService } from '../../../core/services/modal.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class Modal {
-  modalService = inject(ModalService);
+  isOpen = input.required<boolean>();
+  isClosing = input.required<boolean>();
+  hostElement = input.required<HTMLElement | null>();
+
+  backdropClicked = output<void>();
 
   /**
    * A direct reference to the #host <div> in the template.
@@ -55,21 +62,21 @@ export class Modal {
 
   constructor() {
     /**
-     * Reactive listener: runs every time modalService.hostElement() changes.
+     * Reactive listener: runs every time the `hostElement` input changes.
      *
      * queueMicrotask defers the DOM operation by one microtask tick.
      * This ensures @ViewChild('host') hostRef is already resolved before
      * we try to append into it (ViewChild is set after the first render).
      */
     effect(() => {
-      const element = this.modalService.hostElement();
+      const element = this.hostElement();
       queueMicrotask(() => this.renderElement(element));
     });
   }
 
   /** Called when the user clicks the dark backdrop outside the panel. */
   onBackdropClick(): void {
-    this.modalService.close();
+    this.backdropClicked.emit();
   }
 
   /**

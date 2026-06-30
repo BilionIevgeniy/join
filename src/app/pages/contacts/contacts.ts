@@ -46,6 +46,7 @@ export class Contacts {
       actions: {
         save: (data: CreateContactDto) => this.saveContact(mode, contact, data),
         delete: (id: string) => this.deleteContact(id),
+        closed: () => this.modalService.close(),
       },
     });
   }

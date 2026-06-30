@@ -1,19 +1,44 @@
+@keyframes checkbox-pop {
+  0% {
+    transform: scale(0.6);
+  }
+
+  60% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 .checkbox-button {
   display: flex;
   gap: 8px;
   align-items: center;
+  padding: 4px;
   cursor: pointer;
   background: transparent;
   border: none;
+  border-radius: 5px;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: #e0e0e0;
+  }
 
   &__icon {
     width: 24px;
     height: 24px;
+
+    &--pop {
+      animation: checkbox-pop 250ms ease-out;
+    }
   }
 
   &__label {
     font-family: var(--font-family-main);
-    font-size: var(--font-size-s);
-    color: var(--text-color);
+    font-size: var(--font-size-m);
+    color: #000000;
   }
 }

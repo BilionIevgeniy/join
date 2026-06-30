@@ -1,13 +1,13 @@
-@if (modalService.isOpen()) {
+@if (isOpen()) {
   <div
     class="modal-overlay"
-    [class.modal-overlay--closing]="modalService.isClosing()"
+    [class.modal-overlay--closing]="isClosing()"
     (click)="onBackdropClick()"
   >
     <div
       #host
       class="modal-overlay__panel"
-      [class.modal-overlay__panel--closing]="modalService.isClosing()"
+      [class.modal-overlay__panel--closing]="isClosing()"
       (click)="$event.stopPropagation()"
     ></div>
   </div>

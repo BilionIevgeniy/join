@@ -11,16 +11,18 @@ export class CheckboxButton {
   label = input<string>('');
   toggled = output<boolean>();
 
-  isHovered = signal(false);
+  justChecked = signal(false);
 
   toggle(): void {
-    this.toggled.emit(!this.checked());
+    const next = !this.checked();
+    this.toggled.emit(next);
+    if (next) {
+      this.justChecked.set(false);
+      requestAnimationFrame(() => this.justChecked.set(true));
+    }
   }
 
   get icon(): string {
-    if (this.checked()) {
-      return this.isHovered() ? 'ckeck-button-active-hover.svg' : 'ckeck-button-active-default.svg';
-    }
-    return this.isHovered() ? 'ckeck-button-hover.svg' : 'check-button-default.svg';
+    return this.checked() ? 'ckeck-button-active-default.svg' : 'choice-quarder-icon.svg';
   }
 }

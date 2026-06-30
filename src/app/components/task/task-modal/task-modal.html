@@ -1,0 +1,75 @@
+<div class="task-modal">
+  <div class="task-modal__header">
+    <span class="task-modal__category" [class]="categoryClass()">{{ task().category }}</span>
+    <button class="task-modal__close" (click)="close()">
+      <img src="/assets/icons/x-black-icon.svg" alt="close" class="task-modal__close-icon" />
+    </button>
+  </div>
+
+  <h2 class="task-modal__title">{{ task().title }}</h2>
+  <p class="task-modal__description">{{ task().description }}</p>
+
+  <div class="task-modal__row">
+    <span class="task-modal__label">Due date:</span>
+    <span class="task-modal__value">{{ task().due_date }}</span>
+  </div>
+
+  <div class="task-modal__row">
+    <span class="task-modal__label">Priority:</span>
+    <span class="task-modal__value task-modal__priority">
+      {{ priorityLabel() }}
+      <img [src]="'/assets/icons/' + priorityIcon()" alt="" />
+    </span>
+  </div>
+
+  @if (assignedContacts().length > 0) {
+    <div class="task-modal__section">
+      <span class="task-modal__label">Assigned To:</span>
+      <div class="task-modal__contacts">
+        @for (contact of assignedContacts(); track contact.id) {
+          <div class="task-modal__contact">
+            <app-avatar size="small" [initials]="contact.initials" [color]="contact.color" />
+            <span>{{ contact.first_name }} {{ contact.last_name }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (task().subtasks.length > 0) {
+    <div class="task-modal__section">
+      <span class="task-modal__label">Subtasks:</span>
+      <div class="task-modal__subtasks">
+        @for (subtask of task().subtasks; track subtask.id) {
+          <app-checkbox-button
+            [checked]="subtask.done"
+            [label]="subtask.title"
+            (toggled)="toggleSubtask(subtask.id)"
+          />
+        }
+      </div>
+    </div>
+  }
+
+  <div class="task-modal__footer">
+    <app-button
+      variant="text"
+      weight="regular"
+      fontSize="medium"
+      label="Delete"
+      icon="delete-icon.svg"
+      hoverIcon="delete-blue.svg"
+      (click)="onDelete()"
+    />
+    <span class="task-modal__divider"></span>
+    <app-button
+      variant="text"
+      weight="regular"
+      fontSize="small"
+      label="Edit"
+      icon="edit-icon.svg"
+      hoverIcon="edit-blue.svg"
+      (click)="onEdit()"
+    />
+  </div>
+</div>
