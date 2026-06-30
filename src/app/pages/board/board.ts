@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal, DestroyRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { TaskService } from '../../core/services/task.service';
 import { ContactService } from '../../core/services/contact.service';
 import { ModalService } from '../../core/services/modal.service';
@@ -10,6 +11,7 @@ import {
   Task,
   TaskStatus,
 } from '../../core/models/task.model';
+import { RoutesEnum } from '../../core/models/routes.model';
 import { Button } from '../../components/shared/button/button';
 import { SearchInput } from '../../components/shared/search-input/search-input';
 import { Board as BoardComponent } from '../../components/board/board';
@@ -28,6 +30,7 @@ export class Board {
   private contactService = inject(ContactService);
   private modalService = inject(ModalService);
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
 
   searchQuery = signal('');
 
@@ -83,6 +86,11 @@ export class Board {
   }
 
   onAddTask(status: TaskStatus): void {
+    if (this.isMobile()) {
+      this.router.navigate(['/', RoutesEnum.ADD_TASK]);
+      return;
+    }
+
     this.modalService.open(AddTaskComponent, {
       inputs: {
         initialStatus: status,
