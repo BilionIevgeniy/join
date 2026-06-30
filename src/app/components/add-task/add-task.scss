@@ -97,9 +97,37 @@
   }
 
   // ─── EDIT VARIANT ─────────────────────────────────────────
-  // Placeholder for edit-specific styling (size, actions) — to be defined
-  // once the compact edit-modal design is finalized.
+  // Compact single-column card, no title — matches the task-detail-modal size.
   &--edit {
+    width: min(525px, 95vw);
+    padding: 40px 40px 24px;
+
+    .add-task__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .add-task__col:first-of-type {
+      padding-right: 0;
+    }
+
+    .add-task__col-spacer {
+      display: none;
+    }
+
+    .add-task__actions {
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 1025px) {
+      width: 396px;
+      max-width: 92vw;
+      padding: 32px 24px 24px;
+    }
+
+    @media (max-width: 768px) {
+      width: min(396px, 92vw);
+      padding: 32px 20px 24px;
+    }
   }
 }
 
