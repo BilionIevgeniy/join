@@ -8,7 +8,9 @@
       <img src="/assets/icons/x-black-icon.svg" alt="close" />
     </button>
   }
-  <h1 class="add-task__title">{{ isEdit() ? 'Edit Task' : 'Add Task' }}</h1>
+  @if (!isEdit()) {
+    <h1 class="add-task__title">Add Task</h1>
+  }
 
   <form class="add-task__form" [formGroup]="form" (ngSubmit)="onSave()">
     <div class="add-task__grid">
@@ -290,19 +292,30 @@
   </form>
 
   <div class="add-task__actions">
-    <span class="add-task__hint">
-      <span class="add-task__required">*</span> This field is required
-    </span>
-    <div class="add-task__action-buttons">
-      <button class="add-task__btn-clear" type="button" (click)="onClear()">Clear ✕</button>
+    @if (isEdit()) {
       <button
         class="add-task__btn-save"
         type="button"
         [disabled]="!isFormValid() || isLoading()"
         (click)="onSave()"
       >
-        {{ task() ? 'Save Task' : 'Create Task' }} <img src="assets/icons/check.svg" alt="" />
+        Ok <img src="assets/icons/check.svg" alt="" />
       </button>
-    </div>
+    } @else {
+      <span class="add-task__hint">
+        <span class="add-task__required">*</span> This field is required
+      </span>
+      <div class="add-task__action-buttons">
+        <button class="add-task__btn-clear" type="button" (click)="onClear()">Clear ✕</button>
+        <button
+          class="add-task__btn-save"
+          type="button"
+          [disabled]="!isFormValid() || isLoading()"
+          (click)="onSave()"
+        >
+          {{ task() ? 'Save Task' : 'Create Task' }} <img src="assets/icons/check.svg" alt="" />
+        </button>
+      </div>
+    }
   </div>
 </div>

@@ -129,7 +129,13 @@
   }
 
   @media (width <= 1025px) {
-    width: 100%;
+    width: 396px;
+    max-width: 92vw;
+    padding: 32px 24px;
+  }
+
+  @media (width <= 768px) {
+    width: min(396px, 92vw);
     padding: 24px;
   }
 }
