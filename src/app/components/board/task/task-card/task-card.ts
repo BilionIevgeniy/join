@@ -1,6 +1,11 @@
 import { Component, computed, input, output, signal } from '@angular/core';
-import { getTaskContacts, STATUS_LABELS, Task, TaskStatus } from '../../../core/models/task.model';
-import { Avatar } from '../../shared/avatar/avatar';
+import {
+  getTaskContacts,
+  STATUS_LABELS,
+  Task,
+  TaskStatus,
+} from '../../../../core/models/task.model';
+import { Avatar } from '../../../shared/avatar/avatar';
 
 @Component({
   selector: 'app-task-card',

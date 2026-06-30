@@ -1,8 +1,8 @@
 import { Component, computed, input, output } from '@angular/core';
-import { getTaskContacts, Subtask, Task, TaskPriority } from '../../../core/models/task.model';
-import { Avatar } from '../../shared/avatar/avatar';
-import { Button } from '../../shared/button/button';
-import { CheckboxButton } from '../../shared/checkbox-button/checkbox-button';
+import { getTaskContacts, Subtask, Task, TaskPriority } from '../../../../core/models/task.model';
+import { Avatar } from '../../../shared/avatar/avatar';
+import { Button } from '../../../shared/button/button';
+import { CheckboxButton } from '../../../shared/checkbox-button/checkbox-button';
 
 const PRIORITY_LABELS: Record<TaskPriority, string> = {
   urgent: 'Urgent',

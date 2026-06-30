@@ -2,12 +2,19 @@ import { Component, computed, inject, signal, DestroyRef } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
 import { ContactService } from '../../core/services/contact.service';
 import { ModalService } from '../../core/services/modal.service';
-import { BoardColumnConfig, CreateTaskDto, STATUS_LABELS, Subtask, Task, TaskStatus } from '../../core/models/task.model';
+import {
+  BoardColumnConfig,
+  CreateTaskDto,
+  STATUS_LABELS,
+  Subtask,
+  Task,
+  TaskStatus,
+} from '../../core/models/task.model';
 import { Button } from '../../components/shared/button/button';
 import { SearchInput } from '../../components/shared/search-input/search-input';
 import { Board as BoardComponent } from '../../components/board/board';
-import { AddTaskComponent } from '../../components/task/add-task/add-task';
-import { TaskModal } from '../../components/task/task-modal/task-modal';
+import { AddTaskComponent } from '../../components/add-task/add-task';
+import { TaskModal } from '../../components/board/task/task-modal/task-modal';
 
 @Component({
   selector: 'app-board-page',

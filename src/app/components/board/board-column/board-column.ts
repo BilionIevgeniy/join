@@ -1,6 +1,6 @@
 import { Component, input, output, signal } from '@angular/core';
 import { Task, TaskStatus } from '../../../core/models/task.model';
-import { TaskCard } from '../../task/task-card/task-card';
+import { TaskCard } from '../task/task-card/task-card';
 
 @Component({
   selector: 'app-board-column',

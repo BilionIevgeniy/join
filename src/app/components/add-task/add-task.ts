@@ -1,6 +1,6 @@
 import { Component, OnInit, computed, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Contact } from '../../../core/models/contact.model';
+import { Contact } from '../../core/models/contact.model';
 import {
   Task,
   TaskPriority,
@@ -8,9 +8,9 @@ import {
   TaskCategory,
   Subtask,
   CreateTaskDto,
-} from '../../../core/models/task.model';
-import { PriorityButton } from '../../shared/button/priority-button/priority-button';
-import { Avatar } from '../../shared/avatar/avatar';
+} from '../../core/models/task.model';
+import { PriorityButton } from '../shared/button/priority-button/priority-button';
+import { Avatar } from '../shared/avatar/avatar';
 
 @Component({
   selector: 'app-add-task-component',
