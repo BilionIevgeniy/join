@@ -296,7 +296,7 @@
       <button
         class="add-task__btn-save"
         type="button"
-        [disabled]="!isFormValid() || isLoading()"
+        [disabled]="!isFormValid() || isLoading() || !hasChanges()"
         (click)="onSave()"
       >
         Ok <img src="assets/icons/check.svg" alt="" />

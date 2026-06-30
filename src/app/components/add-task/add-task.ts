@@ -1,4 +1,5 @@
 import { Component, OnInit, computed, inject, input, output, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Contact } from '../../core/models/contact.model';
 import {
@@ -74,6 +75,39 @@ export class AddTaskComponent implements OnInit {
     return title.valid && due_date.valid && category.valid;
   }
 
+  // ─── CHANGE DETECTION (edit mode) ──────────────────────────
+  // Reactive view of the form's current value, used to compare against
+  // the original snapshot below. toSignal bridges the RxJS valueChanges
+  // observable into a signal so it can be read inside computed().
+  private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.value });
+
+  // Snapshot of title/description/.../subtasks as they were when the
+  // modal opened. Set once in ngOnInit, never mutated afterwards.
+  private originalSnapshot: string | null = null;
+
+  // True only when the current form + subtasks actually differ in value
+  // from the original snapshot — not just "something fired a change event".
+  // Typing a character and deleting it again correctly stays "unchanged".
+  hasChanges = computed(() => {
+    if (this.originalSnapshot === null) return true;
+    return this.buildSnapshot(this.formValue(), this.subtasks()) !== this.originalSnapshot;
+  });
+
+  private buildSnapshot(
+    formValue: typeof this.form.value,
+    subtasks: Subtask[],
+  ): string {
+    return JSON.stringify({
+      title: formValue.title ?? '',
+      description: formValue.description ?? '',
+      due_date: formValue.due_date ?? '',
+      priority: formValue.priority ?? 'medium',
+      category: formValue.category ?? '',
+      assigned_contacts: [...(formValue.assigned_contacts ?? [])].sort(),
+      subtasks: subtasks.map((s) => ({ id: s.id, title: s.title, done: s.done })),
+    });
+  }
+
   ngOnInit(): void {
     const task = this.task();
     if (!task) return;
@@ -95,6 +129,9 @@ export class AddTaskComponent implements OnInit {
       .map((ac) => ac.contact?.id)
       .filter((id): id is string => !!id);
     this.form.patchValue({ assigned_contacts: ids });
+
+    // Capture the baseline to compare future edits against.
+    this.originalSnapshot = this.buildSnapshot(this.form.value, this.subtasks());
   }
 
   // ─── PRIORITY ─────────────────────────────────────────────
