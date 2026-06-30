@@ -137,5 +137,9 @@
   @media (width <= 768px) {
     width: min(396px, 92vw);
     padding: 24px;
+
+    &__footer .btn {
+      padding: 10px 13px;
+    }
   }
 }

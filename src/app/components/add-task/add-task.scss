@@ -55,7 +55,25 @@
       min-height: 0;
       padding-right: 4px; // breathing room next to the scrollbar
       margin-bottom: 24px;
-      overflow-y: auto;
+      overflow-y: scroll; // always show the scrollbar, not just on hover/scroll
+
+      // Firefox: reserve space for a permanently visible scrollbar.
+      scrollbar-width: thin;
+
+      // WebKit (Chrome/Safari): force a visible, styled scrollbar track + thumb
+      // instead of the OS-default overlay that only appears on hover.
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+      }
     }
 
     // Override the mobile `position: fixed` so actions stay
@@ -92,7 +110,25 @@
     @media (max-width: 768px) {
       width: 92vw;
       max-height: 85vh;
-      padding: 32px 20px 24px;
+      padding: 32px 16px 24px;
+
+      .add-task__btn-clear,
+      .add-task__btn-save {
+        padding: 10px 13px;
+      }
+    }
+
+    // Plain add-task modal: still scrollable on mobile, just without a
+    // visible scrollbar track/thumb. (The edit variant below keeps it visible.)
+    &:not(&--edit) .add-task__form {
+      @media (max-width: 768px) {
+        padding-right: 0;
+        scrollbar-width: none; // Firefox: scroll works, bar hidden
+
+        &::-webkit-scrollbar {
+          display: none; // WebKit: scroll works, bar hidden
+        }
+      }
     }
   }
 
@@ -101,6 +137,17 @@
   &--edit {
     width: min(525px, 95vw);
     padding: 40px 40px 24px;
+
+    // Extra breathing room so the scrollbar doesn't sit on top of the fields —
+    // the narrow single-column layout makes the default 4px (from --modal) too tight.
+    .add-task__form {
+      padding-right: 20px;
+    }
+
+    .add-task__input,
+    .add-task__textarea {
+      margin-right: 20px;
+    }
 
     .add-task__grid {
       grid-template-columns: 1fr;
@@ -118,6 +165,34 @@
       justify-content: flex-end;
     }
 
+    // Subtask edit/delete icons stay visible at all times here (no hover
+    // fade-in), separated by a divider — matches the edit-mode mockup.
+    .add-task__subtask-actions {
+      gap: 0;
+      opacity: 1;
+    }
+
+    .add-task__subtask-btn {
+      border-radius: 0;
+
+      &:hover {
+        background: transparent;
+      }
+
+      &--delete:hover {
+        color: inherit;
+      }
+
+      &:first-child {
+        padding-right: 8px;
+        border-right: 1px solid var(--border-color);
+      }
+
+      &:last-child {
+        padding-left: 8px;
+      }
+    }
+
     @media (max-width: 1025px) {
       width: 396px;
       max-width: 92vw;
@@ -126,7 +201,18 @@
 
     @media (max-width: 768px) {
       width: min(396px, 92vw);
-      padding: 32px 20px 24px;
+      padding: 55px 16px 22px;
+
+      // Smaller breathing room than desktop (20px) so the scrollbar still
+      // fits inside the now-tighter 16px outer padding.
+      .add-task__form {
+        padding-right: 10px;
+      }
+
+      .add-task__input,
+      .add-task__textarea {
+        margin-right: 10px;
+      }
     }
   }
 }
@@ -551,6 +637,7 @@
 
 .add-task__action-buttons {
   display: flex;
+  justify-content: flex-end;
   gap: 16px;
 
   @media (max-width: 768px) {
@@ -569,10 +656,6 @@
 
   &:hover {
     border-color: var(--primary-color);
-  }
-
-  @media (max-width: 768px) {
-    flex: 1;
   }
 }
 
@@ -597,9 +680,5 @@
   &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
-  }
-
-  @media (max-width: 768px) {
-    flex: 1;
   }
 }
