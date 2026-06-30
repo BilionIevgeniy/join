@@ -101,7 +101,7 @@ export class TaskService {
     try {
       const { contact_ids, ...taskData } = dto;
       const { data, error } = await this.supabase.db.rpc('update_task_with_contacts', {
-        task_id: id,
+        p_task_id: id,
         task_data: taskData,
         contact_ids: contact_ids ?? [],
       });
