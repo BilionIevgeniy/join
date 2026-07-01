@@ -86,11 +86,6 @@ export class Board {
   }
 
   onAddTask(status: TaskStatus): void {
-    if (this.isMobile()) {
-      this.router.navigate(['/', RoutesEnum.ADD_TASK]);
-      return;
-    }
-
     this.modalService.open(AddTaskComponent, {
       inputs: {
         initialStatus: status,
