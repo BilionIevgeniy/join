@@ -2,7 +2,7 @@
   <div class="task-modal__header">
     <span class="task-modal__category" [class]="categoryClass()">{{ task().category }}</span>
     <button class="task-modal__close" (click)="close()">
-      <img src="/assets/icons/x-black-icon.svg" alt="close" class="task-modal__close-icon" />
+      <img src="assets/icons/x-black-icon.svg" alt="close" class="task-modal__close-icon" />
     </button>
   </div>
 
@@ -19,7 +19,7 @@
       <span class="task-modal__label">Priority:</span>
       <span class="task-modal__value task-modal__priority">
         {{ priorityLabel() }}
-        <img [src]="'/assets/icons/' + priorityIcon()" alt="" />
+        <img [src]="'assets/icons/' + priorityIcon()" alt="" />
       </span>
     </div>
 

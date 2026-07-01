@@ -14,22 +14,22 @@ export class Sidebar {
     {
       label: 'Summary',
       route: RoutesEnum.SUMMARY,
-      icon: '/assets/icons/summary-icon.svg',
+      icon: 'assets/icons/summary-icon.svg',
     },
     {
       label: 'Add Task',
       route: RoutesEnum.ADD_TASK,
-      icon: '/assets/icons/add-task-icon.svg',
+      icon: 'assets/icons/add-task-icon.svg',
     },
     {
       label: 'Board',
       route: RoutesEnum.BOARD,
-      icon: '/assets/icons/board-icon.svg',
+      icon: 'assets/icons/board-icon.svg',
     },
     {
       label: 'Contacts',
       route: RoutesEnum.CONTACTS,
-      icon: '/assets/icons/contacts-icon.svg',
+      icon: 'assets/icons/contacts-icon.svg',
     },
   ];
 }

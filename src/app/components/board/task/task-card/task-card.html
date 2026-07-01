@@ -33,7 +33,7 @@
     </div>
 
     <div class="task-card__right">
-      <img class="task-card__priority" [src]="'/assets/icons/' + priorityIcon()" alt="priority" />
+      <img class="task-card__priority" [src]="'assets/icons/' + priorityIcon()" alt="priority" />
 
       <div class="task-card__move-wrap">
         <button
@@ -42,7 +42,7 @@
           aria-label="Move task to another column"
           (click)="toggleMoveMenu($event)"
         >
-          <img src="/assets/icons/choice-arrow-icon.svg" alt="" />
+          <img src="assets/icons/choice-arrow-icon.svg" alt="" />
         </button>
 
         @if (showMoveMenu()) {

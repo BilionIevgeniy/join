@@ -23,7 +23,7 @@ import { Component, input } from '@angular/core';
         [class.medium]="size() === 'medium'"
         [class.large]="size() === 'large'"
       >
-        <img src="/assets/icons/person.svg" alt="avatar" class="user-avatar__icon" />
+        <img src="assets/icons/person.svg" alt="avatar" class="user-avatar__icon" />
       </div>
     }
   `,
