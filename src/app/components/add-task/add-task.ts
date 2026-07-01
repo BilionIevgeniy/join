@@ -153,9 +153,19 @@ export class AddTaskComponent implements OnInit {
     return current.includes(contactId);
   }
 
+  private readonly maxVisibleAvatars = 3;
+
   getSelectedContacts(): Contact[] {
     const ids = this.form.get('assigned_contacts')!.value as string[];
     return this.contacts().filter((c) => ids.includes(c.id!));
+  }
+
+  getVisibleContacts(): Contact[] {
+    return this.getSelectedContacts().slice(0, this.maxVisibleAvatars);
+  }
+
+  getRemainingContactsCount(): number {
+    return Math.max(0, this.getSelectedContacts().length - this.maxVisibleAvatars);
   }
 
   onSearchChange(query: string): void {
@@ -196,6 +206,16 @@ export class AddTaskComponent implements OnInit {
 
   addSubtask(): void {
     this.isSubtaskActive.set(true);
+  }
+
+  onSubtaskInput(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.subtaskInput.set(value);
+    if (value) {
+      this.isSubtaskActive.set(true);
+    } else {
+      this.isSubtaskActive.set(false);
+    }
   }
 
   clearSubtask(): void {
