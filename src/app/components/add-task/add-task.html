@@ -136,8 +136,16 @@
             <!-- Selected contact avatars -->
             @if (getSelectedContacts().length > 0) {
               <div class="add-task__selected-avatars">
-                @for (contact of getSelectedContacts(); track contact.id) {
+                @for (contact of getVisibleContacts(); track contact.id) {
                   <app-avatar [initials]="contact.initials" [color]="contact.color" size="small" />
+                }
+                @if (getRemainingContactsCount() > 0) {
+                  <app-avatar
+                    [initials]="`+${getRemainingContactsCount().toString()}`"
+                    [color]="'#e0e0e0'"
+                    [textColor]="'#606060'"
+                    size="small"
+                  />
                 }
               </div>
             }
@@ -202,7 +210,7 @@
               type="text"
               placeholder="Add new subtask"
               [value]="subtaskInput()"
-              (input)="subtaskInput.set($any($event.target).value)"
+              (input)="onSubtaskInput($event)"
               (keydown)="onSubtaskKeydown($event)"
             />
             <div class="add-task__subtask-buttons-wrapper">
