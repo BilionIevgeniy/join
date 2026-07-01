@@ -19,6 +19,9 @@
   }
 
   &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
     padding: 0 24px;
     overflow-y: auto;
   }
@@ -63,7 +66,7 @@
 
   &__title {
     margin-bottom: 16px;
-    font-size: var(--font-h2-xl);
+    font-size: var(--font-h2-xxl);
     font-weight: 700;
     color: #2a3647;
     word-wrap: break-word;
@@ -150,6 +153,25 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    max-height: 120px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      background: #e8e8e8;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #e8e8e8;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #b0b0b0;
+      border-radius: 4px;
+      min-height: 20px;
+    }
   }
 
   &__divider {
