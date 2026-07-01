@@ -2,9 +2,9 @@
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
   width: 252px;
-  min-height: 150px;
+  height: 252px;
   padding: 16px;
   cursor: grab;
   background: #fff;
@@ -44,6 +44,13 @@
     }
   }
 
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+  }
+
   &__title {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -67,6 +74,7 @@
     display: flex;
     gap: 8px;
     align-items: center;
+    min-height: 16px; // reserves space even when empty
   }
 
   &__progress-bar {
