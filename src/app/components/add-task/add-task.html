@@ -57,6 +57,7 @@
             [class.add-task__input--error]="isFieldInvalid('due_date')"
             formControlName="due_date"
             type="date"
+            min="{{ today }}"
             placeholder="dd/mm/yyyy"
           />
           @if (isFieldInvalid('due_date')) {
