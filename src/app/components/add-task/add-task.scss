@@ -21,6 +21,11 @@
   &--error {
     border-color: var(--error-color);
   }
+
+  @media (max-width: 420px) {
+    padding: 10px 14px;
+    font-size: var(--font-size-m);
+  }
 }
 
 .add-task {
@@ -55,7 +60,7 @@
       min-height: 0;
       padding-right: 4px; // breathing room next to the scrollbar
       margin-bottom: 24px;
-      overflow-y: scroll; // always show the scrollbar, not just on hover/scroll
+      overflow-y: auto;
 
       // Firefox: reserve space for a permanently visible scrollbar.
       scrollbar-width: thin;
@@ -118,6 +123,12 @@
       }
     }
 
+    @media (max-width: 470px) {
+      .add-task__priority {
+        grid-template-columns: 1fr;
+      }
+    }
+
     // Plain add-task modal: still scrollable on mobile, just without a
     // visible scrollbar track/thumb. (The edit variant below keeps it visible.)
     &:not(&--edit) .add-task__form {
@@ -136,17 +147,13 @@
   // Compact single-column card, no title — matches the task-detail-modal size.
   &--edit {
     width: min(525px, 95vw);
-    padding: 40px 40px 24px;
+    max-height: 90vh;
+    padding: 55px 40px 24px;
 
     // Extra breathing room so the scrollbar doesn't sit on top of the fields —
     // the narrow single-column layout makes the default 4px (from --modal) too tight.
     .add-task__form {
       padding-right: 20px;
-    }
-
-    .add-task__input,
-    .add-task__textarea {
-      margin-right: 20px;
     }
 
     .add-task__grid {
@@ -196,11 +203,10 @@
     @media (max-width: 1025px) {
       width: 396px;
       max-width: 92vw;
-      padding: 32px 24px 24px;
+      padding: 55px 24px 24px;
     }
 
     @media (max-width: 768px) {
-      width: min(396px, 92vw);
       padding: 55px 16px 22px;
 
       // Smaller breathing room than desktop (20px) so the scrollbar still
@@ -211,7 +217,11 @@
 
       .add-task__input,
       .add-task__textarea {
-        margin-right: 10px;
+        font-size: var(--font-size-m);
+      }
+
+      .add-task__priority {
+        grid-template-columns: 1fr;
       }
     }
   }
@@ -368,9 +378,25 @@
 
 // ─── PRIORITY ─────────────────────────────────────────────
 .add-task__priority {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+
+  .priority-btn {
+    flex: 1;
+  }
+
+  @media (max-width: 1069px) {
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 420px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 // ─── DROPDOWN ─────────────────────────────────────────────
@@ -637,8 +663,8 @@
 
 .add-task__action-buttons {
   display: flex;
-  justify-content: flex-end;
   gap: 16px;
+  justify-content: flex-end;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -656,6 +682,11 @@
 
   &:hover {
     border-color: var(--primary-color);
+  }
+
+  @media (max-width: 420px) {
+    padding: 10px 14px;
+    font-size: var(--font-size-m);
   }
 }
 
@@ -680,5 +711,10 @@
   &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+  }
+
+  @media (max-width: 420px) {
+    padding: 10px 14px;
+    font-size: var(--font-size-m);
   }
 }

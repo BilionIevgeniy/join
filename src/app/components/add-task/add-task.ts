@@ -39,6 +39,7 @@ export class AddTaskComponent implements OnInit {
   cancel = output<void>();
 
   // ─── LOCAL STATE ──────────────────────────────────────────
+  today = new Date().toISOString().split('T')[0];
   subtasks = signal<Subtask[]>([]);
   subtaskInput = signal('');
   isSubtaskActive = signal(false);
@@ -93,10 +94,7 @@ export class AddTaskComponent implements OnInit {
     return this.buildSnapshot(this.formValue(), this.subtasks()) !== this.originalSnapshot;
   });
 
-  private buildSnapshot(
-    formValue: typeof this.form.value,
-    subtasks: Subtask[],
-  ): string {
+  private buildSnapshot(formValue: typeof this.form.value, subtasks: Subtask[]): string {
     return JSON.stringify({
       title: formValue.title ?? '',
       description: formValue.description ?? '',

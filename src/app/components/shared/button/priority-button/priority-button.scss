@@ -3,8 +3,9 @@
   gap: 8px;
   align-items: center;
   justify-content: center;
-  width: 136px;
+  width: 100%;
   height: 56px;
+  padding: 0 16px;
   font-size: var(--font-size-l);
   font-weight: 500;
   color: #2a3647;
@@ -43,7 +44,6 @@
   }
 
   @media (max-width: 768px) {
-    width: 120px;
     height: 40px;
     font-size: var(--font-size-m);
   }
