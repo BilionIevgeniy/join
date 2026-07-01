@@ -1,6 +1,6 @@
 RewriteEngine On
-RewriteBase /join/browser/
+RewriteBase /angular-projects/join/
 RewriteRule ^index\.html$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /join/browser/index.html [L]
+RewriteRule . /angular-projects/join/index.html [L]
