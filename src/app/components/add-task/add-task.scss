@@ -156,11 +156,6 @@
       padding-right: 20px;
     }
 
-    // .add-task__input,
-    // .add-task__textarea {
-    //   margin-right: 20px;
-    // }
-
     .add-task__grid {
       grid-template-columns: 1fr;
     }
@@ -212,7 +207,6 @@
     }
 
     @media (max-width: 768px) {
-      // width: min(396px, 92vw);
       padding: 55px 16px 22px;
 
       // Smaller breathing room than desktop (20px) so the scrollbar still
