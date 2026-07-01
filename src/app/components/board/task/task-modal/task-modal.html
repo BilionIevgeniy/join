@@ -26,13 +26,15 @@
     @if (assignedContacts().length > 0) {
       <div class="task-modal__section">
         <span class="task-modal__label">Assigned To:</span>
-        <div class="task-modal__contacts">
-          @for (contact of assignedContacts(); track contact.id) {
-            <div class="task-modal__contact">
-              <app-avatar size="small" [initials]="contact.initials" [color]="contact.color" />
-              <span>{{ contact.first_name }} {{ contact.last_name }}</span>
-            </div>
-          }
+        <div class="task-modal__contacts-wrapper">
+          <div class="task-modal__contacts">
+            @for (contact of assignedContacts(); track contact.id) {
+              <div class="task-modal__contact">
+                <app-avatar size="small" [initials]="contact.initials" [color]="contact.color" />
+                <span>{{ contact.first_name }} {{ contact.last_name }}</span>
+              </div>
+            }
+          </div>
         </div>
       </div>
     }

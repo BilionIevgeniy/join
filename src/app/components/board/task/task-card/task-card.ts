@@ -19,7 +19,7 @@ export class TaskCard {
   opened = output<Task>();
   moveTo = output<TaskStatus>();
 
-  private readonly maxVisibleAvatars = 4;
+  private readonly maxVisibleAvatars = 3;
 
   isDragging = signal(false);
   showMoveMenu = signal(false);

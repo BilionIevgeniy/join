@@ -8,17 +8,19 @@
 >
   <span class="task-card__category" [class]="categoryClass()">{{ task().category }}</span>
 
-  <h3 class="task-card__title">{{ task().title }}</h3>
-  <p class="task-card__description">{{ task().description }}</p>
+  <div class="task-card__body">
+    <h3 class="task-card__title">{{ task().title }}</h3>
+    <p class="task-card__description">{{ task().description }}</p>
+  </div>
 
-  @if (totalSubtasks() > 0) {
-    <div class="task-card__subtasks">
+  <div class="task-card__subtasks">
+    @if (totalSubtasks() > 0) {
       <div class="task-card__progress-bar">
         <div class="task-card__progress-fill" [style.width.%]="subtaskProgress()"></div>
       </div>
       <span class="task-card__subtasks-label">{{ doneSubtasks() }}/{{ totalSubtasks() }} Subtasks</span>
-    </div>
-  }
+    }
+  </div>
 
   <div class="task-card__footer">
     <div class="task-card__avatars">
