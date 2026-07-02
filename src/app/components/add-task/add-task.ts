@@ -1,6 +1,13 @@
 import { Component, OnInit, computed, inject, input, output, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+
 import { Contact } from '@core/models/contact.model';
 import {
   Task,
@@ -12,6 +19,13 @@ import {
 } from '@core/models/task.model';
 import { PriorityButton } from '@shared/button/priority-button/priority-button';
 import { Avatar } from '@shared/avatar/avatar';
+
+function minDateValidator(minDate: string): ValidatorFn {
+  return (control: AbstractControl) => {
+    if (!control.value) return null;
+    return control.value < minDate ? { minDate: true } : null;
+  };
+}
 
 @Component({
   selector: 'app-add-task-component',
@@ -28,14 +42,11 @@ export class AddTaskComponent implements OnInit {
   task = input<Task | null>(null);
   contacts = input.required<Contact[]>();
   isLoading = input<boolean>(false);
-  /** When true, renders as a floating card with close button instead of a full page. */
   isModal = input<boolean>(false);
-  /** When true, the form is prefilled and styled for editing an existing task. */
   isEdit = input<boolean>(false);
 
   // ─── OUTPUTS ──────────────────────────────────────────────
   save = output<CreateTaskDto>();
-  /** Emitted when the user clicks the X close button (modal mode only). */
   cancel = output<void>();
 
   // ─── LOCAL STATE ──────────────────────────────────────────
@@ -65,7 +76,7 @@ export class AddTaskComponent implements OnInit {
   form = this.fb.group({
     title: ['', [Validators.required]],
     description: [''],
-    due_date: ['', [Validators.required]],
+    due_date: ['', [Validators.required, minDateValidator(this.today)]],
     priority: ['medium' as TaskPriority],
     category: ['' as TaskCategory, [Validators.required]],
     assigned_contacts: [[] as string[]],

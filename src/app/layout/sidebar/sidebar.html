@@ -11,7 +11,7 @@
         <li
           class="nav-item"
           routerLinkActive="nav-item--active"
-          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActiveOptions]="{ paths: 'exact', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' }"
         >
           <a [routerLink]="'/' + item.route">
             <img [src]="item.icon" [alt]="item.label" class="nav-icon" />

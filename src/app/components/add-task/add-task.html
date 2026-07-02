@@ -61,7 +61,11 @@
             placeholder="dd/mm/yyyy"
           />
           @if (isFieldInvalid('due_date')) {
-            <span class="add-task__error">This field is required</span>
+            @if (form.controls['due_date'].errors?.['minDate']) {
+              <span class="add-task__error">Date cannot be in the past</span>
+            } @else {
+              <span class="add-task__error">This field is required</span>
+            }
           }
         </div>
 
