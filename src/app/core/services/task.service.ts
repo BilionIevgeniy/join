@@ -10,7 +10,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { ToastService } from './toast.service';
-import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto, Subtask } from '../models/task.model';
+import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto, Subtask } from '@core/models/task.model';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {

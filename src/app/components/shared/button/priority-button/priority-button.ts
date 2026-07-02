@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, input, output } from '@angular/core';
-import { TaskPriority } from '../../../../core/models/task.model';
+import { TaskPriority } from '@core/models/task.model';
 
 const PRIORITY_CONFIG: Record<TaskPriority, { label: string; color: string }> = {
   urgent: { label: 'Urgent', color: '#FF3D00' },
