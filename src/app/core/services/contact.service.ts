@@ -18,7 +18,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { ToastService } from './toast.service';
-import { Contact, CreateContactDto, UpdateContactDto } from '../models/contact.model';
+import { Contact, CreateContactDto, UpdateContactDto } from '@core/models/contact.model';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {

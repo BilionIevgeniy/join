@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContactService } from '../../core/services/contact.service';
-import { Contact, ContactMode, CreateContactDto } from '../../core/models/contact.model';
-import { ModalService } from '../../core/services/modal.service';
-import { Avatar } from '../../components/shared/avatar/avatar';
-import { Button } from '../../components/shared/button/button';
-import { ContactModal } from '../../components/contact/contact-modal/contact-modal';
+import { ContactService } from '@core/services/contact.service';
+import { Contact, ContactMode, CreateContactDto } from '@core/models/contact.model';
+import { ModalService } from '@core/services/modal.service';
+import { Avatar } from '@shared/avatar/avatar';
+import { Button } from '@shared/button/button';
+import { ContactModal } from '@components/contact/contact-modal/contact-modal';
 
 @Component({
   selector: 'app-contacts',

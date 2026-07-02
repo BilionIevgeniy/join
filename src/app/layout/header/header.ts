@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, signal } from '@angular/core';
-import { Avatar } from '../../components/shared/avatar/avatar';
+import { Avatar } from '@shared/avatar/avatar';
 
 @Component({
   selector: 'app-header',

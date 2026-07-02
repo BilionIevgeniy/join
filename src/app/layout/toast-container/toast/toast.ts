@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, input, output } from '@angular/core';
-import { Toast as ToastModel } from '../../../core/models/toast.model';
+import { Toast as ToastModel } from '@core/models/toast.model';
 
 const AUTO_CLOSE_DELAY = 3000;
 
