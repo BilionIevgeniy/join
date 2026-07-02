@@ -1,1 +1,6 @@
-<app-add-task-component [contacts]="contacts()" [isLoading]="isLoading()" (save)="onSave($event)" />
+<app-add-task-component
+  [contacts]="contacts()"
+  [isLoading]="isLoading()"
+  [initialStatus]="initialStatus()"
+  (save)="onSave($event)"
+/>
