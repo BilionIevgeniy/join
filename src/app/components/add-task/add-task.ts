@@ -1,6 +1,12 @@
 import { Component, OnInit, computed, inject, input, output, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Contact } from '../../core/models/contact.model';
 import {
   Task,
@@ -12,6 +18,13 @@ import {
 } from '../../core/models/task.model';
 import { PriorityButton } from '../shared/button/priority-button/priority-button';
 import { Avatar } from '../shared/avatar/avatar';
+
+function minDateValidator(minDate: string): ValidatorFn {
+  return (control: AbstractControl) => {
+    if (!control.value) return null;
+    return control.value < minDate ? { minDate: true } : null;
+  };
+}
 
 @Component({
   selector: 'app-add-task-component',
@@ -65,7 +78,7 @@ export class AddTaskComponent implements OnInit {
   form = this.fb.group({
     title: ['', [Validators.required]],
     description: [''],
-    due_date: ['', [Validators.required]],
+    due_date: ['', [Validators.required, minDateValidator(this.today)]],
     priority: ['medium' as TaskPriority],
     category: ['' as TaskCategory, [Validators.required]],
     assigned_contacts: [[] as string[]],
