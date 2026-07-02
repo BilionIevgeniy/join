@@ -7,7 +7,8 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Contact } from '../../core/models/contact.model';
+
+import { Contact } from '@core/models/contact.model';
 import {
   Task,
   TaskPriority,
@@ -15,9 +16,9 @@ import {
   TaskCategory,
   Subtask,
   CreateTaskDto,
-} from '../../core/models/task.model';
-import { PriorityButton } from '../shared/button/priority-button/priority-button';
-import { Avatar } from '../shared/avatar/avatar';
+} from '@core/models/task.model';
+import { PriorityButton } from '@shared/button/priority-button/priority-button';
+import { Avatar } from '@shared/avatar/avatar';
 
 function minDateValidator(minDate: string): ValidatorFn {
   return (control: AbstractControl) => {

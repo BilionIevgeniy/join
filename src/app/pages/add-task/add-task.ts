@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { TaskService } from '../../core/services/task.service';
-import { ContactService } from '../../core/services/contact.service';
-import { CreateTaskDto, TaskStatus } from '../../core/models/task.model';
-import { AddTaskComponent } from '../../components/add-task/add-task';
+import { TaskService } from '@core/services/task.service';
+import { ContactService } from '@core/services/contact.service';
+import { CreateTaskDto, TaskStatus } from '@core/models/task.model';
+import { AddTaskComponent } from '@components/add-task/add-task';
 
 const VALID_STATUSES: TaskStatus[] = ['todo', 'inProgress', 'awaitingFeedback', 'done'];
 

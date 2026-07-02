@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { BoardColumnConfig, Task, TaskStatus } from '../../core/models/task.model';
+import { BoardColumnConfig, Task, TaskStatus } from '@core/models/task.model';
 import { BoardColumn } from './board-column/board-column';
 
 @Component({
