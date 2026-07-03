@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from '@app/layout/header/header';
-import { Sidebar } from '@app/layout/sidebar/sidebar';
+import { Header } from '@app/layout/main-layout/header/header';
+import { Sidebar } from '@app/layout/main-layout/sidebar/sidebar';
 import { ContactService } from '@core/services/contact.service';
 import { Loader } from '@shared/loader/loader';
 import { Modal } from '@shared/modal/modal';

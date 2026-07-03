@@ -2,16 +2,22 @@ import { Routes } from '@angular/router';
 import { RoutesEnum } from './core/models/routes.model';
 
 export const routes: Routes = [
-  // Public routes
-  // {
-  //   path: 'login',
-  //   loadComponent: () => import('./pages/auth/login/login').then((m) => m.Login),
-  // },
-  // {
-  //   path: 'signup',
-  //   loadComponent: () =>
-  //     import('./pages/auth/signup/signup').then((m) => m.Signup),
-  // },
+  // Auth routes
+  {
+    path: '',
+    // Layout with sidebar — all pages are nested inside
+    loadComponent: () => import('./layout/auth-layout/auth-layout').then((m) => m.AuthLayout),
+    children: [
+      {
+        path: 'login',
+        loadComponent: () => import('./pages/auth/login/login').then((m) => m.Login),
+      },
+      {
+        path: 'signup',
+        loadComponent: () => import('./pages/auth/signup/signup').then((m) => m.Signup),
+      },
+    ],
+  },
 
   // Protected routes (require authentication)
   {
@@ -27,13 +33,6 @@ export const routes: Routes = [
         path: 'board',
         loadComponent: () => import('./pages/board/board').then((m) => m.Board),
       },
-      // {
-      //   path: 'add-task',
-      //   loadComponent: () =>
-      //     import('./pages/task/add-task-page/add-task-page').then(
-      //       (m) => m.AddTaskPageComponent,
-      //     ),
-      // },
       {
         path: RoutesEnum.ADD_TASK,
         loadComponent: () => import('./pages/add-task/add-task').then((m) => m.AddTaskPage),
