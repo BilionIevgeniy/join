@@ -26,7 +26,6 @@ export class AuthLayout implements OnInit {
     if (!url.includes(RoutesEnum.LOGIN)) return;
 
     this.animating.set(true);
-    // After the logo animation completes, switch to static layout
     setTimeout(() => this.animating.set(false), 900);
   }
 }

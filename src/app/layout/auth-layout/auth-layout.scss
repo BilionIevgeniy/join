@@ -1,9 +1,3 @@
-// The logo's resting spot is top:37px / left:46px, positioned absolute
-// relative to .auth-layout (max-width: 1440px, centered). Below 1440px the
-// container is flush with the viewport edge, so the fixed→absolute switch at
-// 100% lands exactly on the same pixel. Above 1440px there's a small jump
-// since .auth-layout picks up a side margin — acceptable for now since the
-// login screen isn't meant to be viewed on ultra-wide monitors.
 @keyframes logo-center-to-corner {
   0% {
     top: 50vh;
@@ -63,7 +57,6 @@
     animation: content-fade-in 0.4s ease both;
   }
 
-  // Everything except the logo stays hidden while the intro animation runs
   &--animating {
     .auth-layout__top-bar,
     .auth-layout__content,

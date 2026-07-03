@@ -2,12 +2,11 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from '@shared/button/button';
-import { CheckboxButton } from '@shared/checkbox-button/checkbox-button';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, Button, CheckboxButton],
+  imports: [ReactiveFormsModule, Button],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -15,7 +14,6 @@ export class Login {
   private fb = inject(FormBuilder);
 
   isLoading = signal(false);
-  rememberMe = signal(false);
   showPassword = signal(false);
 
   form = this.fb.group({
@@ -30,21 +28,12 @@ export class Login {
     ],
   });
 
-  // Plain method (not computed): form.valid is not a signal, so a computed
-  // would cache the first value and never update. A method re-evaluates on
-  // every change detection cycle.
   isFormValid(): boolean {
     return this.form.valid;
   }
 
-  // Bridges valueChanges into a signal so the template can reactively show
-  // the eye icon only once the user has typed something into the password field.
   private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.value });
   hasPasswordInput = computed(() => !!this.formValue().password);
-
-  toggleRememberMe(): void {
-    this.rememberMe.update((v) => !v);
-  }
 
   togglePasswordVisibility(): void {
     this.showPassword.update((v) => !v);
@@ -60,7 +49,7 @@ export class Login {
       this.form.markAllAsTouched();
       return;
     }
-    console.log('Login:', this.form.value, 'rememberMe:', this.rememberMe());
+    console.log('Login:', this.form.value);
   }
 
   onGuestLogin(): void {
