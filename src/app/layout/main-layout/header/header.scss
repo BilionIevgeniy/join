@@ -30,7 +30,7 @@
   height: 32px;
   padding: 8px;
   cursor: pointer;
-  background-image: url('../../../../public/assets/icons/help-icon.svg');
+  background-image: url('../../../../../public/assets/icons/help-icon.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -79,13 +79,23 @@
 
 // Dropdown Menü
 @keyframes dropdown-open {
-  from { transform: scaleY(0); }
-  to   { transform: scaleY(1); }
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
 }
 
 @keyframes dropdown-close {
-  from { transform: scaleY(1); }
-  to   { transform: scaleY(0); }
+  from {
+    transform: scaleY(1);
+  }
+
+  to {
+    transform: scaleY(0);
+  }
 }
 
 .dropdown-menu {

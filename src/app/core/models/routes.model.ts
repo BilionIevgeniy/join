@@ -3,6 +3,8 @@ export enum RoutesEnum {
   BOARD = 'board',
   ADD_TASK = 'add-task',
   CONTACTS = 'contacts',
+  LOGIN = 'login',
+  SIGNUP = 'signup',
 }
 
 export interface NavItem {
