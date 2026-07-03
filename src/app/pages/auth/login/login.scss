@@ -1,0 +1,136 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 24px;
+  align-items: center;
+  width: 625px;
+  max-width: 100%;
+  padding: 48px;
+  background: #fff;
+  border-radius: 30px;
+  box-shadow: 0 0 14px 3px rgb(0 0 0 / 8%);
+  box-sizing: border-box;
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-h2-xxl);
+    font-weight: 700;
+    color: #2a3647;
+    text-align: center;
+  }
+
+  &__divider {
+    width: 150px;
+    height: 3px;
+    margin-top: -8px;
+    background: #29abe2;
+    border-radius: 2px;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 422px;
+  }
+
+  &__field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    max-width: 422px;
+
+    &--error .login__input {
+      border-color: #ff3d00;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    height: 48px;
+    padding: 0 48px 0 21px;
+    font-size: 16px;
+    color: #2a3647;
+    background: #fff;
+    border: 1px solid #d1d7e0;
+    border-radius: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+
+    &::placeholder {
+      color: #d1d1d1;
+    }
+
+    &:focus {
+      border-color: #29abe2;
+    }
+  }
+
+  &__field-icon {
+    position: absolute;
+    top: 24px;
+    right: 21px;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    opacity: 0.6;
+
+    &--toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 1;
+      pointer-events: all;
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  &__error {
+    padding-left: 4px;
+    font-size: 13px;
+    color: #ff3d00;
+  }
+
+  &__remember {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 8px;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  // ─── Mobile ───────────────────────────────────────────────
+  @media (max-width: 768px) {
+    padding: 32px 24px;
+    border-radius: 20px;
+
+    &__title {
+      font-size: var(--font-h2-m);
+    }
+  }
+}

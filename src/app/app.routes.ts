@@ -15,6 +15,16 @@ export const routes: Routes = [
         path: RoutesEnum.SIGNUP,
         loadComponent: () => import('./pages/auth/signup/signup').then((m) => m.Signup),
       },
+      {
+        path: RoutesEnum.PRIVACY_POLICY,
+        loadComponent: () =>
+          import('./pages/auth/privacy-policy/privacy-policy').then((m) => m.PrivacyPolicy),
+      },
+      {
+        path: RoutesEnum.LEGAL_NOTICE,
+        loadComponent: () =>
+          import('./pages/auth/legal-notice/legal-notice').then((m) => m.LegalNotice),
+      },
       { path: '', redirectTo: RoutesEnum.LOGIN, pathMatch: 'full' },
     ],
   },
