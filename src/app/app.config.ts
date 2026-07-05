@@ -8,7 +8,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
-    // provideAppInitializer - for initial data loading before app starts
+    // provideAppInitializer - for initial data loading, called before app starts
     provideAppInitializer(() => {
       const auth = inject(AuthService);
       return auth.loadSession();
