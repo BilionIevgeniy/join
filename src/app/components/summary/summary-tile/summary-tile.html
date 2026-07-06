@@ -1,0 +1,16 @@
+<button
+  type="button"
+  class="summary-tile"
+  [class.summary-tile--third]="size() === 'third'"
+  (click)="tileClick.emit()"
+>
+  <div class="summary-tile__top">
+    @if (icon()) {
+      <span class="summary-tile__badge">
+        <img class="summary-tile__icon" [src]="'assets/icons/' + icon()" alt="" />
+      </span>
+    }
+    <span class="summary-tile__count">{{ count() }}</span>
+  </div>
+  <span class="summary-tile__label">{{ label() }}</span>
+</button>

@@ -1,7 +1,7 @@
 @mixin input-base {
   width: 100%;
   padding: 12px 16px;
-  font-size: var(--font-size-l);
+  font-size: var(--font-size-sm);
   color: var(--inverted-text-color);
   outline: none;
   background: transparent;
@@ -24,7 +24,7 @@
 
   @media (max-width: 420px) {
     padding: 10px 14px;
-    font-size: var(--font-size-m);
+    font-size: var(--font-size-s);
   }
 }
 
@@ -217,7 +217,7 @@
 
       .add-task__input,
       .add-task__textarea {
-        font-size: var(--font-size-m);
+        font-size: var(--font-size-s);
       }
 
       .add-task__priority {
@@ -336,12 +336,12 @@
 }
 
 .add-task__label {
-  font-size: var(--font-size-l);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--inverted-text-color);
 
   @media (max-width: 768px) {
-    font-size: var(--font-size-m);
+    font-size: var(--font-size-s);
   }
 }
 
@@ -618,7 +618,7 @@
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: var(--font-size-m);
+  font-size: var(--font-size-s);
   color: var(--inverted-text-color);
   white-space: nowrap;
 }
@@ -702,7 +702,7 @@
 
   @media (max-width: 420px) {
     padding: 10px 14px;
-    font-size: var(--font-size-m);
+    font-size: var(--font-size-s);
   }
 }
 
@@ -731,6 +731,6 @@
 
   @media (max-width: 420px) {
     padding: 10px 14px;
-    font-size: var(--font-size-m);
+    font-size: var(--font-size-s);
   }
 }

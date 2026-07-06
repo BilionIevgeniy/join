@@ -28,14 +28,14 @@
 
   &__title {
     margin: 0;
-    font-size: var(--font-h2-xl);
+    font-size: var(--font-size-xl);
     font-weight: 700;
     line-height: 1.1;
     color: white;
   }
 
   &__subtitle {
-    font-size: var(--font-size-l);
+    font-size: var(--font-size-sm);
     color: rgb(255 255 255 / 70%);
   }
 
