@@ -57,7 +57,7 @@
   }
 
   &__count {
-    font-size: 46px;
+    font-size: var(--font-size-xl);
     font-weight: 700;
   }
 
@@ -109,6 +109,12 @@
     &__date-label,
     &__no-deadline {
       font-size: var(--font-size-s);
+    }
+  }
+
+  @media (width <= 1024px) {
+    &__count {
+      font-size: var(--font-size-l);
     }
   }
 }
