@@ -104,4 +104,11 @@
       align-items: center;
     }
   }
+
+  @media (width <= 1024px) {
+    &__date-label,
+    &__no-deadline {
+      font-size: var(--font-size-s);
+    }
+  }
 }
