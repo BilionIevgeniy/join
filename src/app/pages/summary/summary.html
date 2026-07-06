@@ -1,1 +1,14 @@
-<p>summary works!</p>
+<div class="summary-page container">
+  <app-summary
+    [userName]="userName()"
+    [greeting]="greeting"
+    [todoCount]="todoCount()"
+    [doneCount]="doneCount()"
+    [urgentCount]="urgentCount()"
+    [deadlineLabel]="deadlineLabel()"
+    [boardCount]="boardCount()"
+    [inProgressCount]="inProgressCount()"
+    [awaitingCount]="awaitingCount()"
+    (tileClicked)="goToBoard()"
+  />
+</div>

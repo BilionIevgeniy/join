@@ -1,3 +1,10 @@
 .summary-page {
-  // Add summary page specific styles here
+  height: 100%;
+  padding: 64px 80px 80px;
+  background: var(--main-bg-color, #f6f7f8);
+
+  @media (width <= 1025px) {
+    height: auto;
+    padding: 48px 16px 50px;
+  }
 }

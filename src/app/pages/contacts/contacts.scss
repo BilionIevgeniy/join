@@ -66,7 +66,7 @@
   &__letter {
     display: block;
     padding: 17px 36px;
-    font-size: var(--font-size-l);
+    font-size: var(--font-size-sm);
     color: var(--inverted-text-color);
   }
 
@@ -124,7 +124,7 @@
   &__name {
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: clamp(var(--font-size-m), 4vw, var(--font-size-l));
+    font-size: clamp(var(--font-size-s), 4vw, var(--font-size-sm));
     color: var(--inverted-text-color);
     white-space: nowrap;
   }
@@ -132,7 +132,7 @@
   &__email {
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: clamp(var(--font-size-s), 4vw, var(--font-size-m));
+    font-size: clamp(var(--font-size-xs), 4vw, var(--font-size-s));
     color: var(--c-accent);
     white-space: nowrap;
   }
@@ -218,7 +218,7 @@
       display: block;
       padding: 26px 0;
       margin-bottom: 20px;
-      font-size: var(--font-size-l);
+      font-size: var(--font-size-sm);
       color: var(--inverted-text-color);
     }
 
@@ -330,7 +330,7 @@
     gap: 6px;
     align-items: center;
     padding: 4px 0;
-    font-size: var(--font-size-m);
+    font-size: var(--font-size-s);
     color: var(--inverted-text-color);
     cursor: pointer;
     background: transparent;
@@ -349,13 +349,13 @@
   }
 
   &__field-label {
-    font-size: var(--font-size-m);
+    font-size: var(--font-size-s);
     font-weight: 600;
     color: var(--inverted-text-color);
   }
 
   &__field-email {
-    font-size: var(--font-size-m);
+    font-size: var(--font-size-s);
     color: var(--c-accent);
     text-decoration: none;
 
@@ -365,7 +365,7 @@
   }
 
   &__field-value {
-    font-size: var(--font-size-m);
+    font-size: var(--font-size-s);
     color: var(--inverted-text-color);
   }
 

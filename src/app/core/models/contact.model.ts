@@ -7,7 +7,7 @@ export interface Contact {
   first_name: string;
   last_name: string;
   email: string;
-  phone: string | null; // nullable — not required at signup
+  phone?: string | null; // nullable — not required at signup
   color: string; // hex color for avatar circle
   initials: string; // generated from first_name + last_name
   auth_user_id?: string; // links to Supabase Auth user

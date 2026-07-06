@@ -1,0 +1,22 @@
+<button type="button" class="deadline-tile" (click)="tileClick.emit()">
+  <div class="deadline-tile__urgent">
+    <div class="deadline-tile__urgent-top">
+      <span class="deadline-tile__badge">
+        <img class="deadline-tile__icon" src="assets/icons/urgent-prio-icon-white.svg" alt="" />
+      </span>
+      <span class="deadline-tile__count">{{ urgentCount() }}</span>
+    </div>
+    <span class="deadline-tile__label">Urgent</span>
+  </div>
+
+  <span class="deadline-tile__divider"></span>
+
+  <div class="deadline-tile__deadline">
+    @if (deadlineLabel()) {
+      <span class="deadline-tile__date">{{ deadlineLabel() }}</span>
+      <span class="deadline-tile__date-label">Upcoming Deadline</span>
+    } @else {
+      <span class="deadline-tile__no-deadline">No upcoming deadline</span>
+    }
+  </div>
+</button>
