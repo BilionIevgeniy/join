@@ -51,16 +51,16 @@ export const routes: Routes = [
       },
 
       // Public — accessible without authentication
-      // {
-      //   path: RoutesEnum.PRIVACY,
-      //   loadComponent: () =>
-      //     import('./pages/privacy/privacy').then((m) => m.Privacy),
-      // },
-      // {
-      //   path: RoutesEnum.TERMS,
-      //   loadComponent: () =>
-      //     import('./pages/terms/terms').then((m) => m.Terms),
-      // },
+      {
+        path: RoutesEnum.PRIVACY_POLICY,
+        loadComponent: () =>
+          import('./pages/privacy-policy/privacy-policy').then((m) => m.PrivacyPolicy),
+      },
+      {
+        path: RoutesEnum.LEGAL_NOTICE,
+        loadComponent: () =>
+          import('./pages/legal-notice/legal-notice').then((m) => m.LegalNotice),
+      },
       // {
       //   path: RoutesEnum.HELP,
       //   loadComponent: () =>

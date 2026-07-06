@@ -31,6 +31,10 @@
     padding: 15.5px 64px;
   }
 
+  &--xlarge {
+    padding: 11.5px 24px;
+  }
+
   &--weight-regular {
     font-weight: 400;
   }
@@ -140,6 +144,22 @@
 
     &:active {
       color: var(--btn-text-active);
+    }
+  }
+
+  &:disabled {
+    color: #fff;
+    cursor: not-allowed;
+    background: #cad1da;
+    border-color: #cad1da;
+    box-shadow: none;
+
+    &:hover,
+    &:active {
+      color: #fff;
+      background: #cad1da;
+      border-color: #cad1da;
+      box-shadow: none;
     }
   }
 }
