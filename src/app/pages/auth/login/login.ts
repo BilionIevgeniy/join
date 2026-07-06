@@ -13,9 +13,9 @@ import { Button } from '@shared/button/button';
 })
 export class Login {
   private fb = inject(FormBuilder);
-  authService = inject(AuthService)
+  private authService = inject(AuthService);
 
-  isLoading = signal(false);
+  isLoading = this.authService.isLoading;
   showPassword = signal(false);
 
   form = this.fb.group({
@@ -51,7 +51,8 @@ export class Login {
       this.form.markAllAsTouched();
       return;
     }
-    console.log('Login:', this.form.value);
+    const { email, password } = this.form.value;
+    this.authService.signIn(email!, password!);
   }
 
   onGuestLogin(): void {
