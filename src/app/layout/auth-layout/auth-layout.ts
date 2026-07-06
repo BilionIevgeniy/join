@@ -2,10 +2,11 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { RoutesEnum } from '@core/models/routes.model';
+import { SignupHint } from '@shared/signup-hint/signup-hint';
 
 @Component({
   selector: 'app-auth-layout',
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, SignupHint],
   templateUrl: './auth-layout.html',
   styleUrl: './auth-layout.scss',
 })

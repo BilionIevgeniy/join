@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '@app/core/services/auth.service';
 import { Button } from '@shared/button/button';
 
 @Component({
@@ -12,6 +13,7 @@ import { Button } from '@shared/button/button';
 })
 export class Login {
   private fb = inject(FormBuilder);
+  authService = inject(AuthService)
 
   isLoading = signal(false);
   showPassword = signal(false);
@@ -53,6 +55,6 @@ export class Login {
   }
 
   onGuestLogin(): void {
-    console.log('Guest login');
+    this.authService.signInAsGuest();
   }
 }
