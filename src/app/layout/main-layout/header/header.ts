@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, computed, inject, signal } from '@angular/core';
 import { Avatar } from '@shared/avatar/avatar';
 import { AuthService } from '@core/services/auth.service';
 
@@ -12,11 +12,10 @@ import { AuthService } from '@core/services/auth.service';
 export class Header {
   private authService = inject(AuthService);
 
-  userEmail = signal('sofia.mueller@join.com');
-  userInitials = signal('SM');
-  userColor = signal('linear-gradient(135deg, #3498db 0%, #2980b9 100%)');
+  isLoggedIn = this.authService.isLoggedIn;
+  userInitials = computed(() => this.authService.currentUser()?.initials ?? '');
+  userColor = computed(() => this.authService.currentUser()?.color ?? '');
 
-  isLoggedIn = signal(true);
   isDropdownOpen = signal(false);
   isDropdownClosing = signal(false);
 
@@ -46,7 +45,7 @@ export class Header {
     }
   }
 
-  signOut(): void {
-    this.authService.signOut();
+  async logout(): Promise<void> {
+    await this.authService.signOut();
   }
 }
