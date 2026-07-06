@@ -1,5 +1,6 @@
-import { Component, ElementRef, HostListener, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { Avatar } from '@shared/avatar/avatar';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,6 +10,8 @@ import { Avatar } from '@shared/avatar/avatar';
   styleUrl: './header.scss',
 })
 export class Header {
+  private authService = inject(AuthService);
+
   userEmail = signal('sofia.mueller@join.com');
   userInitials = signal('SM');
   userColor = signal('linear-gradient(135deg, #3498db 0%, #2980b9 100%)');
@@ -41,5 +44,9 @@ export class Header {
     if (!this.elementRef.nativeElement.contains(event.target as Node)) {
       this.closeDropdown();
     }
+  }
+
+  signOut(): void {
+    this.authService.signOut();
   }
 }

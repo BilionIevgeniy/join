@@ -46,8 +46,21 @@
     </div>
 
     <div class="summary__greeting">
-      <p class="summary__greeting-text">{{ greeting() }},</p>
-      <p class="summary__greeting-name">Sfkdsfkhsdfsfgdg KHFDhjfgdlsgfsdgfkjdshfkgds</p>
+      <ng-container *ngTemplateOutlet="greetingText" />
     </div>
   </div>
+
+  @if (showGreetingIntro()) {
+    <div
+      class="summary__greeting-intro"
+      [class.summary__greeting-intro--visible]="greetingIntroVisible()"
+    >
+      <ng-container *ngTemplateOutlet="greetingText" />
+    </div>
+  }
 </div>
+
+<ng-template #greetingText>
+  <p class="summary__greeting-text">{{ greeting() }},</p>
+  <p class="summary__greeting-name">{{ userName() }}</p>
+</ng-template>

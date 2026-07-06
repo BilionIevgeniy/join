@@ -28,7 +28,7 @@
             <div class="dropdown-menu" [class.dropdown-menu--closing]="isDropdownClosing()">
               <a href="#" class="dropdown-item">Legal Notice</a>
               <a href="#" class="dropdown-item">Privacy Policy</a>
-              <a href="#" class="dropdown-item">Log out</a>
+              <span class="dropdown-item" (click)="signOut()">Log out</span>
             </div>
           }
         </div>

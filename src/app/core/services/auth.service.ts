@@ -6,6 +6,7 @@ import { ToastService } from './toast.service';
 import { Contact } from '../models/contact.model';
 import { RoutesEnum } from '../models/routes.model';
 import { generateAvatarColor, generateInitials } from '../utils/contact.utils';
+import { GREETING_INTRO_SESSION_KEY } from '@app/components/summary/summary';
 
 // Guest placeholder — lives only in memory, never stored in DB
 const GUEST_USER: Contact = {
@@ -135,6 +136,7 @@ export class AuthService {
       this.currentUser.set(null);
       this.toastService.success('You have been signed out.');
       this.router.navigate([RoutesEnum.LOGIN]);
+      sessionStorage.removeItem(GREETING_INTRO_SESSION_KEY);
     } catch (err) {
       console.error('signOut failed:', err);
       this.toastService.error('Failed to sign out.');
