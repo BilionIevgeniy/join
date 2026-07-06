@@ -1,66 +1,63 @@
 <div class="summary">
-  <h1 class="summary__title">
-    Join 360
-    <span class="summary__title-divider"></span>
-    <span class="summary__title-subtitle">Key Metrics at a Glance</span>
-  </h1>
-  <div class="summary__content">
-    <div class="summary__grid">
-      <app-summary-tile
-        icon="edit.svg"
-        [count]="todoCount()"
-        label="To-do"
-        (tileClick)="tileClicked.emit()"
-      />
-      <app-summary-tile
-        icon="check-big.svg"
-        [count]="doneCount()"
-        label="Done"
-        (tileClick)="tileClicked.emit()"
-      />
-
-      <app-summary-deadline-tile
-        [urgentCount]="urgentCount()"
-        [deadlineLabel]="deadlineLabel()"
-        (tileClick)="tileClicked.emit()"
-      />
-
-      <app-summary-tile
-        size="third"
-        [count]="boardCount()"
-        label="Tasks in Board"
-        (tileClick)="tileClicked.emit()"
-      />
-      <app-summary-tile
-        size="third"
-        [count]="inProgressCount()"
-        label="Tasks in Progress"
-        (tileClick)="tileClicked.emit()"
-      />
-      <app-summary-tile
-        size="third"
-        [count]="awaitingCount()"
-        label="Awaiting Feedback"
-        (tileClick)="tileClicked.emit()"
-      />
-    </div>
-
-    <div class="summary__greeting">
-      <ng-container *ngTemplateOutlet="greetingText" />
-    </div>
-  </div>
-
   @if (showGreetingIntro()) {
     <div
       class="summary__greeting-intro"
-      [class.summary__greeting-intro--visible]="greetingIntroVisible()"
+      [class.summary__greeting-intro--leaving]="greetingIntroLeaving()"
     >
-      <ng-container *ngTemplateOutlet="greetingText" />
+      <p class="summary__greeting-text">{{ greeting() }},</p>
+      <p class="summary__greeting-name">{{ userName() }}</p>
+    </div>
+  } @else {
+    <h1 class="summary__title">
+      Join 360
+      <span class="summary__title-divider"></span>
+      <span class="summary__title-subtitle">Key Metrics at a Glance</span>
+    </h1>
+    <div class="summary__content">
+      <div class="summary__grid">
+        <app-summary-tile
+          icon="edit.svg"
+          [count]="todoCount()"
+          label="To-do"
+          (tileClick)="tileClicked.emit()"
+        />
+        <app-summary-tile
+          icon="check-big.svg"
+          [count]="doneCount()"
+          label="Done"
+          (tileClick)="tileClicked.emit()"
+        />
+
+        <app-summary-deadline-tile
+          [urgentCount]="urgentCount()"
+          [deadlineLabel]="deadlineLabel()"
+          (tileClick)="tileClicked.emit()"
+        />
+
+        <app-summary-tile
+          size="third"
+          [count]="boardCount()"
+          label="Tasks in Board"
+          (tileClick)="tileClicked.emit()"
+        />
+        <app-summary-tile
+          size="third"
+          [count]="inProgressCount()"
+          label="Tasks in Progress"
+          (tileClick)="tileClicked.emit()"
+        />
+        <app-summary-tile
+          size="third"
+          [count]="awaitingCount()"
+          label="Awaiting Feedback"
+          (tileClick)="tileClicked.emit()"
+        />
+      </div>
+
+      <div class="summary__greeting">
+        <p class="summary__greeting-text">{{ greeting() }},</p>
+        <p class="summary__greeting-name">{{ userName() }}</p>
+      </div>
     </div>
   }
 </div>
-
-<ng-template #greetingText>
-  <p class="summary__greeting-text">{{ greeting() }},</p>
-  <p class="summary__greeting-name">{{ userName() }}</p>
-</ng-template>
