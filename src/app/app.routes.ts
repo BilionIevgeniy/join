@@ -9,10 +9,12 @@ export const routes: Routes = [
     children: [
       {
         path: RoutesEnum.LOGIN,
+        // canActivate: [guestGuard],
         loadComponent: () => import('./pages/auth/login/login').then((m) => m.Login),
       },
       {
         path: RoutesEnum.SIGNUP,
+        // canActivate: [guestGuard],
         loadComponent: () => import('./pages/auth/signup/signup').then((m) => m.Signup),
       },
       { path: '', redirectTo: RoutesEnum.LOGIN, pathMatch: 'full' },
