@@ -1,1 +1,23 @@
-<router-outlet />
+<div class="auth-layout-wrapper">
+  <div class="auth-layout" [class.auth-layout--animating]="animating()">
+    <img
+      class="auth-layout__logo"
+      [class.auth-layout__logo--animating]="animating()"
+      src="assets/img/join-logo-dark.svg"
+      alt="Join Logo"
+    />
+
+    <div class="auth-layout__top-bar">
+      <app-signup-hint />
+    </div>
+
+    <div class="auth-layout__content">
+      <router-outlet />
+    </div>
+
+    <footer class="auth-layout__footer">
+      <a class="auth-layout__footer-link" routerLink="/privacy-policy">Privacy Policy</a>
+      <a class="auth-layout__footer-link" routerLink="/legal-notice">Legal Notice</a>
+    </footer>
+  </div>
+</div>
