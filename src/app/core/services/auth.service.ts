@@ -74,7 +74,6 @@ export class AuthService {
         first_name: firstName,
         last_name: lastName,
         email,
-        phone: null,
         color: generateAvatarColor(firstName),
         initials: generateInitials(firstName, lastName),
         auth_user_id: data.user.id,
