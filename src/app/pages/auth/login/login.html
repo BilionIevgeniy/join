@@ -60,6 +60,7 @@
         fontSize="large"
         weight="bold"
         type="submit"
+        [fullWidth]="true"
         [disabled]="!isFormValid() || isLoading()"
       />
       <app-button
@@ -68,6 +69,7 @@
         size="xlarge"
         fontSize="large"
         weight="bold"
+        [fullWidth]="true"
         (click)="onGuestLogin()"
       />
     </div>

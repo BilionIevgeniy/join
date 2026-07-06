@@ -8,12 +8,20 @@
     />
 
     <div class="auth-layout__top-bar">
-      <app-signup-hint />
+      @if (!hideSignupHint()) {
+        <app-signup-hint />
+      }
     </div>
 
     <div class="auth-layout__content">
       <router-outlet />
     </div>
+
+    @if (!hideSignupHint()) {
+      <div class="auth-layout__mobile-signup-hint">
+        <app-signup-hint />
+      </div>
+    }
 
     <footer class="auth-layout__footer">
       <a class="auth-layout__footer-link" routerLink="/privacy-policy">Privacy Policy</a>

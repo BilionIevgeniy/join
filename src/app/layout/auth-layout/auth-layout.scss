@@ -53,14 +53,16 @@
 
   &__top-bar,
   &__content,
-  &__footer {
+  &__footer,
+  &__mobile-signup-hint {
     animation: content-fade-in 0.4s ease both;
   }
 
   &--animating {
     .auth-layout__top-bar,
     .auth-layout__content,
-    .auth-layout__footer {
+    .auth-layout__footer,
+    .auth-layout__mobile-signup-hint {
       opacity: 0;
       animation: none;
       pointer-events: none;
@@ -80,7 +82,12 @@
     flex: 1;
     align-items: center;
     justify-content: center;
+    min-width: 0;
     padding: 24px 40px;
+  }
+
+  &__mobile-signup-hint {
+    display: none;
   }
 
   &__footer {
@@ -130,11 +137,17 @@
     }
 
     .auth-layout__top-bar {
-      padding: 24px;
+      display: none;
     }
 
     .auth-layout__content {
       padding: 16px 20px;
+    }
+
+    .auth-layout__mobile-signup-hint {
+      display: flex;
+      justify-content: center;
+      padding: 0 20px 16px;
     }
 
     .auth-layout__footer {
