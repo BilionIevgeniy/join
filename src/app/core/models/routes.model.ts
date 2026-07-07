@@ -7,6 +7,7 @@ export enum RoutesEnum {
   SIGNUP = 'signup',
   PRIVACY_POLICY = 'privacy-policy',
   LEGAL_NOTICE = 'legal-notice',
+  HELP = 'help',
 }
 
 export interface NavItem {

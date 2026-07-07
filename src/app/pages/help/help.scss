@@ -1,0 +1,46 @@
+.help {
+  padding: 40px;
+  font-family: var(--font-family-main);
+  color: #000000;
+
+  &__title-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    font-size: var(--font-size-l);
+    margin: 0;
+  }
+
+  &__highlight {
+    color: #124658;
+  }
+
+  h2 {
+    font-size: var(--font-size-m);
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  &__steps {
+    padding-left: 24px;
+    margin: 16px 0;
+
+    li {
+      margin-bottom: 16px;
+    }
+  }
+
+  &__step-title {
+    font-weight: 700;
+  }
+}

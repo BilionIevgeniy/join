@@ -61,11 +61,10 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/legal-notice/legal-notice').then((m) => m.LegalNotice),
       },
-      // {
-      //   path: RoutesEnum.HELP,
-      //   loadComponent: () =>
-      //     import('./pages/help/help').then((m) => m.Help),
-      // },
+      {
+        path: RoutesEnum.HELP,
+        loadComponent: () => import('./pages/help/help').then((m) => m.Help),
+      },
 
       { path: '', redirectTo: RoutesEnum.SUMMARY, pathMatch: 'full' },
     ],
