@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { RoutesEnum } from './core/models/routes.model';
+import { authGuard } from './core/guards/auth.guard';
+import { guestGuard } from './core/guards/guest.guard';
 
 export const routes: Routes = [
   // ─── AUTH ROUTES (no sidebar) ─────────────────────────────
@@ -9,12 +11,12 @@ export const routes: Routes = [
     children: [
       {
         path: RoutesEnum.LOGIN,
-        // canActivate: [guestGuard],
+        canActivate: [guestGuard],
         loadComponent: () => import('./pages/auth/login/login').then((m) => m.Login),
       },
       {
         path: RoutesEnum.SIGNUP,
-        // canActivate: [guestGuard],
+        canActivate: [guestGuard],
         loadComponent: () => import('./pages/auth/signup/signup').then((m) => m.Signup),
       },
       { path: '', redirectTo: RoutesEnum.LOGIN, pathMatch: 'full' },
@@ -31,22 +33,22 @@ export const routes: Routes = [
       // Protected — canActivate: [authGuard] added later
       {
         path: RoutesEnum.SUMMARY,
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
         loadComponent: () => import('./pages/summary/summary').then((m) => m.Summary),
       },
       {
         path: RoutesEnum.BOARD,
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
         loadComponent: () => import('./pages/board/board').then((m) => m.Board),
       },
       {
         path: RoutesEnum.ADD_TASK,
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
         loadComponent: () => import('./pages/add-task/add-task').then((m) => m.AddTaskPage),
       },
       {
         path: RoutesEnum.CONTACTS,
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
         loadComponent: () => import('./pages/contacts/contacts').then((m) => m.Contacts),
       },
 

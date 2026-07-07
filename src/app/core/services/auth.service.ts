@@ -123,6 +123,7 @@ export class AuthService {
   signInAsGuest(): void {
     sessionStorage.setItem('isGuest', 'true');
     this.currentUser.set(GUEST_USER);
+    this.toastService.success('You have been signed in as a guest.');
     this.router.navigate([RoutesEnum.SUMMARY]);
   }
 
