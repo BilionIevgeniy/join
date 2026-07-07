@@ -7,15 +7,38 @@
   <!-- Navigation Links -->
   <nav class="sidebar__nav">
     <ul class="nav-list">
-      @for (item of navItems; track item.route) {
+      @if (isLoggedIn()) {
+        @for (item of navItems; track item.route) {
+          <li
+            class="nav-item"
+            routerLinkActive="nav-item--active"
+            [routerLinkActiveOptions]="{
+              paths: 'exact',
+              queryParams: 'ignored',
+              fragment: 'ignored',
+              matrixParams: 'ignored',
+            }"
+          >
+            <a [routerLink]="'/' + item.route">
+              <img [src]="item.icon" [alt]="item.label" class="nav-icon" />
+              <span class="nav-text">{{ item.label }}</span>
+            </a>
+          </li>
+        }
+      } @else {
         <li
-          class="nav-item"
+          class="nav-item nav-item--login"
           routerLinkActive="nav-item--active"
-          [routerLinkActiveOptions]="{ paths: 'exact', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' }"
+          [routerLinkActiveOptions]="{
+            paths: 'exact',
+            queryParams: 'ignored',
+            fragment: 'ignored',
+            matrixParams: 'ignored',
+          }"
         >
-          <a [routerLink]="'/' + item.route">
-            <img [src]="item.icon" [alt]="item.label" class="nav-icon" />
-            <span class="nav-text">{{ item.label }}</span>
+          <a routerLink="/login">
+            <img src="assets/icons/login-icon.svg" alt="Log In" class="nav-icon" />
+            <span class="nav-text">Log In</span>
           </a>
         </li>
       }
@@ -23,8 +46,28 @@
   </nav>
 
   <!-- Footer Links -->
-  <footer class="sidebar__footer">
-    <a routerLink="/privacy-policy">Privacy Policy</a>
-    <a routerLink="/legal-notice">Legal notice</a>
+  <footer class="sidebar__footer" [class.sidebar__footer--visible]="!isLoggedIn()">
+    <a
+      routerLink="/privacy-policy"
+      routerLinkActive="footer-link--active"
+      [routerLinkActiveOptions]="{
+        paths: 'exact',
+        queryParams: 'ignored',
+        fragment: 'ignored',
+        matrixParams: 'ignored',
+      }"
+      >Privacy Policy</a
+    >
+    <a
+      routerLink="/legal-notice"
+      routerLinkActive="footer-link--active"
+      [routerLinkActiveOptions]="{
+        paths: 'exact',
+        queryParams: 'ignored',
+        fragment: 'ignored',
+        matrixParams: 'ignored',
+      }"
+      >Legal notice</a
+    >
   </footer>
 </aside>

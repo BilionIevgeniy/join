@@ -29,7 +29,7 @@
   &:hover {
     color: #fff;
     background: #2a3647;
-    transform: scale(1.05);
+    transform: scale(1.02);
   }
 
   &__top {
@@ -78,7 +78,7 @@
 
   @media (width <= 1230px) {
     grid-column: span 3;
-    padding: 20px 30px;
+    padding: 20px;
 
     &--third {
       grid-column: span 2;
@@ -87,7 +87,7 @@
 
   @media (width <= 1024px) {
     &__count {
-      font-size: var(--font-size-l);
+      font-size: var(--font-size-xl);
     }
 
     &__label {

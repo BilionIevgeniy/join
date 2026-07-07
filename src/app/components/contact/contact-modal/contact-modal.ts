@@ -16,7 +16,7 @@ export class ContactModal implements OnInit {
   contact = input<Contact | null>(null);
   isLoading = input<boolean>(false);
   save = output<CreateContactDto>();
-  delete = output<string>();
+  delete = output<Contact>();
   closed = output<void>();
 
   form = new FormGroup({
@@ -77,7 +77,7 @@ export class ContactModal implements OnInit {
   onDelete(): void {
     const contact = this.contact();
     if (!contact?.id) return;
-    this.delete.emit(contact.id);
+    this.delete.emit(contact);
   }
 
   close(): void {

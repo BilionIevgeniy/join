@@ -126,22 +126,41 @@ export class ContactService {
     }
   }
 
-  async deleteContact(id: string): Promise<boolean> {
+  async deleteContact(
+    contact: Contact,
+    currentAuthUserId?: string,
+  ): Promise<{ success: boolean; shouldSignOut: boolean }> {
     this.isLoading.set(true);
     try {
-      const { error } = await this.supabase.db.from('contacts').delete().eq('id', id);
+      // Step 1: if contact has auth_user_id — delete from auth.users via Edge Function first
+      if (contact.auth_user_id) {
+        const { error: fnError } = await this.supabase.db.functions.invoke('delete-user', {
+          body: { auth_user_id: contact.auth_user_id },
+        });
+        if (fnError) throw fnError;
+      }
+
+      // Step 2: delete from contacts table
+      const { error } = await this.supabase.db.from('contacts').delete().eq('id', contact.id);
       if (error) throw error;
+
+      // Step 3: remove from local state
       this.contactsMap.update((map) => {
         const next = { ...map };
-        delete next[id];
+        delete next[contact.id!];
         return next;
       });
+
       this.toastService.success('Contact deleted successfully.');
-      return true;
+
+      // Step 4: check if deleted contact is the current user
+      const shouldSignOut = !!contact.auth_user_id && contact.auth_user_id === currentAuthUserId;
+
+      return { success: true, shouldSignOut };
     } catch (err) {
       console.error('deleteContact failed:', err);
       this.toastService.error('Failed to delete contact.');
-      return false;
+      return { success: false, shouldSignOut: false };
     } finally {
       this.isLoading.set(false);
     }

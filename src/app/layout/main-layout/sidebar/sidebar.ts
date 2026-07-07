@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavItem, RoutesEnum } from '@core/models/routes.model';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,6 +11,10 @@ import { NavItem, RoutesEnum } from '@core/models/routes.model';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar {
+  private authService = inject(AuthService);
+
+  isLoggedIn = this.authService.isLoggedIn;
+
   navItems: NavItem[] = [
     {
       label: 'Summary',

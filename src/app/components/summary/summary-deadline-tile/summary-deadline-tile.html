@@ -1,12 +1,12 @@
 <button type="button" class="deadline-tile" (click)="tileClick.emit()">
   <div class="deadline-tile__urgent">
-    <div class="deadline-tile__urgent-top">
-      <span class="deadline-tile__badge">
-        <img class="deadline-tile__icon" src="assets/icons/urgent-prio-icon-white.svg" alt="" />
-      </span>
+    <span class="deadline-tile__badge">
+      <img class="deadline-tile__icon" src="assets/icons/urgent-prio-icon-white.svg" alt="" />
+    </span>
+    <div class="deadline-tile__urgent-right">
       <span class="deadline-tile__count">{{ urgentCount() }}</span>
+      <span class="deadline-tile__label">Urgent</span>
     </div>
-    <span class="deadline-tile__label">Urgent</span>
   </div>
 
   <span class="deadline-tile__divider"></span>
