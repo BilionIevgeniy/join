@@ -5,7 +5,7 @@
 .deadline-tile {
   display: flex;
   grid-column: 1 / -1;
-  gap: 40px;
+  gap: 25px;
   align-items: center;
   justify-content: center;
   min-height: 140px;
@@ -24,19 +24,20 @@
   &:hover {
     color: #fff;
     background: #2a3647;
-    transform: scale(1.05);
+    transform: scale(1.02);
   }
 
   &__urgent {
     display: flex;
-    flex-direction: column;
     gap: 12px;
     align-items: center;
+    margin: 0 auto;
   }
 
-  &__urgent-top {
+  &__urgent-right {
     display: flex;
-    gap: 16px;
+    flex-direction: column;
+    gap: 4px;
     align-items: center;
   }
 
@@ -78,6 +79,7 @@
     flex-direction: column;
     gap: 4px;
     align-items: flex-start;
+    margin: 0 auto;
   }
 
   &__date {
@@ -88,6 +90,10 @@
   &__date-label,
   &__no-deadline {
     font-size: var(--font-size-sm);
+  }
+
+  &__date-label {
+    text-align: left;
   }
 
   @media (width <= 1024px) {
