@@ -10,7 +10,7 @@
     @if (isLoggedIn()) {
       <div class="header__user">
         <!-- Hilfenachricht -->
-        <button class="help-button" title="Help"></button>
+        <button class="help-button" title="Help" routerLink="/help"></button>
 
         <!-- Benutzer Dropdown -->
         <div class="user-dropdown">
@@ -26,8 +26,8 @@
           <!-- Dropdown Menü -->
           @if (isDropdownOpen()) {
             <div class="dropdown-menu" [class.dropdown-menu--closing]="isDropdownClosing()">
-              <a href="#" class="dropdown-item">Legal Notice</a>
-              <a href="#" class="dropdown-item">Privacy Policy</a>
+              <a routerLink="/legal-notice" class="dropdown-item">Legal Notice</a>
+              <a routerLink="/privacy-policy" class="dropdown-item">Privacy Policy</a>
               <a class="dropdown-item" (click)="logout()">Log out</a>
             </div>
           }

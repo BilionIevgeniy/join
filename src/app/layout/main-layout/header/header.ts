@@ -1,11 +1,12 @@
 import { Component, ElementRef, HostListener, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Avatar } from '@shared/avatar/avatar';
 import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [Avatar],
+  imports: [Avatar, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

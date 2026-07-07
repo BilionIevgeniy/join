@@ -1,22 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { AuthService } from '@core/services/auth.service';
+import { RoutesEnum } from '@core/models/routes.model';
+import { BackButton } from '@shared/back-button/back-button';
 
 @Component({
   selector: 'app-legal-notice',
   standalone: true,
-  template: `
-    <div class="placeholder-page">
-      <h1>Legal Notice</h1>
-      <p>Content coming soon.</p>
-    </div>
-  `,
-  styles: [`
-    .placeholder-page {
-      padding: 40px;
-      font-family: var(--font-family-main);
-      color: var(--text-color);
-
-      h1 { margin-bottom: 16px; }
-    }
-  `],
+  imports: [BackButton],
+  templateUrl: './legal-notice.html',
+  styleUrl: './legal-notice.scss',
 })
-export class LegalNotice {}
+export class LegalNotice {
+  private authService = inject(AuthService);
+
+  backRoute = computed(() =>
+    this.authService.isLoggedIn() ? `/${RoutesEnum.SUMMARY}` : `/${RoutesEnum.LOGIN}`,
+  );
+}

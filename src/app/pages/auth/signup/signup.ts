@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { Button } from '@shared/button/button';
 import { CheckboxButton } from '@shared/checkbox-button/checkbox-button';
+import { BackButton } from '@shared/back-button/back-button';
 
 function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password')?.value;
@@ -21,7 +22,7 @@ function passwordsMatchValidator(control: AbstractControl): ValidationErrors | n
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, Button, CheckboxButton],
+  imports: [ReactiveFormsModule, RouterLink, Button, CheckboxButton, BackButton],
   templateUrl: './signup.html',
   styleUrl: './signup.scss',
 })

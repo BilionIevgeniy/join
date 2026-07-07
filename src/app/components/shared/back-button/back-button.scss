@@ -1,0 +1,21 @@
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+  background: none;
+  border: none;
+
+  img {
+    width: 31px;
+    height: 30px;
+    transition: width 0.15s ease, height 0.15s ease;
+  }
+
+  &:hover img {
+    width: 33px;
+    height: 31px;
+  }
+}
