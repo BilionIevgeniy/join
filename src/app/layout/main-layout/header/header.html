@@ -1,7 +1,8 @@
 <header class="header">
   <div class="header__content">
-    <!-- Leerer Platz (später: Breadcrumbs) -->
+    <!-- Titel nur im Desktop sichtbar -->
     <div class="header__breadcrumb">
+      <span class="header__title">Kanban Project Management Tool</span>
       <!-- Logo nur im Responsive sichtbar -->
       <img src="assets/img/join-logo-dark.svg" alt="Join Logo" class="header__logo" />
     </div>
@@ -9,7 +10,7 @@
     <!-- Benutzer Sektion rechts -->
     @if (isLoggedIn()) {
       <div class="header__user">
-        <!-- Hilfenachricht -->
+        <!-- Hilfenachricht: nur Desktop sichtbar -->
         <button class="help-button" title="Help" routerLink="/help"></button>
 
         <!-- Benutzer Dropdown -->
@@ -26,6 +27,7 @@
           <!-- Dropdown Menü -->
           @if (isDropdownOpen()) {
             <div class="dropdown-menu" [class.dropdown-menu--closing]="isDropdownClosing()">
+              <a routerLink="/help" class="dropdown-item dropdown-item--mobile-help">Help</a>
               <a routerLink="/legal-notice" class="dropdown-item">Legal Notice</a>
               <a routerLink="/privacy-policy" class="dropdown-item">Privacy Policy</a>
               <a class="dropdown-item" (click)="logout()">Log out</a>
