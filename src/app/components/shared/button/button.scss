@@ -101,6 +101,12 @@
     }
   }
 
+  &--primary.legacy-primary {
+    &:hover {
+      background: var(--btn-legacy-primary-hover);
+    }
+  }
+
   &--secondary {
     color: var(--btn-secondary-text);
     background: var(--btn-secondary-bg);
