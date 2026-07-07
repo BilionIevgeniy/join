@@ -1,16 +1,19 @@
 .header {
   position: relative;
   z-index: 3;
-  padding: 16px 32px;
+  height: 96px;
+  padding: 0 32px;
   background: var(--inverted-bg-color);
   border-bottom: 1px solid var(--header-border);
   box-shadow: 0 4px 4px rgb(0 0 0 / 10%);
+  box-sizing: border-box;
 }
 
 .header__content {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 100%;
   max-width: 1440px;
 }
 
@@ -138,13 +141,50 @@
   }
 }
 
+.header__title {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 120%;
+  color: #000000;
+}
+
+.dropdown-item--mobile-help {
+  display: none;
+}
+
 .header__logo {
   display: none;
   height: 40px;
 }
 
 @media (width <= 1025px) {
+  .header {
+    height: 80px;
+  }
+
+  .header__title {
+    display: none;
+  }
+
+  .help-button {
+    display: none;
+  }
+
+  .dropdown-item--mobile-help {
+    display: block;
+  }
+
+  .dropdown-menu {
+    height: calc(var(--dropdown-height) + 42px);
+  }
+
   .header__logo {
     display: block;
+  }
+
+  ::ng-deep .user-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 14px !important;
   }
 }

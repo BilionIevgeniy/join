@@ -1,7 +1,7 @@
-@keyframes logo-center-to-corner {
+@keyframes logo-center-to-corner-desktop {
   0% {
-    top: 50vh;
-    left: 50vw;
+    top: 50%;
+    left: 50%;
     width: 274px;
     height: 329px;
     transform: translate(-50%, -50%);
@@ -46,8 +46,8 @@
     z-index: 100;
 
     &--animating {
-      position: fixed;
-      animation: logo-center-to-corner 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      position: absolute;
+      animation: logo-center-to-corner-desktop 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
   }
 
@@ -118,10 +118,10 @@
       height: 77px;
     }
 
-    @keyframes logo-center-to-corner {
+    @keyframes logo-center-to-corner-mobile {
       0% {
-        top: 50vh;
-        left: 50vw;
+        top: 50%;
+        left: 50%;
         width: 200px;
         height: 240px;
         transform: translate(-50%, -50%);
@@ -134,6 +134,10 @@
         height: 77px;
         transform: translate(0, 0);
       }
+    }
+
+    .auth-layout__logo--animating {
+      animation-name: logo-center-to-corner-mobile;
     }
 
     .auth-layout__top-bar {
