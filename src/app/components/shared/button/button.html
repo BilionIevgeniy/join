@@ -6,7 +6,7 @@
   {{ label() }}
   @if (icon()) {
     <img class="btn__icon"
-      [src]="'/assets/icons/' + icon()"
+      [src]="'assets/icons/' + icon()"
       [alt]="label()"
       [style.--hover-icon]="hoverIcon() ? 'url(/assets/icons/' + hoverIcon() + ')' : null"
       [class.btn__icon--hoverable]="hoverIcon()" />

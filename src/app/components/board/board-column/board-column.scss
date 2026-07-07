@@ -4,9 +4,11 @@
   flex-direction: column;
   gap: 16px;
   width: 252px;
+  height: 100%;
 
   @media (width <= 1415px) {
     width: 100%;
+    height: auto;
   }
 
   &__header {
@@ -22,12 +24,12 @@
   }
 
   &__title {
-    font-size: var(--font-size-l);
+    font-size: var(--font-size-sm);
     font-weight: 700;
     color: #2a3647;
 
     @media (width <= 1025px) {
-      font-size: var(--font-xl);
+      font-size: var(--font-size-m);
     }
   }
 
@@ -52,6 +54,7 @@
     flex-direction: column;
     gap: 16px;
     align-items: stretch;
+    height: 100%;
     padding: 8px;
     margin: -8px;
     border: 2px dashed transparent;
@@ -63,6 +66,8 @@
     @media (width <= 1415px) {
       flex-direction: row;
       align-items: flex-start;
+      width: 100%;
+      height: auto;
       padding: 8px 8px 16px;
       margin: -8px -8px -16px;
       overflow-x: auto;
@@ -81,7 +86,7 @@
     width: 246px;
     height: 48px;
     padding: 10px;
-    font-size: var(--font-size-s);
+    font-size: var(--font-size-xs);
     color: #2a3647;
     background: #e7e7e7;
     background-image:

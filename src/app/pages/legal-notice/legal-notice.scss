@@ -1,0 +1,42 @@
+.legal-notice {
+  padding: 40px;
+  font-family: var(--font-family-main);
+  color: #000000;
+
+  &__title-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    font-size: var(--font-size-xxl);
+    margin: 0;
+  }
+
+  &__highlight {
+    color: #124658;
+  }
+
+  h2 {
+    font-size: var(--font-size-m);
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  &__list {
+    padding-left: 24px;
+    margin: 12px 0;
+
+    li {
+      margin-bottom: 4px;
+    }
+  }
+}

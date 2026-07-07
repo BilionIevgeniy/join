@@ -1,0 +1,110 @@
+:host {
+  display: contents;
+}
+
+.deadline-tile {
+  display: flex;
+  grid-column: 1 / -1;
+  gap: 25px;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  padding: 25px 30px;
+  font-family: var(--font-family-main);
+  color: #2a3647;
+  cursor: pointer;
+  background: #fff;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 0 14px rgb(0 0 0 / 10%);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    color: #fff;
+    background: #2a3647;
+    transform: scale(1.02);
+  }
+
+  &__urgent {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  &__urgent-right {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+
+  &__badge {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: #ff3d00;
+    border-radius: 50%;
+  }
+
+  &__icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  &__count {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+  }
+
+  &__label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+  }
+
+  &__divider {
+    flex-shrink: 0;
+    width: 1px;
+    height: 70px;
+    background: var(--border-color, #d1d7e0);
+  }
+
+  &__deadline {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    margin: 0 auto;
+  }
+
+  &__date {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+  }
+
+  &__date-label,
+  &__no-deadline {
+    font-size: var(--font-size-sm);
+  }
+
+  &__date-label {
+    text-align: left;
+  }
+
+  @media (width <= 1024px) {
+    &__date-label,
+    &__no-deadline,
+    &__date {
+      font-size: var(--font-size-s);
+    }
+
+    &__count {
+      font-size: var(--font-size-xl);
+    }
+  }
+}

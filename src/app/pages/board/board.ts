@@ -1,7 +1,8 @@
 import { Component, computed, inject, signal, DestroyRef } from '@angular/core';
-import { TaskService } from '../../core/services/task.service';
-import { ContactService } from '../../core/services/contact.service';
-import { ModalService } from '../../core/services/modal.service';
+import { Router } from '@angular/router';
+import { TaskService } from '@core/services/task.service';
+import { ContactService } from '@core/services/contact.service';
+import { ModalService } from '@core/services/modal.service';
 import {
   BoardColumnConfig,
   CreateTaskDto,
@@ -9,12 +10,13 @@ import {
   Subtask,
   Task,
   TaskStatus,
-} from '../../core/models/task.model';
-import { Button } from '../../components/shared/button/button';
-import { SearchInput } from '../../components/shared/search-input/search-input';
-import { Board as BoardComponent } from '../../components/board/board';
-import { AddTaskComponent } from '../../components/add-task/add-task';
-import { TaskModal } from '../../components/board/task/task-modal/task-modal';
+} from '@core/models/task.model';
+import { RoutesEnum } from '@core/models/routes.model';
+import { Button } from '@shared/button/button';
+import { SearchInput } from '@shared/search-input/search-input';
+import { Board as BoardComponent } from '@components/board/board';
+import { AddTaskComponent } from '@components/add-task/add-task';
+import { TaskModal } from '@components/board/task/task-modal/task-modal';
 
 @Component({
   selector: 'app-board-page',
@@ -28,6 +30,7 @@ export class Board {
   private contactService = inject(ContactService);
   private modalService = inject(ModalService);
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
 
   searchQuery = signal('');
 
@@ -83,6 +86,10 @@ export class Board {
   }
 
   onAddTask(status: TaskStatus): void {
+    if (this.isMobile()) {
+      this.router.navigate(['/', RoutesEnum.ADD_TASK], { queryParams: { status } });
+      return;
+    }
     this.modalService.open(AddTaskComponent, {
       inputs: {
         initialStatus: status,

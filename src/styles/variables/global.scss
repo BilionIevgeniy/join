@@ -2,29 +2,14 @@
 :root {
   --font-family-main: Inter, sans-serif;
 
-  --font-size-s: 14px;
-  --font-line-s: 20px;
+  --font-size-xs: 14px;
+  --font-size-s: 16px;
+  --font-size-sm: 20px;
+  --font-size-m: 27px;
 
-  /* Default font family */
-  --font-size-m: 16px;
-  /* Base font size */
-  --font-line-m: 24px;
-  /* Base line height */
-  --font-m: var(--font-size-m) / var(--font-line-m) var(--font-family-main);
-
-  /* Base font size in em */
-  --font-size-l: 20px;
-  /* Larger font size */
-  --font-line-l: 28px;
-  /* Larger line height */
-  --font-l: var(--font-size-l) / var(--font-line-l) var(--font-family-main);
-  /* DISPLAY Modal overlay Title h2 */ 
-  --font-h2-xxl:61px;
-  /* MOBILE Modal overlay Title h2 */ 
-  --font-h2-xl:47px;
-  /* Display Subtitel Modal overlay */
-  --font-xl:27px;
- 
+  --font-size-l: 32px;
+  --font-size-xl: 47px;
+  --font-size-xxl: 61px;
 
   // Header
   --header-height: 50px;

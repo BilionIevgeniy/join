@@ -1,7 +1,7 @@
 @mixin input-base {
   width: 100%;
   padding: 12px 16px;
-  font-size: var(--font-size-l);
+  font-size: var(--font-size-sm);
   color: var(--inverted-text-color);
   outline: none;
   background: transparent;
@@ -21,13 +21,18 @@
   &--error {
     border-color: var(--error-color);
   }
+
+  @media (max-width: 420px) {
+    padding: 10px 14px;
+    font-size: var(--font-size-s);
+  }
 }
 
 .add-task {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 124px 36px 79px 96px;
+  padding: 64px 74px;
 
   @media (max-width: 768px) {
     padding: 48px 16px 0;
@@ -56,6 +61,24 @@
       padding-right: 4px; // breathing room next to the scrollbar
       margin-bottom: 24px;
       overflow-y: auto;
+
+      // Firefox: reserve space for a permanently visible scrollbar.
+      scrollbar-width: thin;
+
+      // WebKit (Chrome/Safari): force a visible, styled scrollbar track + thumb
+      // instead of the OS-default overlay that only appears on hover.
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+      }
     }
 
     // Override the mobile `position: fixed` so actions stay
@@ -92,14 +115,115 @@
     @media (max-width: 768px) {
       width: 92vw;
       max-height: 85vh;
-      padding: 32px 20px 24px;
+      padding: 32px 16px 24px;
+
+      .add-task__btn-clear,
+      .add-task__btn-save {
+        padding: 10px 13px;
+      }
+    }
+
+    @media (max-width: 470px) {
+      .add-task__priority {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    // Plain add-task modal: still scrollable on mobile, just without a
+    // visible scrollbar track/thumb. (The edit variant below keeps it visible.)
+    &:not(&--edit) .add-task__form {
+      @media (max-width: 768px) {
+        padding-right: 0;
+        scrollbar-width: none; // Firefox: scroll works, bar hidden
+
+        &::-webkit-scrollbar {
+          display: none; // WebKit: scroll works, bar hidden
+        }
+      }
     }
   }
 
   // ─── EDIT VARIANT ─────────────────────────────────────────
-  // Placeholder for edit-specific styling (size, actions) — to be defined
-  // once the compact edit-modal design is finalized.
+  // Compact single-column card, no title — matches the task-detail-modal size.
   &--edit {
+    width: min(525px, 95vw);
+    max-height: 90vh;
+    padding: 55px 40px 24px;
+
+    // Extra breathing room so the scrollbar doesn't sit on top of the fields —
+    // the narrow single-column layout makes the default 4px (from --modal) too tight.
+    .add-task__form {
+      padding-right: 20px;
+    }
+
+    .add-task__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .add-task__col:first-of-type {
+      padding-right: 0;
+    }
+
+    .add-task__col-spacer {
+      display: none;
+    }
+
+    .add-task__actions {
+      justify-content: flex-end;
+    }
+
+    // Subtask edit/delete icons stay visible at all times here (no hover
+    // fade-in), separated by a divider — matches the edit-mode mockup.
+    .add-task__subtask-actions {
+      gap: 0;
+      opacity: 1;
+    }
+
+    .add-task__subtask-btn {
+      border-radius: 0;
+
+      &:hover {
+        background: transparent;
+      }
+
+      &--delete:hover {
+        color: inherit;
+      }
+
+      &:first-child {
+        padding-right: 8px;
+        border-right: 1px solid var(--border-color);
+      }
+
+      &:last-child {
+        padding-left: 8px;
+      }
+    }
+
+    @media (max-width: 1025px) {
+      width: 396px;
+      max-width: 92vw;
+      padding: 55px 24px 24px;
+    }
+
+    @media (max-width: 768px) {
+      padding: 55px 16px 22px;
+
+      // Smaller breathing room than desktop (20px) so the scrollbar still
+      // fits inside the now-tighter 16px outer padding.
+      .add-task__form {
+        padding-right: 10px;
+      }
+
+      .add-task__input,
+      .add-task__textarea {
+        font-size: var(--font-size-s);
+      }
+
+      .add-task__priority {
+        grid-template-columns: 1fr;
+      }
+    }
   }
 }
 
@@ -212,12 +336,12 @@
 }
 
 .add-task__label {
-  font-size: var(--font-size-l);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--inverted-text-color);
 
   @media (max-width: 768px) {
-    font-size: var(--font-size-m);
+    font-size: var(--font-size-s);
   }
 }
 
@@ -254,9 +378,25 @@
 
 // ─── PRIORITY ─────────────────────────────────────────────
 .add-task__priority {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+
+  .priority-btn {
+    flex: 1;
+  }
+
+  @media (max-width: 1069px) {
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 420px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 // ─── DROPDOWN ─────────────────────────────────────────────
@@ -388,6 +528,22 @@
   margin-top: 8px;
 }
 
+.add-task__selected-avatars-more {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin-left: -8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2a3647;
+  background: #e0e0e0;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
 // ─── SUBTASKS ─────────────────────────────────────────────
 .add-task__subtask-input-row {
   position: relative;
@@ -434,7 +590,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-height: 200px;
+  max-height: 100px;
   padding: 0;
   margin: 0;
   overflow-y: auto;
@@ -462,7 +618,7 @@
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: var(--font-size-m);
+  font-size: var(--font-size-s);
   color: var(--inverted-text-color);
   white-space: nowrap;
 }
@@ -524,6 +680,7 @@
 .add-task__action-buttons {
   display: flex;
   gap: 16px;
+  justify-content: flex-end;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -543,8 +700,9 @@
     border-color: var(--primary-color);
   }
 
-  @media (max-width: 768px) {
-    flex: 1;
+  @media (max-width: 420px) {
+    padding: 10px 14px;
+    font-size: var(--font-size-s);
   }
 }
 
@@ -571,7 +729,8 @@
     opacity: 0.5;
   }
 
-  @media (max-width: 768px) {
-    flex: 1;
+  @media (max-width: 420px) {
+    padding: 10px 14px;
+    font-size: var(--font-size-s);
   }
 }

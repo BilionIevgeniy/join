@@ -10,7 +10,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { ToastService } from './toast.service';
-import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto, Subtask } from '../models/task.model';
+import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto, Subtask } from '@core/models/task.model';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -37,10 +37,12 @@ export class TaskService {
   todoCount = computed(() => this.todoTasks().length);
   doneCount = computed(() => this.doneTasks().length);
 
-  // Nearest deadline (for Summary page)
+  // Nearest deadline (for Summary page) — excludes dates before today
   upcomingDeadline = computed(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const withDates = this.tasks()
-      .filter((t) => t.due_date)
+      .filter((t) => t.due_date && new Date(t.due_date).getTime() >= today.getTime())
       .sort((a, b) => new Date(a.due_date).getTime() - new Date(b.due_date).getTime());
     return withDates[0]?.due_date ?? null;
   });
@@ -101,7 +103,7 @@ export class TaskService {
     try {
       const { contact_ids, ...taskData } = dto;
       const { data, error } = await this.supabase.db.rpc('update_task_with_contacts', {
-        task_id: id,
+        p_task_id: id,
         task_data: taskData,
         contact_ids: contact_ids ?? [],
       });

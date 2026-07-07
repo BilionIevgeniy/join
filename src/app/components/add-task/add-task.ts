@@ -1,6 +1,14 @@
 import { Component, OnInit, computed, inject, input, output, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Contact } from '../../core/models/contact.model';
+import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+
+import { Contact } from '@core/models/contact.model';
 import {
   Task,
   TaskPriority,
@@ -8,9 +16,16 @@ import {
   TaskCategory,
   Subtask,
   CreateTaskDto,
-} from '../../core/models/task.model';
-import { PriorityButton } from '../shared/button/priority-button/priority-button';
-import { Avatar } from '../shared/avatar/avatar';
+} from '@core/models/task.model';
+import { PriorityButton } from '@shared/button/priority-button/priority-button';
+import { Avatar } from '@shared/avatar/avatar';
+
+function minDateValidator(minDate: string): ValidatorFn {
+  return (control: AbstractControl) => {
+    if (!control.value) return null;
+    return control.value < minDate ? { minDate: true } : null;
+  };
+}
 
 @Component({
   selector: 'app-add-task-component',
@@ -27,17 +42,15 @@ export class AddTaskComponent implements OnInit {
   task = input<Task | null>(null);
   contacts = input.required<Contact[]>();
   isLoading = input<boolean>(false);
-  /** When true, renders as a floating card with close button instead of a full page. */
   isModal = input<boolean>(false);
-  /** When true, the form is prefilled and styled for editing an existing task. */
   isEdit = input<boolean>(false);
 
   // ─── OUTPUTS ──────────────────────────────────────────────
   save = output<CreateTaskDto>();
-  /** Emitted when the user clicks the X close button (modal mode only). */
   cancel = output<void>();
 
   // ─── LOCAL STATE ──────────────────────────────────────────
+  today = new Date().toISOString().split('T')[0];
   subtasks = signal<Subtask[]>([]);
   subtaskInput = signal('');
   isSubtaskActive = signal(false);
@@ -63,7 +76,7 @@ export class AddTaskComponent implements OnInit {
   form = this.fb.group({
     title: ['', [Validators.required]],
     description: [''],
-    due_date: ['', [Validators.required]],
+    due_date: ['', [Validators.required, minDateValidator(this.today)]],
     priority: ['medium' as TaskPriority],
     category: ['' as TaskCategory, [Validators.required]],
     assigned_contacts: [[] as string[]],
@@ -72,6 +85,36 @@ export class AddTaskComponent implements OnInit {
   isFormValid(): boolean {
     const { title, due_date, category } = this.form.controls;
     return title.valid && due_date.valid && category.valid;
+  }
+
+  // ─── CHANGE DETECTION (edit mode) ──────────────────────────
+  // Reactive view of the form's current value, used to compare against
+  // the original snapshot below. toSignal bridges the RxJS valueChanges
+  // observable into a signal so it can be read inside computed().
+  private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.value });
+
+  // Snapshot of title/description/.../subtasks as they were when the
+  // modal opened. Set once in ngOnInit, never mutated afterwards.
+  private originalSnapshot: string | null = null;
+
+  // True only when the current form + subtasks actually differ in value
+  // from the original snapshot — not just "something fired a change event".
+  // Typing a character and deleting it again correctly stays "unchanged".
+  hasChanges = computed(() => {
+    if (this.originalSnapshot === null) return true;
+    return this.buildSnapshot(this.formValue(), this.subtasks()) !== this.originalSnapshot;
+  });
+
+  private buildSnapshot(formValue: typeof this.form.value, subtasks: Subtask[]): string {
+    return JSON.stringify({
+      title: formValue.title ?? '',
+      description: formValue.description ?? '',
+      due_date: formValue.due_date ?? '',
+      priority: formValue.priority ?? 'medium',
+      category: formValue.category ?? '',
+      assigned_contacts: [...(formValue.assigned_contacts ?? [])].sort(),
+      subtasks: subtasks.map((s) => ({ id: s.id, title: s.title, done: s.done })),
+    });
   }
 
   ngOnInit(): void {
@@ -95,6 +138,9 @@ export class AddTaskComponent implements OnInit {
       .map((ac) => ac.contact?.id)
       .filter((id): id is string => !!id);
     this.form.patchValue({ assigned_contacts: ids });
+
+    // Capture the baseline to compare future edits against.
+    this.originalSnapshot = this.buildSnapshot(this.form.value, this.subtasks());
   }
 
   // ─── PRIORITY ─────────────────────────────────────────────
@@ -118,9 +164,19 @@ export class AddTaskComponent implements OnInit {
     return current.includes(contactId);
   }
 
+  private readonly maxVisibleAvatars = 3;
+
   getSelectedContacts(): Contact[] {
     const ids = this.form.get('assigned_contacts')!.value as string[];
     return this.contacts().filter((c) => ids.includes(c.id!));
+  }
+
+  getVisibleContacts(): Contact[] {
+    return this.getSelectedContacts().slice(0, this.maxVisibleAvatars);
+  }
+
+  getRemainingContactsCount(): number {
+    return Math.max(0, this.getSelectedContacts().length - this.maxVisibleAvatars);
   }
 
   onSearchChange(query: string): void {
@@ -161,6 +217,16 @@ export class AddTaskComponent implements OnInit {
 
   addSubtask(): void {
     this.isSubtaskActive.set(true);
+  }
+
+  onSubtaskInput(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.subtaskInput.set(value);
+    if (value) {
+      this.isSubtaskActive.set(true);
+    } else {
+      this.isSubtaskActive.set(false);
+    }
   }
 
   clearSubtask(): void {

@@ -1,8 +1,8 @@
 import { Component, input, output, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Contact, ContactMode, CreateContactDto } from '../../../core/models/contact.model';
-import { Avatar } from '../../shared/avatar/avatar';
-import { Button } from '../../shared/button/button';
+import { Contact, ContactMode, CreateContactDto } from '@core/models/contact.model';
+import { Avatar } from '@shared/avatar/avatar';
+import { Button } from '@shared/button/button';
 
 @Component({
   selector: 'app-contact-modal',
@@ -16,7 +16,7 @@ export class ContactModal implements OnInit {
   contact = input<Contact | null>(null);
   isLoading = input<boolean>(false);
   save = output<CreateContactDto>();
-  delete = output<string>();
+  delete = output<Contact>();
   closed = output<void>();
 
   form = new FormGroup({
@@ -77,7 +77,7 @@ export class ContactModal implements OnInit {
   onDelete(): void {
     const contact = this.contact();
     if (!contact?.id) return;
-    this.delete.emit(contact.id);
+    this.delete.emit(contact);
   }
 
   close(): void {

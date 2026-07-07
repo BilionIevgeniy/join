@@ -1,8 +1,8 @@
-import { Component, computed, input, output } from '@angular/core';
-import { getTaskContacts, Subtask, Task, TaskPriority } from '../../../../core/models/task.model';
-import { Avatar } from '../../../shared/avatar/avatar';
-import { Button } from '../../../shared/button/button';
-import { CheckboxButton } from '../../../shared/checkbox-button/checkbox-button';
+import { Component, ViewEncapsulation, computed, input, output } from '@angular/core';
+import { getTaskContacts, Subtask, Task, TaskPriority } from '@core/models/task.model';
+import { Avatar } from '@shared/avatar/avatar';
+import { Button } from '@shared/button/button';
+import { CheckboxButton } from '@shared/checkbox-button/checkbox-button';
 
 const PRIORITY_LABELS: Record<TaskPriority, string> = {
   urgent: 'Urgent',
@@ -16,6 +16,7 @@ const PRIORITY_LABELS: Record<TaskPriority, string> = {
   imports: [Avatar, Button, CheckboxButton],
   templateUrl: './task-modal.html',
   styleUrl: './task-modal.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaskModal {
   task = input.required<Task>();

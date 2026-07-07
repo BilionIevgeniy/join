@@ -2,19 +2,19 @@
 
     <!-- LEFT PANEL -->
     <div class="modal__left">
-      <img src="/assets/img/join-logo-white.svg" alt="Join Logo" class="modal__logo" />
+      <img src="assets/img/join-logo-white.svg" alt="Join Logo" class="modal__logo" />
       <h2 class="modal__title">{{ mode() === 'edit' ? 'Edit contact' : 'Add contact' }}</h2>
       <p class="modal__subtitle">Tasks are better with a team!</p>
       <div class="modal__underline"></div>
       <button class="modal__close modal__close--mobile" (click)="close()">
-        <img src="/assets/icons/x-white-icon.svg" alt="close" class="modal__close-icon" />
+        <img src="assets/icons/x-white-icon.svg" alt="close" class="modal__close-icon" />
       </button>
     </div>
 
     <!-- RIGHT PANEL -->
     <div class="modal__right">
       <button class="modal__close modal__close--desktop" (click)="close()">
-        <img src="/assets/icons/x-black-icon.svg" alt="close" class="modal__close-icon modal__close-icon--desktop" />
+        <img src="assets/icons/x-black-icon.svg" alt="close" class="modal__close-icon modal__close-icon--desktop" />
       </button>
 
       <div class="modal__content">
@@ -29,7 +29,7 @@
           <div class="modal__field">
             @let firstNameField = getField('first_name');
             <input class="modal__input" formControlName="first_name" placeholder="First name" type="text" />
-            <img class="modal__input-icon" src="/assets/icons/person-dark-icon.svg" alt="" />
+            <img class="modal__input-icon" src="assets/icons/person-dark-icon.svg" alt="" />
             <span class="modal__error">
               @if (firstNameField.touched && firstNameField.hasError('required')) {
                 First name is required
@@ -43,7 +43,7 @@
           <div class="modal__field">
             @let lastNameField = getField('last_name');
             <input class="modal__input" formControlName="last_name" placeholder="Last name" type="text" />
-            <img class="modal__input-icon" src="/assets/icons/person-dark-icon.svg" alt="" />
+            <img class="modal__input-icon" src="assets/icons/person-dark-icon.svg" alt="" />
             <span class="modal__error">
               @if (lastNameField.touched && lastNameField.hasError('required')) {
                 Last name is required
@@ -60,7 +60,7 @@
         <div class="modal__field">
           @let emailField = getField('email');
           <input class="modal__input" formControlName="email" placeholder="Email" type="email" />
-          <img class="modal__input-icon" src="/assets/icons/mail-dark-icon.svg" alt="" />
+          <img class="modal__input-icon" src="assets/icons/mail-dark-icon.svg" alt="" />
           <span class="modal__error">
             @if (emailField.touched && emailField.hasError('required')) {
               Email is required
@@ -74,7 +74,7 @@
         <div class="modal__field">
           @let phoneField = getField('phone');
           <input class="modal__input" formControlName="phone" placeholder="Phone" type="tel" />
-          <img class="modal__input-icon" src="/assets/icons/phone-dark-icon.svg" alt="" />
+          <img class="modal__input-icon" src="assets/icons/phone-dark-icon.svg" alt="" />
           <span class="modal__error">
             @if (phoneField.touched && phoneField.hasError('required')) {
               Phone is required

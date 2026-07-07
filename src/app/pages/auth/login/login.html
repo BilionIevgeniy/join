@@ -1,0 +1,78 @@
+<div class="login">
+  <h1 class="login__title">Log in</h1>
+  <div class="login__divider"></div>
+
+  <form class="login__form" [formGroup]="form" (ngSubmit)="onLogin()">
+
+    <!-- Email -->
+    <div class="login__field" [class.login__field--error]="isFieldInvalid('email')">
+      <input
+        class="login__input"
+        formControlName="email"
+        type="text"
+        placeholder="Email"
+        autocomplete="email"
+      />
+      <img class="login__field-icon" src="assets/icons/mail-dark-icon.svg" alt="" />
+      @if (isFieldInvalid('email')) {
+        <span class="login__error">Please enter a valid email address.</span>
+      }
+    </div>
+
+    <!-- Password -->
+    <div class="login__field" [class.login__field--error]="isFieldInvalid('password')">
+      <input
+        class="login__input"
+        formControlName="password"
+        [type]="showPassword() ? 'text' : 'password'"
+        placeholder="Password"
+        autocomplete="current-password"
+      />
+      @if (hasPasswordInput()) {
+        <button
+          type="button"
+          class="login__field-icon login__field-icon--toggle"
+          (click)="togglePasswordVisibility()"
+          tabindex="-1"
+        >
+          <img
+            [src]="'assets/icons/' + (showPassword() ? 'eye-icon.svg' : 'eye-off-icon.svg')"
+            alt="Toggle password visibility"
+          />
+        </button>
+      } @else {
+        <img class="login__field-icon" src="assets/icons/lock-icon.svg" alt="" />
+      }
+      @if (isFieldInvalid('password')) {
+        <span class="login__error">
+          Password must be at least 8 characters and include upper case, lower case and a special
+          character.
+        </span>
+      }
+    </div>
+
+    <!-- Buttons -->
+    <div class="login__actions">
+      <app-button
+        label="Log in"
+        variant="primary"
+        size="xlarge"
+        fontSize="large"
+        weight="bold"
+        type="submit"
+        [fullWidth]="true"
+        [disabled]="!isFormValid() || isLoading()"
+      />
+      <app-button
+        label="Guest Log in"
+        variant="outline"
+        size="xlarge"
+        fontSize="large"
+        weight="bold"
+        [fullWidth]="true"
+        (click)="onGuestLogin()"
+      />
+    </div>
+
+  </form>
+</div>

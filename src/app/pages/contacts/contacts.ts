@@ -1,11 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContactService } from '../../core/services/contact.service';
-import { Contact, ContactMode, CreateContactDto } from '../../core/models/contact.model';
-import { ModalService } from '../../core/services/modal.service';
-import { Avatar } from '../../components/shared/avatar/avatar';
-import { Button } from '../../components/shared/button/button';
-import { ContactModal } from '../../components/contact/contact-modal/contact-modal';
+import { ContactService } from '@core/services/contact.service';
+import { Contact, ContactMode, CreateContactDto } from '@core/models/contact.model';
+import { ModalService } from '@core/services/modal.service';
+import { Avatar } from '@shared/avatar/avatar';
+import { Button } from '@shared/button/button';
+import { ContactModal } from '@components/contact/contact-modal/contact-modal';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-contacts',
@@ -17,6 +18,7 @@ import { ContactModal } from '../../components/contact/contact-modal/contact-mod
 export class Contacts {
   private contactService = inject(ContactService);
   private modalService = inject(ModalService);
+  private authService = inject(AuthService);
 
   contacts = this.contactService.contacts;
   groupedContacts = this.contactService.groupedContacts;
@@ -45,7 +47,7 @@ export class Contacts {
       syncInputs: { isLoading: this.isLoading },
       actions: {
         save: (data: CreateContactDto) => this.saveContact(mode, contact, data),
-        delete: (id: string) => this.deleteContact(id),
+        delete: (contact: Contact) => this.deleteContact(contact),
         closed: () => this.modalService.close(),
       },
     });
@@ -64,9 +66,15 @@ export class Contacts {
     this.modalService.close();
   }
 
-  async deleteContact(id: string): Promise<void> {
+  async deleteContact(contact: Contact): Promise<void> {
     this.selectedContact.set(null);
-    await this.contactService.deleteContact(id);
+    const result = await this.contactService.deleteContact(
+      contact,
+      this.authService.currentUser()?.auth_user_id || '',
+    );
+    if (result.shouldSignOut) {
+      this.authService.signOut();
+    }
     this.modalService.close();
   }
 

@@ -1,0 +1,167 @@
+<div class="signup">
+  <div class="signup__title-row">
+    <app-back-button class="signup__back-btn" />
+    <h1 class="signup__title">Sign up</h1>
+  </div>
+  <div class="signup__divider"></div>
+
+  <form class="signup__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- Name row -->
+    <div class="signup__name-row">
+      <div class="signup__field" [class.signup__field--error]="isFieldInvalid('first_name')">
+        <input
+          class="signup__input"
+          formControlName="first_name"
+          type="text"
+          placeholder="First name"
+          autocomplete="given-name"
+        />
+        <img class="signup__field-icon" src="assets/icons/person-dark-icon.svg" alt="" />
+        @if (isFieldInvalid('first_name')) {
+          <span class="signup__error">
+            @if (form.get('first_name')?.hasError('required')) {
+              First name is required
+            } @else if (form.get('first_name')?.hasError('minlength')) {
+              At least 2 characters
+            } @else if (form.get('first_name')?.hasError('pattern')) {
+              Only letters, spaces and hyphens
+            }
+          </span>
+        }
+      </div>
+      <div class="signup__field" [class.signup__field--error]="isFieldInvalid('last_name')">
+        <input
+          class="signup__input"
+          formControlName="last_name"
+          type="text"
+          placeholder="Last name"
+          autocomplete="family-name"
+        />
+        <img class="signup__field-icon" src="assets/icons/person-dark-icon.svg" alt="" />
+        @if (isFieldInvalid('last_name')) {
+          <span class="signup__error">
+            @if (form.get('last_name')?.hasError('required')) {
+              Last name is required
+            } @else if (form.get('last_name')?.hasError('minlength')) {
+              At least 2 characters
+            } @else if (form.get('last_name')?.hasError('pattern')) {
+              Only letters, spaces and hyphens
+            }
+          </span>
+        }
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="signup__field" [class.signup__field--error]="isFieldInvalid('email')">
+      <input
+        class="signup__input"
+        formControlName="email"
+        type="text"
+        placeholder="Email"
+        autocomplete="email"
+      />
+      <img class="signup__field-icon" src="assets/icons/mail-dark-icon.svg" alt="" />
+      @if (isFieldInvalid('email')) {
+        <span class="signup__error">Please enter a valid email address.</span>
+      }
+    </div>
+
+    <!-- Password -->
+    <div class="signup__field" [class.signup__field--error]="isFieldInvalid('password')">
+      <input
+        class="signup__input"
+        formControlName="password"
+        [type]="showPassword() ? 'text' : 'password'"
+        placeholder="Password"
+        autocomplete="new-password"
+      />
+      @if (hasPasswordInput()) {
+        <button
+          type="button"
+          class="signup__field-icon signup__field-icon--toggle"
+          (click)="togglePasswordVisibility()"
+          tabindex="-1"
+        >
+          <img
+            [src]="'assets/icons/' + (showPassword() ? 'eye-icon.svg' : 'eye-off-icon.svg')"
+            alt="Toggle password visibility"
+          />
+        </button>
+      } @else {
+        <img class="signup__field-icon" src="assets/icons/lock-icon.svg" alt="" />
+      }
+      @if (isFieldInvalid('password')) {
+        <span class="signup__error">
+          Password must be at least 8 characters and include upper case, lower case and a special
+          character.
+        </span>
+      }
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="signup__field" [class.signup__field--error]="isConfirmPasswordInvalid()">
+      <input
+        class="signup__input"
+        formControlName="confirmPassword"
+        [type]="showConfirmPassword() ? 'text' : 'password'"
+        placeholder="Confirm password"
+        autocomplete="new-password"
+      />
+      @if (hasConfirmPasswordInput()) {
+        <button
+          type="button"
+          class="signup__field-icon signup__field-icon--toggle"
+          (click)="toggleConfirmPasswordVisibility()"
+          tabindex="-1"
+        >
+          <img
+            [src]="'assets/icons/' + (showConfirmPassword() ? 'eye-icon.svg' : 'eye-off-icon.svg')"
+            alt="Toggle password visibility"
+          />
+        </button>
+      } @else {
+        <img class="signup__field-icon" src="assets/icons/lock-icon.svg" alt="" />
+      }
+      @if (isConfirmPasswordInvalid()) {
+        @if (form.get('confirmPassword')?.hasError('required')) {
+          <span class="signup__error">Please confirm your password.</span>
+        } @else {
+          <span class="signup__error">Passwords do not match.</span>
+        }
+      }
+    </div>
+
+    <!-- Privacy policy -->
+    <div class="signup__policy-row">
+      <app-checkbox-button
+        [checked]="acceptedPolicy()"
+        (toggled)="toggleAcceptPolicy()"
+      />
+      <span class="signup__policy-text">
+        I accept the <a routerLink="/privacy-policy" class="signup__policy-link">Privacy Policy</a>
+      </span>
+    </div>
+    @if (policyTouched() && !acceptedPolicy()) {
+      <span class="signup__error signup__error--policy">
+        You must accept the Privacy Policy to sign up.
+      </span>
+    }
+
+    <!-- Buttons -->
+    <div class="signup__actions">
+      <app-button
+        label="Sign up"
+        variant="primary"
+        size="xlarge"
+        fontSize="large"
+        weight="bold"
+        type="submit"
+        [fullWidth]="false"
+        [disabled]="!isFormValid() || isLoading()"
+      />
+    </div>
+
+  </form>
+</div>

@@ -4,8 +4,8 @@ import {
   STATUS_LABELS,
   Task,
   TaskStatus,
-} from '../../../../core/models/task.model';
-import { Avatar } from '../../../shared/avatar/avatar';
+} from '@core/models/task.model';
+import { Avatar } from '@shared/avatar/avatar';
 
 @Component({
   selector: 'app-task-card',
@@ -19,7 +19,7 @@ export class TaskCard {
   opened = output<Task>();
   moveTo = output<TaskStatus>();
 
-  private readonly maxVisibleAvatars = 4;
+  private readonly maxVisibleAvatars = 3;
 
   isDragging = signal(false);
   showMoveMenu = signal(false);

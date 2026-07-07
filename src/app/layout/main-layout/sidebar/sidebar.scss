@@ -1,0 +1,211 @@
+.sidebar {
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 64px 0;
+  overflow-y: auto;
+  color: white;
+  background: var(--bg-color);
+}
+
+// Logo Bereich
+.sidebar__logo {
+  padding: 0 24px 100px;
+  text-align: center;
+
+  img {
+    max-width: 80px;
+  }
+}
+
+// Navigation Bereich
+.sidebar__nav {
+  flex: 1;
+  padding: 0;
+}
+
+.nav-list {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.nav-item {
+  margin-bottom: 0;
+
+  a {
+    box-sizing: border-box;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    height: 46px;
+    padding: 8px 60px;
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+    text-decoration: none;
+    border-radius: 0;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: var(--hover-color);
+      transform: none;
+    }
+  }
+}
+
+// Aktiver Link
+.nav-item--active a {
+  background: var(--nav-active-bg);
+  box-shadow: none;
+}
+
+// Icons
+.nav-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.nav-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Footer Bereich (unten)
+.sidebar__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 232px;
+  padding-top: 24px;
+  font-size: var(--font-size-xs);
+
+  a {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    padding-left: 80px;
+    color: rgb(255 255 255 / 60%);
+    text-align: left;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: white;
+      background: var(--hover-color);
+    }
+  }
+
+  // Aktiver Link — gleicher Stil wie Navigation Links
+  .footer-link--active {
+    color: white;
+    background: var(--nav-active-bg);
+    box-shadow: none;
+  }
+}
+
+// === RESPONSIVE: Bottom-Navigation ab 1024px ===
+@media (width <= 1025px) {
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 200;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    padding: 0 8px;
+  }
+
+  // Logo in der Sidebar ausblenden (wandert in Header)
+  .sidebar__logo {
+    display: none;
+  }
+
+  // Footer (Privacy/Legal) ausblenden — außer im Gast-Zustand
+  .sidebar__footer {
+    display: none;
+
+    &--visible {
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      height: 80px;
+      padding-top: 0;
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        height: 80px;
+        padding: 8px 4px;
+        color: white;
+        text-align: center;
+        border-radius: 16px;
+
+        &:hover {
+          background-color: var(--nav-active-bg);
+        }
+
+        &.footer-link--active {
+          background-color: var(--nav-active-bg);
+        }
+      }
+    }
+  }
+
+  // Navigation horizontal
+  .sidebar__nav {
+    display: flex;
+    height: 80px;
+    padding: 0;
+  }
+
+  .nav-list {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .nav-item {
+    height: 100%;
+
+    &--login {
+      margin-right: auto;
+    }
+
+    a {
+      flex-direction: column; // Icon über Text
+      gap: 4px;
+      justify-content: center;
+      width: 76px;
+      height: 100%;
+      padding: 8px 4px;
+      font-size: 16px;
+
+      &:hover {
+        background-color: var(--nav-active-bg);
+        border-radius: 16px;
+      }
+    }
+  }
+
+  // Icons etwas kleiner
+  .nav-icon {
+    width: 21px;
+    height: 24px;
+  }
+}

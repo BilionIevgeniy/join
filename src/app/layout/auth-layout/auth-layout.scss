@@ -1,0 +1,161 @@
+@keyframes logo-center-to-corner-desktop {
+  0% {
+    top: 50%;
+    left: 50%;
+    width: 274px;
+    height: 329px;
+    transform: translate(-50%, -50%);
+  }
+
+  100% {
+    top: 37px;
+    left: 46px;
+    width: 100px;
+    height: 120px;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes content-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.auth-layout-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: #f6f7f8;
+}
+
+.auth-layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1440px;
+  min-height: 100vh;
+  margin: 0 auto;
+  color: #2a3647;
+
+  &__logo {
+    position: absolute;
+    top: 37px;
+    left: 46px;
+    width: 100px;
+    height: 120px;
+    z-index: 100;
+
+    &--animating {
+      position: absolute;
+      animation: logo-center-to-corner-desktop 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+  }
+
+  &__top-bar,
+  &__content,
+  &__footer,
+  &__mobile-signup-hint {
+    animation: content-fade-in 0.4s ease both;
+  }
+
+  &--animating {
+    .auth-layout__top-bar,
+    .auth-layout__content,
+    .auth-layout__footer,
+    .auth-layout__mobile-signup-hint {
+      opacity: 0;
+      animation: none;
+      pointer-events: none;
+    }
+  }
+
+  &__top-bar {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 32px 40px;
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 24px 40px;
+  }
+
+  &__mobile-signup-hint {
+    display: none;
+  }
+
+  &__footer {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    padding: 38px 40px;
+  }
+
+  &__footer-link {
+    font-size: 14px;
+    color: #a8a8a8;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #29abe2;
+      font-weight: 700;
+    }
+  }
+
+  // ─── Mobile ───────────────────────────────────────────────
+  @media (max-width: 768px) {
+    .auth-layout__logo {
+      top: 24px;
+      left: 24px;
+      width: 64px;
+      height: 77px;
+    }
+
+    @keyframes logo-center-to-corner-mobile {
+      0% {
+        top: 50%;
+        left: 50%;
+        width: 200px;
+        height: 240px;
+        transform: translate(-50%, -50%);
+      }
+
+      100% {
+        top: 24px;
+        left: 24px;
+        width: 64px;
+        height: 77px;
+        transform: translate(0, 0);
+      }
+    }
+
+    .auth-layout__logo--animating {
+      animation-name: logo-center-to-corner-mobile;
+    }
+
+    .auth-layout__top-bar {
+      display: none;
+    }
+
+    .auth-layout__content {
+      padding: 16px 20px;
+    }
+
+    .auth-layout__mobile-signup-hint {
+      display: flex;
+      justify-content: center;
+      padding: 0 20px 16px;
+    }
+
+    .auth-layout__footer {
+      padding: 16px 20px;
+    }
+  }
+}
