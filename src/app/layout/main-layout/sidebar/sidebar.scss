@@ -87,11 +87,12 @@
   width: 100%;
   height: 232px;
   padding-top: 24px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
 
   a {
     display: block;
     width: 100%;
+    padding: 8px 0;
     padding-left: 80px;
     color: rgb(255 255 255 / 60%);
     text-align: left;
@@ -99,8 +100,16 @@
     transition: color 0.2s ease;
 
     &:hover {
-      color: var(--nav-footer-link-hover);
+      color: white;
+      background: var(--hover-color);
     }
+  }
+
+  // Aktiver Link — gleicher Stil wie Navigation Links
+  .footer-link--active {
+    color: white;
+    background: var(--nav-active-bg);
+    box-shadow: none;
   }
 }
 
@@ -114,7 +123,7 @@
     flex-direction: row;
     width: 100%;
     height: auto;
-    padding: 0;
+    padding: 0 8px;
   }
 
   // Logo in der Sidebar ausblenden (wandert in Header)
@@ -122,26 +131,61 @@
     display: none;
   }
 
-  // Footer (Privacy/Legal) ausblenden
+  // Footer (Privacy/Legal) ausblenden — außer im Gast-Zustand
   .sidebar__footer {
     display: none;
+
+    &--visible {
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      height: 80px;
+      padding-top: 0;
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        height: 80px;
+        padding: 8px 4px;
+        color: white;
+        text-align: center;
+        border-radius: 16px;
+
+        &:hover {
+          background-color: var(--nav-active-bg);
+        }
+
+        &.footer-link--active {
+          background-color: var(--nav-active-bg);
+        }
+      }
+    }
   }
 
   // Navigation horizontal
   .sidebar__nav {
-    width: 100%;
+    display: flex;
     height: 80px;
     padding: 0;
   }
 
   .nav-list {
     display: flex;
+    flex: 1;
     align-items: center;
     justify-content: space-around;
   }
 
   .nav-item {
     height: 100%;
+
+    &--login {
+      margin-right: auto;
+    }
 
     a {
       flex-direction: column; // Icon über Text

@@ -1,4 +1,3 @@
-import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, input, output, signal } from '@angular/core';
 import { SummaryTile } from './summary-tile/summary-tile';
 import { SummaryDeadlineTile } from './summary-deadline-tile/summary-deadline-tile';
@@ -10,7 +9,7 @@ export const GREETING_INTRO_TRANSITION_MS = 400;
 @Component({
   selector: 'app-summary',
   standalone: true,
-  imports: [SummaryTile, SummaryDeadlineTile, NgTemplateOutlet],
+  imports: [SummaryTile, SummaryDeadlineTile],
   templateUrl: './summary.html',
   styleUrl: './summary.scss',
 })
