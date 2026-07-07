@@ -90,31 +90,15 @@
     font-size: var(--font-size-sm);
   }
 
-  @media (width <= 1230px) {
-    flex-direction: column;
-    gap: 16px;
-    padding: 20px 30px;
-
-    &__divider {
-      width: 70%;
-      height: 1px;
-    }
-
-    &__deadline {
-      align-items: center;
-    }
-  }
-
   @media (width <= 1024px) {
     &__date-label,
-    &__no-deadline {
+    &__no-deadline,
+    &__date {
       font-size: var(--font-size-s);
     }
-  }
 
-  @media (width <= 1024px) {
     &__count {
-      font-size: var(--font-size-l);
+      font-size: var(--font-size-xl);
     }
   }
 }
