@@ -20,13 +20,6 @@ import {
 import { PriorityButton } from '@shared/button/priority-button/priority-button';
 import { Avatar } from '@shared/avatar/avatar';
 
-function minDateValidator(minDate: string): ValidatorFn {
-  return (control: AbstractControl) => {
-    if (!control.value) return null;
-    return control.value < minDate ? { minDate: true } : null;
-  };
-}
-
 @Component({
   selector: 'app-add-task-component',
   standalone: true,
@@ -72,11 +65,23 @@ export class AddTaskComponent implements OnInit {
     );
   });
 
+  // Original due_date of the task being edited, used to exempt an
+  // unchanged past date from minDateValidator. Null when creating a new task.
+  private originalDueDate: string | null = null;
+
+  private minDateValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      if (!control.value) return null;
+      if (this.originalDueDate && control.value === this.originalDueDate) return null;
+      return control.value < this.today ? { minDate: true } : null;
+    };
+  }
+
   // ─── FORM ─────────────────────────────────────────────────
   form = this.fb.group({
     title: ['', [Validators.required]],
     description: [''],
-    due_date: ['', [Validators.required, minDateValidator(this.today)]],
+    due_date: ['', [Validators.required, this.minDateValidator()]],
     priority: ['medium' as TaskPriority],
     category: ['' as TaskCategory, [Validators.required]],
     assigned_contacts: [[] as string[]],
@@ -120,6 +125,10 @@ export class AddTaskComponent implements OnInit {
   ngOnInit(): void {
     const task = this.task();
     if (!task) return;
+
+    // Exempt the task's existing due_date from minDateValidator so editing
+    // other fields doesn't block saving on an already-past due date.
+    this.originalDueDate = task.due_date;
 
     // Edit mode — prefill form with existing task data
     this.form.patchValue({

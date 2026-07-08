@@ -201,6 +201,11 @@
         border-radius: 16px;
       }
     }
+
+    &--active a {
+      background-color: var(--nav-active-bg);
+      border-radius: 16px;
+    }
   }
 
   // Icons etwas kleiner

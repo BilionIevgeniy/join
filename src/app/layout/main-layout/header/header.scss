@@ -1,20 +1,20 @@
 .header {
   position: relative;
   z-index: 3;
+  box-sizing: border-box;
   height: 96px;
   padding: 0 32px;
   background: var(--inverted-bg-color);
   border-bottom: 1px solid var(--header-border);
   box-shadow: 0 4px 4px rgb(0 0 0 / 10%);
-  box-sizing: border-box;
 }
 
 .header__content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
   max-width: 1440px;
+  height: 100%;
 }
 
 .header__breadcrumb {
@@ -145,7 +145,7 @@
   font-size: 20px;
   font-weight: 400;
   line-height: 120%;
-  color: #000000;
+  color: #000;
 }
 
 .dropdown-item--mobile-help {

@@ -108,7 +108,6 @@ export class AuthService {
       if (error) throw error;
 
       await this.loadContactForUser(data.user.id);
-      this.toastService.success('Welcome back!');
       this.router.navigate([RoutesEnum.SUMMARY]);
       return true;
     } catch (err) {
@@ -123,7 +122,6 @@ export class AuthService {
   signInAsGuest(): void {
     sessionStorage.setItem('isGuest', 'true');
     this.currentUser.set(GUEST_USER);
-    this.toastService.success('You have been signed in as a guest.');
     this.router.navigate([RoutesEnum.SUMMARY]);
   }
 

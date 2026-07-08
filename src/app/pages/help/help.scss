@@ -1,7 +1,7 @@
 .help {
   padding: 40px;
   font-family: var(--font-family-main);
-  color: #000000;
+  color: #000;
 
   &__title-row {
     position: relative;
@@ -12,8 +12,8 @@
   }
 
   &__title {
-    font-size: var(--font-size-xxl);
     margin: 0;
+    font-size: var(--font-size-xxl);
   }
 
   &__highlight {
@@ -21,9 +21,9 @@
   }
 
   h2 {
-    font-size: var(--font-size-m);
     margin-top: 32px;
     margin-bottom: 12px;
+    font-size: var(--font-size-m);
   }
 
   p {
