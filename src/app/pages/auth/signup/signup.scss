@@ -1,17 +1,17 @@
 .signup {
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
   flex-shrink: 0;
+  flex-direction: column;
   gap: 24px;
   align-items: center;
   width: 625px;
-  max-width: 100%;
   min-width: 0;
+  max-width: 100%;
   padding: 48px;
   background: #fff;
   border-radius: 30px;
   box-shadow: 0 0 14px 3px rgb(0 0 0 / 20%);
-  box-sizing: border-box;
 
   &__title-row {
     position: relative;
@@ -24,8 +24,8 @@
 
   &__back-btn {
     position: absolute;
-    left: 0;
     top: 50%;
+    left: 0;
     transform: translateY(-50%);
   }
 
@@ -36,7 +36,6 @@
     font-weight: 700;
     color: #2a3647;
     text-align: center;
-    word-wrap: break-word;
     overflow-wrap: break-word;
   }
 
@@ -51,11 +50,11 @@
   &__form {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 16px;
+    align-items: center;
     width: 100%;
-    max-width: 422px;
     min-width: 0;
+    max-width: 422px;
   }
 
   &__name-row {
@@ -79,17 +78,17 @@
   }
 
   &__input {
+    box-sizing: border-box;
     width: 100%;
     min-width: 0;
     height: 48px;
     padding: 0 48px 0 21px;
     font-size: 16px;
     color: #2a3647;
+    outline: none;
     background: #fff;
     border: 1px solid #d1d7e0;
     border-radius: 10px;
-    outline: none;
-    box-sizing: border-box;
     transition: border-color 0.2s ease;
 
     &::placeholder {
@@ -107,20 +106,20 @@
     right: 21px;
     width: 20px;
     height: 20px;
-    transform: translateY(-50%);
     pointer-events: none;
     opacity: 0.6;
+    transform: translateY(-50%);
 
     &--toggle {
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0;
+      pointer-events: all;
+      cursor: pointer;
       background: none;
       border: none;
-      cursor: pointer;
       opacity: 1;
-      pointer-events: all;
 
       img {
         width: 20px;
@@ -134,7 +133,6 @@
     padding-left: 4px;
     font-size: 13px;
     color: #ff3d00;
-    word-wrap: break-word;
     overflow-wrap: break-word;
 
     &--policy {
@@ -147,19 +145,18 @@
   &__policy-row {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 8px;
     align-items: center;
+    justify-content: center;
     width: 100%;
-    max-width: 422px;
     min-width: 0;
+    max-width: 422px;
   }
 
   &__policy-text {
     min-width: 0;
     font-size: 14px;
     color: #2a3647;
-    word-wrap: break-word;
     overflow-wrap: break-word;
   }
 
@@ -188,9 +185,9 @@
 
   // ─── Mobile ───────────────────────────────────────────────
   @media (max-width: 768px) {
-    max-width: 396px;
-    width: 100%;
     gap: 20px;
+    width: 100%;
+    max-width: 396px;
     padding: 32px 24px;
     border-radius: 20px;
 

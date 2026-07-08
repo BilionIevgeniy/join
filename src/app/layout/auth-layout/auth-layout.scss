@@ -41,9 +41,9 @@
     position: absolute;
     top: 37px;
     left: 46px;
+    z-index: 100;
     width: 100px;
     height: 120px;
-    z-index: 100;
 
     &--animating {
       position: absolute;
@@ -63,9 +63,9 @@
     .auth-layout__content,
     .auth-layout__footer,
     .auth-layout__mobile-signup-hint {
+      pointer-events: none;
       opacity: 0;
       animation: none;
-      pointer-events: none;
     }
   }
 
