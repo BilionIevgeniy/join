@@ -5,6 +5,7 @@ import { TaskService } from '@core/services/task.service';
 import { RoutesEnum } from '@core/models/routes.model';
 import { Summary as SummaryComponent } from '@components/summary/summary';
 
+/** Summary — page-level container wiring auth/task data into the presentational summary view. */
 @Component({
   selector: 'app-summary-page',
   standalone: true,
@@ -13,10 +14,12 @@ import { Summary as SummaryComponent } from '@components/summary/summary';
   styleUrl: './summary.scss',
 })
 export class Summary {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private authService = inject(AuthService);
   private taskService = inject(TaskService);
   private router = inject(Router);
 
+  // ─── COMPUTED ─────────────────────────────────────────────
   // Computed once per page load, based on the time the user opened Summary
   greeting = ((hour = new Date().getHours()) => {
     if (hour >= 5 && hour < 12) return 'Good morning';
@@ -45,6 +48,8 @@ export class Summary {
       year: 'numeric',
     });
   });
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   goToBoard(): void {
     this.router.navigate(['/', RoutesEnum.BOARD]);

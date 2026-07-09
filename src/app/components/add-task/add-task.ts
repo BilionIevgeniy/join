@@ -19,7 +19,17 @@ import {
 } from '@core/models/task.model';
 import { PriorityButton } from '@shared/button/priority-button/priority-button';
 import { Avatar } from '@shared/avatar/avatar';
+import { isFieldInvalid } from '@core/utils/form.utils';
+import { countRemaining, takeVisible } from '@core/utils/collection.utils';
 
+/**
+ * AddTaskComponent — create/edit form for a task.
+ *
+ * Used both as a standalone page ({@link AddTaskPage}) and inside the app-wide
+ * modal (opened via {@link ModalService} for the "add task" / "edit task" flows).
+ * Emits {@link save} with a ready-to-persist DTO; the caller owns actually
+ * calling {@link TaskService}.
+ */
 @Component({
   selector: 'app-add-task-component',
   standalone: true,
@@ -28,21 +38,30 @@ import { Avatar } from '@shared/avatar/avatar';
   styleUrl: './add-task.scss',
 })
 export class AddTaskComponent implements OnInit {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private fb = inject(FormBuilder);
 
   // ─── INPUTS ───────────────────────────────────────────────
+  /** Column the task is created into when there's no existing task (create mode). */
   initialStatus = input<TaskStatus>('todo');
+  /** Task being edited. `null` means create mode. */
   task = input<Task | null>(null);
+  /** Full contact list, used to populate the "assigned to" dropdown. */
   contacts = input.required<Contact[]>();
+  /** Disables the save button / shows a spinner while a save request is in flight. */
   isLoading = input<boolean>(false);
+  /** True when rendered inside the app-wide modal, as opposed to the standalone page. */
   isModal = input<boolean>(false);
+  /** True when editing an existing task, as opposed to creating a new one. */
   isEdit = input<boolean>(false);
 
   // ─── OUTPUTS ──────────────────────────────────────────────
+  /** Emitted with a ready-to-persist DTO when the user submits a valid form. */
   save = output<CreateTaskDto>();
+  /** Emitted when the user cancels out of the form (e.g. closes the modal). */
   cancel = output<void>();
 
-  // ─── LOCAL STATE ──────────────────────────────────────────
+  // ─── STATE ────────────────────────────────────────────────
   today = new Date().toISOString().split('T')[0];
   subtasks = signal<Subtask[]>([]);
   subtaskInput = signal('');
@@ -50,32 +69,18 @@ export class AddTaskComponent implements OnInit {
   editingSubtask = signal<string | null>(null); // id of subtask being edited
   isDropdownOpen = signal(false);
   isCategoryDropdownOpen = signal(false);
+  searchQuery = signal('');
   categories: TaskCategory[] = ['User Story', 'Technical Task'];
   priorities: TaskPriority[] = ['urgent', 'medium', 'low'];
-  // Search query for filtering contacts in dropdown
-  searchQuery = signal('');
-  // Filtered contacts passed down to AddTask
-  filteredContacts = computed(() => {
-    const q = this.searchQuery().toLowerCase().trim();
-    if (!q) return this.contacts();
-    return this.contacts().filter(
-      (c) =>
-        c.first_name.toLowerCase().includes(q) ||
-        (c.last_name && c.last_name.toLowerCase().includes(q)),
-    );
-  });
 
+  /** Max number of assigned-contact avatars rendered before collapsing into a "+N" badge. */
+  private readonly maxVisibleAvatars = 3;
   // Original due_date of the task being edited, used to exempt an
   // unchanged past date from minDateValidator. Null when creating a new task.
   private originalDueDate: string | null = null;
-
-  private minDateValidator(): ValidatorFn {
-    return (control: AbstractControl) => {
-      if (!control.value) return null;
-      if (this.originalDueDate && control.value === this.originalDueDate) return null;
-      return control.value < this.today ? { minDate: true } : null;
-    };
-  }
+  // Snapshot of title/description/.../subtasks as they were when the
+  // modal opened. Set once in ngOnInit, never mutated afterwards.
+  private originalSnapshot: string | null = null;
 
   // ─── FORM ─────────────────────────────────────────────────
   form = this.fb.group({
@@ -87,20 +92,22 @@ export class AddTaskComponent implements OnInit {
     assigned_contacts: [[] as string[]],
   });
 
-  isFormValid(): boolean {
-    const { title, due_date, category } = this.form.controls;
-    return title.valid && due_date.valid && category.valid;
-  }
-
-  // ─── CHANGE DETECTION (edit mode) ──────────────────────────
   // Reactive view of the form's current value, used to compare against
-  // the original snapshot below. toSignal bridges the RxJS valueChanges
+  // the original snapshot in hasChanges. toSignal bridges the RxJS valueChanges
   // observable into a signal so it can be read inside computed().
   private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.value });
 
-  // Snapshot of title/description/.../subtasks as they were when the
-  // modal opened. Set once in ngOnInit, never mutated afterwards.
-  private originalSnapshot: string | null = null;
+  // ─── COMPUTED ─────────────────────────────────────────────
+  /** Filtered contacts passed down to the assigned-to dropdown. */
+  filteredContacts = computed(() => {
+    const q = this.searchQuery().toLowerCase().trim();
+    if (!q) return this.contacts();
+    return this.contacts().filter(
+      (c) =>
+        c.first_name.toLowerCase().includes(q) ||
+        (c.last_name && c.last_name.toLowerCase().includes(q)),
+    );
+  });
 
   // True only when the current form + subtasks actually differ in value
   // from the original snapshot — not just "something fired a change event".
@@ -110,17 +117,7 @@ export class AddTaskComponent implements OnInit {
     return this.buildSnapshot(this.formValue(), this.subtasks()) !== this.originalSnapshot;
   });
 
-  private buildSnapshot(formValue: typeof this.form.value, subtasks: Subtask[]): string {
-    return JSON.stringify({
-      title: formValue.title ?? '',
-      description: formValue.description ?? '',
-      due_date: formValue.due_date ?? '',
-      priority: formValue.priority ?? 'medium',
-      category: formValue.category ?? '',
-      assigned_contacts: [...(formValue.assigned_contacts ?? [])].sort(),
-      subtasks: subtasks.map((s) => ({ id: s.id, title: s.title, done: s.done })),
-    });
-  }
+  // ─── LIFECYCLE ────────────────────────────────────────────
 
   ngOnInit(): void {
     const task = this.task();
@@ -130,26 +127,24 @@ export class AddTaskComponent implements OnInit {
     // other fields doesn't block saving on an already-past due date.
     this.originalDueDate = task.due_date;
 
-    // Edit mode — prefill form with existing task data
-    this.form.patchValue({
-      title: task.title,
-      description: task.description,
-      due_date: task.due_date,
-      priority: task.priority,
-      category: task.category,
-    });
-
-    // Prefill subtasks
+    this.prefillFormFields(task);
     this.subtasks.set(task.subtasks ?? []);
-
-    // Prefill assigned contacts ids
-    const ids = (task.assigned_contacts ?? [])
-      .map((ac) => ac.contact?.id)
-      .filter((id): id is string => !!id);
-    this.form.patchValue({ assigned_contacts: ids });
+    this.prefillAssignedContacts(task);
 
     // Capture the baseline to compare future edits against.
     this.originalSnapshot = this.buildSnapshot(this.form.value, this.subtasks());
+  }
+
+  // ─── FORM VALIDITY ────────────────────────────────────────
+
+  /** True when all required fields (title, due_date, category) are valid. */
+  isFormValid(): boolean {
+    const { title, due_date, category } = this.form.controls;
+    return title.valid && due_date.valid && category.valid;
+  }
+
+  isFieldInvalid(field: string): boolean {
+    return isFieldInvalid(this.form, field);
   }
 
   // ─── PRIORITY ─────────────────────────────────────────────
@@ -173,19 +168,19 @@ export class AddTaskComponent implements OnInit {
     return current.includes(contactId);
   }
 
-  private readonly maxVisibleAvatars = 3;
-
   getSelectedContacts(): Contact[] {
     const ids = this.form.get('assigned_contacts')!.value as string[];
     return this.contacts().filter((c) => ids.includes(c.id!));
   }
 
+  /** First {@link maxVisibleAvatars} selected contacts, for avatar-stack rendering. */
   getVisibleContacts(): Contact[] {
-    return this.getSelectedContacts().slice(0, this.maxVisibleAvatars);
+    return takeVisible(this.getSelectedContacts(), this.maxVisibleAvatars);
   }
 
+  /** Count of selected contacts beyond {@link maxVisibleAvatars}, shown as a "+N" badge. */
   getRemainingContactsCount(): number {
-    return Math.max(0, this.getSelectedContacts().length - this.maxVisibleAvatars);
+    return countRemaining(this.getSelectedContacts(), this.maxVisibleAvatars);
   }
 
   onSearchChange(query: string): void {
@@ -203,6 +198,8 @@ export class AddTaskComponent implements OnInit {
   closeDropdown(): void {
     this.isDropdownOpen.set(false);
   }
+
+  // ─── CATEGORY ─────────────────────────────────────────────
 
   toggleCategoryDropdown(): void {
     this.isCategoryDropdownOpen.update((v) => !v);
@@ -285,7 +282,8 @@ export class AddTaskComponent implements OnInit {
       title: title!,
       description: description ?? '',
       due_date: due_date!,
-      status: this.initialStatus(),
+      // Editing keeps the task's current column; only a brand-new task uses initialStatus.
+      status: this.task()?.status ?? this.initialStatus(),
       priority: (priority as TaskPriority) ?? 'medium',
       category: category as TaskCategory,
       subtasks: this.subtasks(),
@@ -305,8 +303,44 @@ export class AddTaskComponent implements OnInit {
     this.cancel.emit();
   }
 
-  isFieldInvalid(field: string): boolean {
-    const control = this.form.get(field);
-    return !!(control && control.touched && control.invalid);
+  // ─── PRIVATE ──────────────────────────────────────────────
+
+  private minDateValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      if (!control.value) return null;
+      if (this.originalDueDate && control.value === this.originalDueDate) return null;
+      return control.value < this.today ? { minDate: true } : null;
+    };
+  }
+
+  private buildSnapshot(formValue: typeof this.form.value, subtasks: Subtask[]): string {
+    return JSON.stringify({
+      title: formValue.title ?? '',
+      description: formValue.description ?? '',
+      due_date: formValue.due_date ?? '',
+      priority: formValue.priority ?? 'medium',
+      category: formValue.category ?? '',
+      assigned_contacts: [...(formValue.assigned_contacts ?? [])].sort(),
+      subtasks: subtasks.map((s) => ({ id: s.id, title: s.title, done: s.done })),
+    });
+  }
+
+  /** Prefills title/description/due_date/priority/category from the task being edited. */
+  private prefillFormFields(task: Task): void {
+    this.form.patchValue({
+      title: task.title,
+      description: task.description,
+      due_date: task.due_date,
+      priority: task.priority,
+      category: task.category,
+    });
+  }
+
+  /** Prefills the assigned_contacts control from the task's joined contact ids. */
+  private prefillAssignedContacts(task: Task): void {
+    const ids = (task.assigned_contacts ?? [])
+      .map((ac) => ac.contact?.id)
+      .filter((id): id is string => !!id);
+    this.form.patchValue({ assigned_contacts: ids });
   }
 }

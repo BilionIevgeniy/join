@@ -1,15 +1,17 @@
 import { Component, ViewEncapsulation, computed, input, output } from '@angular/core';
-import { getTaskContacts, Subtask, Task, TaskPriority } from '@core/models/task.model';
+import {
+  getCategoryModifierClass,
+  getPriorityIconUrl,
+  getTaskContacts,
+  PRIORITY_LABELS,
+  Subtask,
+  Task,
+} from '@core/models/task.model';
 import { Avatar } from '@shared/avatar/avatar';
 import { Button } from '@shared/button/button';
 import { CheckboxButton } from '@shared/checkbox-button/checkbox-button';
 
-const PRIORITY_LABELS: Record<TaskPriority, string> = {
-  urgent: 'Urgent',
-  medium: 'Medium',
-  low: 'Low',
-};
-
+/** TaskModal — read-only task detail view opened via the app-wide modal service. */
 @Component({
   selector: 'app-task-modal',
   standalone: true,
@@ -19,23 +21,22 @@ const PRIORITY_LABELS: Record<TaskPriority, string> = {
   encapsulation: ViewEncapsulation.None,
 })
 export class TaskModal {
+  // ─── INPUTS ───────────────────────────────────────────────
   task = input.required<Task>();
 
+  // ─── OUTPUTS ──────────────────────────────────────────────
   subtaskToggled = output<{ taskId: string; subtasks: Subtask[] }>();
   edit = output<Task>();
   delete = output<string>();
   closed = output<void>();
 
+  // ─── COMPUTED ─────────────────────────────────────────────
   assignedContacts = computed(() => getTaskContacts(this.task()));
-
-  categoryClass = computed(() =>
-    this.task().category === 'User Story'
-      ? 'task-modal__category--user-story'
-      : 'task-modal__category--technical-task',
-  );
-
-  priorityIcon = computed(() => `${this.task().priority}-prio-icon.svg`);
+  categoryClass = computed(() => getCategoryModifierClass(this.task().category, 'task-modal'));
+  priorityIcon = computed(() => getPriorityIconUrl(this.task().priority));
   priorityLabel = computed(() => PRIORITY_LABELS[this.task().priority]);
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   toggleSubtask(subtaskId: string): void {
     const task = this.task();

@@ -2,6 +2,7 @@ import { Component, input } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
+/** BackButton — navigates to browser history back, or to a fixed fallback route if provided. */
 @Component({
   selector: 'app-back-button',
   standalone: true,

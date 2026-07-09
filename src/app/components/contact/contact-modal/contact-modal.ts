@@ -1,9 +1,11 @@
 import { Component, input, output, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Contact, ContactMode, CreateContactDto } from '@core/models/contact.model';
+import { EMAIL_VALIDATORS, NAME_VALIDATORS } from '@core/utils/form.utils';
 import { Avatar } from '@shared/avatar/avatar';
 import { Button } from '@shared/button/button';
 
+/** ContactModal — create/edit form for a contact, opened via the app-wide modal service. */
 @Component({
   selector: 'app-contact-modal',
   standalone: true,
@@ -12,30 +14,25 @@ import { Button } from '@shared/button/button';
   styleUrl: './contact-modal.scss',
 })
 export class ContactModal implements OnInit {
+  // ─── INPUTS ───────────────────────────────────────────────
   mode = input<ContactMode>('add');
   contact = input<Contact | null>(null);
   isLoading = input<boolean>(false);
+
+  // ─── OUTPUTS ──────────────────────────────────────────────
   save = output<CreateContactDto>();
   delete = output<Contact>();
   closed = output<void>();
 
+  // ─── FORM ─────────────────────────────────────────────────
   form = new FormGroup({
-    first_name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s\-]+$/),
-    ]),
-    last_name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s\-]+$/),
-    ]),
-    email: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/),
-    ]),
-    phone: new FormControl('', [Validators.required, Validators.pattern(/^\+?[0-9]+$/)]),
+    first_name: new FormControl('', NAME_VALIDATORS),
+    last_name: new FormControl('', NAME_VALIDATORS),
+    email: new FormControl('', EMAIL_VALIDATORS),
+    phone: new FormControl('', [Validators.required, Validators.pattern(/^\+?[0-9\s]+$/)]),
   });
+
+  // ─── LIFECYCLE ────────────────────────────────────────────
 
   ngOnInit(): void {
     const contact = this.contact();
@@ -48,6 +45,8 @@ export class ContactModal implements OnInit {
       });
     }
   }
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   getField(name: string) {
     return this.form.get(name)!;
@@ -70,7 +69,7 @@ export class ContactModal implements OnInit {
       first_name: (this.getField('first_name').value ?? '').trim(),
       last_name: (this.getField('last_name').value ?? '').trim(),
       email: this.getField('email').value ?? '',
-      phone: this.getField('phone').value ?? '',
+      phone: (this.getField('phone').value ?? '').trim(),
     });
   }
 

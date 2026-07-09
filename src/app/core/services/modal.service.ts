@@ -123,6 +123,8 @@ interface ModalConfig<T> {
  */
 @Injectable({ providedIn: 'root' })
 export class ModalService {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
+
   /**
    * ApplicationRef — a handle to the running Angular app.
    * Needed to register dynamically created components for change detection.
@@ -135,6 +137,8 @@ export class ModalService {
    * can inject services and create effects outside of a component constructor.
    */
   private envInjector = inject(EnvironmentInjector);
+
+  // ─── STATE ────────────────────────────────────────────────
 
   private componentRef: ComponentRef<unknown> | null = null;
 
@@ -152,6 +156,8 @@ export class ModalService {
    * The Modal shell watches this signal and appends/removes the node from the page.
    */
   hostElement = signal<HTMLElement | null>(null);
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   /**
    * Creates a component dynamically, wires inputs/syncInputs/actions, and makes it visible.
@@ -171,17 +177,8 @@ export class ModalService {
 
     // Create the component in memory — no template or HTML tag needed.
     const ref = createComponent(component, { environmentInjector: this.envInjector });
-
-    // Set one-time static inputs (same as [myInput]="value" in a template).
-    for (const key in inputs) {
-      ref.setInput(key, inputs[key as keyof ModalInputs<T>]);
-    }
-
-    // Subscribe to @output() events — same as (myOutput)="handler($event)" in a template.
-    for (const key in actions) {
-      const output = (ref.instance as Record<string, { subscribe(cb: (v: unknown) => void): unknown }>)[key];
-      output?.subscribe((actions as Record<string, (v: unknown) => void>)[key]);
-    }
+    this.applyInputs(ref, inputs);
+    this.subscribeActions(ref, actions);
 
     // Register the component with Angular so it participates in change detection.
     this.appRef.attachView(ref.hostView);
@@ -192,22 +189,7 @@ export class ModalService {
     this.isOpen.set(true);
     this.lockScroll();
 
-    // If any syncInputs provided, create a reactive effect that keeps them in sync.
-    // runInInjectionContext lets us call effect() outside of a component constructor.
-    if (Object.keys(syncInputs as object).length > 0) {
-      this.syncEffectRef = runInInjectionContext(this.envInjector, () =>
-        effect(() => {
-          if (!this.isOpen()) {
-            this.syncEffectRef?.destroy();
-            return;
-          }
-          for (const key in syncInputs) {
-            const sig = (syncInputs as Record<string, Signal<unknown>>)[key];
-            ref.setInput(key, sig());
-          }
-        }),
-      );
-    }
+    this.setupSyncEffect(ref, syncInputs);
   }
 
   /**
@@ -224,6 +206,45 @@ export class ModalService {
       this.isClosing.set(false);
       this.unlockScroll();
     }, CLOSE_ANIMATION_MS);
+  }
+
+  // ─── PRIVATE ──────────────────────────────────────────────
+
+  /** Sets one-time static inputs — same as `[myInput]="value"` in a template. */
+  private applyInputs<T>(ref: ComponentRef<T>, inputs: ModalInputs<T>): void {
+    for (const key in inputs) {
+      ref.setInput(key, inputs[key as keyof ModalInputs<T>]);
+    }
+  }
+
+  /** Subscribes to @output() events — same as `(myOutput)="handler($event)"` in a template. */
+  private subscribeActions<T>(ref: ComponentRef<T>, actions: ModalActions<T>): void {
+    for (const key in actions) {
+      const output = (
+        ref.instance as Record<string, { subscribe(cb: (v: unknown) => void): unknown }>
+      )[key];
+      output?.subscribe((actions as Record<string, (v: unknown) => void>)[key]);
+    }
+  }
+
+  /**
+   * If any syncInputs were provided, creates a reactive effect that keeps them in sync.
+   * runInInjectionContext lets us call effect() outside of a component constructor.
+   */
+  private setupSyncEffect<T>(ref: ComponentRef<T>, syncInputs: ModalSignalInputs<T>): void {
+    if (Object.keys(syncInputs as object).length === 0) return;
+    this.syncEffectRef = runInInjectionContext(this.envInjector, () =>
+      effect(() => {
+        if (!this.isOpen()) {
+          this.syncEffectRef?.destroy();
+          return;
+        }
+        for (const key in syncInputs) {
+          const sig = (syncInputs as Record<string, Signal<unknown>>)[key];
+          ref.setInput(key, sig());
+        }
+      }),
+    );
   }
 
   /** Destroys the current component, its sync effect, and clears all references. */

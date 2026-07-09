@@ -9,6 +9,12 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import {
+  EMAIL_VALIDATORS,
+  NAME_VALIDATORS,
+  PASSWORD_VALIDATORS,
+  isFieldInvalid,
+} from '@core/utils/form.utils';
 import { Button } from '@shared/button/button';
 import { CheckboxButton } from '@shared/checkbox-button/checkbox-button';
 import { BackButton } from '@shared/back-button/back-button';
@@ -27,58 +33,43 @@ function passwordsMatchValidator(control: AbstractControl): ValidationErrors | n
   styleUrl: './signup.scss',
 })
 export class Signup {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
 
-  isLoading = this.authService.isLoading;
+  // ─── STATE ────────────────────────────────────────────────
   showPassword = signal(false);
   showConfirmPassword = signal(false);
   acceptedPolicy = signal(false);
   policyTouched = signal(false);
 
+  // ─── FORM ─────────────────────────────────────────────────
   form = this.fb.group(
     {
-      first_name: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s-]+$/),
-        ],
-      ],
-      last_name: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s-]+$/),
-        ],
-      ],
-      email: ['', [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/)]],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).+$/),
-        ],
-      ],
+      first_name: ['', NAME_VALIDATORS],
+      last_name: ['', NAME_VALIDATORS],
+      email: ['', EMAIL_VALIDATORS],
+      password: ['', PASSWORD_VALIDATORS],
       confirmPassword: ['', [Validators.required]],
     },
     { validators: passwordsMatchValidator },
   );
 
   private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.value });
+
+  // ─── COMPUTED ─────────────────────────────────────────────
+  isLoading = this.authService.isLoading;
   hasPasswordInput = computed(() => !!this.formValue().password);
   hasConfirmPasswordInput = computed(() => !!this.formValue().confirmPassword);
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   isFormValid(): boolean {
     return this.form.valid && this.acceptedPolicy();
   }
 
   isFieldInvalid(field: string): boolean {
-    const control = this.form.get(field);
-    return !!(control && control.touched && control.invalid);
+    return isFieldInvalid(this.form, field);
   }
 
   isConfirmPasswordInvalid(): boolean {
