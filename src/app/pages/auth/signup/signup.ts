@@ -19,12 +19,18 @@ import { Button } from '@shared/button/button';
 import { CheckboxButton } from '@shared/checkbox-button/checkbox-button';
 import { BackButton } from '@shared/back-button/back-button';
 
+/**
+ * Cross-field validator: fails with `passwordsMismatch` unless `password` and
+ * `confirmPassword` are identical. Must be a form-group-level validator (not a
+ * field-level one) since it needs to read both controls at once.
+ */
 function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password')?.value;
   const confirmPassword = control.get('confirmPassword')?.value;
   return password === confirmPassword ? null : { passwordsMismatch: true };
 }
 
+/** Signup — account creation form (name, email, password, privacy policy consent). */
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -55,6 +61,7 @@ export class Signup {
     { validators: passwordsMatchValidator },
   );
 
+  /** Bridges the form's RxJS `valueChanges` into a signal so it can be read inside `computed()`. */
   private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.value });
 
   // ─── COMPUTED ─────────────────────────────────────────────
@@ -72,6 +79,7 @@ export class Signup {
     return isFieldInvalid(this.form, field);
   }
 
+  /** True when the field itself is invalid, or the group-level `passwordsMismatch` error is set. */
   isConfirmPasswordInvalid(): boolean {
     const control = this.form.get('confirmPassword');
     if (!control || !control.touched) return false;

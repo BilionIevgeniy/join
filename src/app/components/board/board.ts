@@ -2,6 +2,7 @@ import { Component, input, output } from '@angular/core';
 import { BoardColumnConfig, Task, TaskStatus } from '@core/models/task.model';
 import { BoardColumn } from './board-column/board-column';
 
+/** Renders the kanban board's columns; all data flows in via `columns`, all actions flow out via outputs. */
 @Component({
   selector: 'app-board',
   standalone: true,

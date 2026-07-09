@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ToastService } from '@core/services/toast.service';
 import { Toast } from './toast/toast';
 
+/** Renders the queued {@link ToastService} notifications as a stack of {@link Toast} components. */
 @Component({
   selector: 'app-toast-container',
   standalone: true,

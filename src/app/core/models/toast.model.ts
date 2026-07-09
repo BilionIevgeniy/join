@@ -4,6 +4,7 @@
 
 export type ToastType = 'success' | 'error';
 
+/** A single toast notification queued for display in {@link ToastContainer}. */
 export interface Toast {
   id: string;
   message: string;

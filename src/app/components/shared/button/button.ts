@@ -1,5 +1,6 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
 
+/** Shared button used across the app; styling and icon are fully driven by inputs, no internal state. */
 @Component({
   selector: 'app-button',
   standalone: true,
@@ -11,7 +12,9 @@ import { Component, ViewEncapsulation, input } from '@angular/core';
 export class Button {
   label = input<string>('');
   variant = input<'primary' | 'secondary' | 'outline' | 'text'>('primary');
+  /** Filename only, e.g. `'check.svg'` — the `/assets/icons/` path is added in the template. */
   icon = input<string>('');
+  /** Filename only, swapped in for `icon` on hover if set. */
   hoverIcon = input<string>('');
   size = input<'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge'>('medium');
   iconPosition = input<'left' | 'right'>('right');

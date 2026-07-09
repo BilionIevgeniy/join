@@ -17,6 +17,7 @@ export type TaskCategory = 'User Story' | 'Technical Task';
 //  SUBTASK — stored as jsonb array inside tasks table
 // ============================================================
 
+/** A single checklist item within a {@link Task}, stored inline as part of the task's jsonb column. */
 export interface Subtask {
   id: string;
   title: string;
@@ -37,8 +38,10 @@ export interface Task {
   subtasks: Subtask[];
   due_date: string;
   created_at: string;
-  // Joined from task_contacts → contacts
-  // Supabase returns: assigned_contacts: [{ contact: Contact }]
+  /**
+   * Joined from `task_contacts` → `contacts` via the Supabase query.
+   * Use {@link getTaskContacts} to get a flat `Contact[]` instead of unwrapping this manually.
+   */
   assigned_contacts?: { contact: Contact }[];
 }
 
@@ -54,9 +57,11 @@ export interface CreateTaskDto {
   category: TaskCategory;
   subtasks: Subtask[];
   due_date: string;
-  contact_ids: string[]; // UUID array — handled separately in TaskService
+  /** Contact UUIDs to assign — persisted via a separate join table by {@link TaskService}. */
+  contact_ids: string[];
 }
 
+/** Partial update — only the fields that changed are sent to the update RPC. */
 export type UpdateTaskDto = Partial<CreateTaskDto>;
 
 // ============================================================
@@ -107,6 +112,7 @@ export function getCategoryModifierClass(category: TaskCategory, block: string):
 //  BOARD COLUMN CONFIG — one column's data, built by the Board page
 // ============================================================
 
+/** One board column's rendering data, assembled by the Board page and passed to {@link BoardColumn}. */
 export interface BoardColumnConfig {
   title: string;
   status: TaskStatus;
