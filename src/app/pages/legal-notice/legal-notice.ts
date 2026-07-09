@@ -3,6 +3,7 @@ import { AuthService } from '@core/services/auth.service';
 import { loggedInAwareBackRoute } from '@core/utils/route.utils';
 import { BackButton } from '@shared/back-button/back-button';
 
+/** Static legal-notice page, reachable both from the auth flow and from within the logged-in app. */
 @Component({
   selector: 'app-legal-notice',
   standalone: true,

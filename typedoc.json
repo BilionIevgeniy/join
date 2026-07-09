@@ -1,0 +1,11 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/app"],
+  "entryPointStrategy": "expand",
+  "out": "out",
+  "tsconfig": "tsconfig.json",
+  "name": "Join",
+  "excludePrivate": false,
+  "excludeExternals": true,
+  "readme": "none"
+}

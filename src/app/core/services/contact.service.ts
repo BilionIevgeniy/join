@@ -105,7 +105,9 @@ export class ContactService {
 
   /**
    * Deletes a contact, also removing its linked auth user (if any) via an Edge Function.
-   * Reports whether the caller should sign out (i.e. the deleted contact was the current user).
+   * @param currentAuthUserId - the currently signed-in user's auth id, used to detect self-deletion
+   * @returns `success` — whether the delete succeeded; `shouldSignOut` — true when the
+   * deleted contact was the caller's own account, so the caller must sign out immediately.
    */
   async deleteContact(
     contact: Contact,

@@ -3,6 +3,7 @@ import { Toast as ToastModel } from '@core/models/toast.model';
 
 const AUTO_CLOSE_DELAY = 3000;
 
+/** A single toast notification with a self-managed auto-close timer. */
 @Component({
   selector: 'app-toast',
   standalone: true,
