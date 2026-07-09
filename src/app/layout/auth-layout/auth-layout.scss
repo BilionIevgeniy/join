@@ -109,6 +109,16 @@
     }
   }
 
+  // ─── Tablet / small desktop ────────────────────────────────
+  @media (max-width: 1024px) {
+    .auth-layout__logo {
+      top: 24px;
+      left: 24px;
+      width: 64px;
+      height: 77px;
+    }
+  }
+
   // ─── Mobile ───────────────────────────────────────────────
   @media (max-width: 768px) {
     .auth-layout__logo {
@@ -145,7 +155,9 @@
     }
 
     .auth-layout__content {
-      padding: 16px 20px;
+      align-items: center;
+      justify-content: center;
+      padding: 105px 20px 0px;
     }
 
     .auth-layout__mobile-signup-hint {
