@@ -17,10 +17,16 @@ import { TaskService } from '@core/services/task.service';
   styleUrl: './main-layout.scss',
 })
 export class MainLayout implements OnInit {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private contactService = inject(ContactService);
   private taskService = inject(TaskService);
+  /** Read by the template to drive the app-wide modal shell. */
   modalService = inject(ModalService);
+
+  // ─── COMPUTED ─────────────────────────────────────────────
   isLoading = computed(() => this.contactService.isLoading() || this.taskService.isLoading());
+
+  // ─── LIFECYCLE ────────────────────────────────────────────
 
   ngOnInit(): void {
     this.contactService.getAll();

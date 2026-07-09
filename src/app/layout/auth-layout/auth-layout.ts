@@ -12,10 +12,14 @@ import { SignupHint } from '@shared/signup-hint/signup-hint';
   styleUrl: './auth-layout.scss',
 })
 export class AuthLayout implements OnInit {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private router = inject(Router);
 
+  // ─── STATE ────────────────────────────────────────────────
   animating = signal(true);
   hideSignupHint = signal(false);
+
+  // ─── LIFECYCLE ────────────────────────────────────────────
 
   ngOnInit(): void {
     this.updateForUrl(this.router.url);
@@ -24,6 +28,8 @@ export class AuthLayout implements OnInit {
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event) => this.updateForUrl(event.urlAfterRedirects));
   }
+
+  // ─── PRIVATE ──────────────────────────────────────────────
 
   /** Re-evaluates intro-animation and signup-hint visibility for the current URL. */
   private updateForUrl(url: string): void {

@@ -21,19 +21,22 @@ import { CheckboxButton } from '@shared/checkbox-button/checkbox-button';
   encapsulation: ViewEncapsulation.None,
 })
 export class TaskModal {
+  // ─── INPUTS ───────────────────────────────────────────────
   task = input.required<Task>();
 
+  // ─── OUTPUTS ──────────────────────────────────────────────
   subtaskToggled = output<{ taskId: string; subtasks: Subtask[] }>();
   edit = output<Task>();
   delete = output<string>();
   closed = output<void>();
 
+  // ─── COMPUTED ─────────────────────────────────────────────
   assignedContacts = computed(() => getTaskContacts(this.task()));
-
   categoryClass = computed(() => getCategoryModifierClass(this.task().category, 'task-modal'));
-
   priorityIcon = computed(() => getPriorityIconUrl(this.task().priority));
   priorityLabel = computed(() => PRIORITY_LABELS[this.task().priority]);
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   toggleSubtask(subtaskId: string): void {
     const task = this.task();

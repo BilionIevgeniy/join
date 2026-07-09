@@ -11,16 +11,21 @@ import { AuthService } from '@core/services/auth.service';
   styleUrl: './header.scss',
 })
 export class Header {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private authService = inject(AuthService);
 
+  // ─── STATE ────────────────────────────────────────────────
+  isDropdownOpen = signal(false);
+  isDropdownClosing = signal(false);
+
+  // ─── COMPUTED ─────────────────────────────────────────────
   isLoggedIn = this.authService.isLoggedIn;
   userInitials = computed(() => this.authService.currentUser()?.initials ?? '');
   userColor = computed(() => this.authService.currentUser()?.color ?? '');
 
-  isDropdownOpen = signal(false);
-  isDropdownClosing = signal(false);
-
   constructor(private elementRef: ElementRef<HTMLElement>) {}
+
+  // ─── DROPDOWN ─────────────────────────────────────────────
 
   toggleDropdown(): void {
     if (this.isDropdownOpen()) {

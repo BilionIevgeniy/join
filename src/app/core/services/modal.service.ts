@@ -123,6 +123,8 @@ interface ModalConfig<T> {
  */
 @Injectable({ providedIn: 'root' })
 export class ModalService {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
+
   /**
    * ApplicationRef — a handle to the running Angular app.
    * Needed to register dynamically created components for change detection.
@@ -135,6 +137,8 @@ export class ModalService {
    * can inject services and create effects outside of a component constructor.
    */
   private envInjector = inject(EnvironmentInjector);
+
+  // ─── STATE ────────────────────────────────────────────────
 
   private componentRef: ComponentRef<unknown> | null = null;
 
@@ -152,6 +156,8 @@ export class ModalService {
    * The Modal shell watches this signal and appends/removes the node from the page.
    */
   hostElement = signal<HTMLElement | null>(null);
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   /**
    * Creates a component dynamically, wires inputs/syncInputs/actions, and makes it visible.
@@ -185,6 +191,24 @@ export class ModalService {
 
     this.setupSyncEffect(ref, syncInputs);
   }
+
+  /**
+   * Starts the close animation, then destroys the component after it completes.
+   * Safe to call multiple times — ignored if already closing or already closed.
+   */
+  close(): void {
+    if (!this.isOpen() || this.isClosing()) return;
+    this.isClosing.set(true);
+
+    setTimeout(() => {
+      this.destroyCurrent();
+      this.isOpen.set(false);
+      this.isClosing.set(false);
+      this.unlockScroll();
+    }, CLOSE_ANIMATION_MS);
+  }
+
+  // ─── PRIVATE ──────────────────────────────────────────────
 
   /** Sets one-time static inputs — same as `[myInput]="value"` in a template. */
   private applyInputs<T>(ref: ComponentRef<T>, inputs: ModalInputs<T>): void {
@@ -221,22 +245,6 @@ export class ModalService {
         }
       }),
     );
-  }
-
-  /**
-   * Starts the close animation, then destroys the component after it completes.
-   * Safe to call multiple times — ignored if already closing or already closed.
-   */
-  close(): void {
-    if (!this.isOpen() || this.isClosing()) return;
-    this.isClosing.set(true);
-
-    setTimeout(() => {
-      this.destroyCurrent();
-      this.isOpen.set(false);
-      this.isClosing.set(false);
-      this.unlockScroll();
-    }, CLOSE_ANIMATION_MS);
   }
 
   /** Destroys the current component, its sync effect, and clears all references. */

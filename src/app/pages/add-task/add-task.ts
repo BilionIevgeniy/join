@@ -16,11 +16,13 @@ import { AddTaskComponent } from '@components/add-task/add-task';
   styleUrl: './add-task.scss',
 })
 export class AddTaskPage {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private taskService = inject(TaskService);
   private contactService = inject(ContactService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
+  // ─── COMPUTED ─────────────────────────────────────────────
   isLoading = this.taskService.isLoading;
   contacts = this.contactService.contacts;
 
@@ -33,6 +35,8 @@ export class AddTaskPage {
     ),
     { initialValue: 'todo' as TaskStatus },
   );
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   async onSave(dto: CreateTaskDto): Promise<void> {
     const result = await this.taskService.addTask(dto);

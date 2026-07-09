@@ -28,14 +28,15 @@ import { toMapById } from '../utils/collection.utils';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private supabase = inject(SupabaseService);
   private toastService = inject(ToastService);
 
-  // Signals
+  // ─── STATE ────────────────────────────────────────────────
   private contactsMap = signal<Record<string, Contact>>({});
   isLoading = signal(false);
 
-  // Computed signals
+  // ─── COMPUTED ─────────────────────────────────────────────
   contacts = computed(() => Object.values(this.contactsMap()));
   sortedContacts = computed(() =>
     [...this.contacts()].sort((a, b) => a.first_name.localeCompare(b.first_name)),

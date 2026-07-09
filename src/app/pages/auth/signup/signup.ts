@@ -33,15 +33,17 @@ function passwordsMatchValidator(control: AbstractControl): ValidationErrors | n
   styleUrl: './signup.scss',
 })
 export class Signup {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
 
-  isLoading = this.authService.isLoading;
+  // ─── STATE ────────────────────────────────────────────────
   showPassword = signal(false);
   showConfirmPassword = signal(false);
   acceptedPolicy = signal(false);
   policyTouched = signal(false);
 
+  // ─── FORM ─────────────────────────────────────────────────
   form = this.fb.group(
     {
       first_name: ['', NAME_VALIDATORS],
@@ -54,8 +56,13 @@ export class Signup {
   );
 
   private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.value });
+
+  // ─── COMPUTED ─────────────────────────────────────────────
+  isLoading = this.authService.isLoading;
   hasPasswordInput = computed(() => !!this.formValue().password);
   hasConfirmPasswordInput = computed(() => !!this.formValue().confirmPassword);
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   isFormValid(): boolean {
     return this.form.valid && this.acceptedPolicy();

@@ -11,17 +11,22 @@ import { TaskCard } from '@components/board/task/task-card/task-card';
   styleUrl: './board-column.scss',
 })
 export class BoardColumn {
+  // ─── INPUTS ───────────────────────────────────────────────
   title = input.required<string>();
   status = input.required<TaskStatus>();
   tasks = input<Task[]>([]);
   showAddIcon = input<boolean>(true);
 
+  // ─── OUTPUTS ──────────────────────────────────────────────
   addTask = output<TaskStatus>();
   taskOpened = output<Task>();
   taskMoved = output<{ taskId: string; newStatus: TaskStatus }>();
 
+  // ─── STATE ────────────────────────────────────────────────
   isDragOver = signal(false);
   private dragCounter = 0;
+
+  // ─── DRAG & DROP ──────────────────────────────────────────
 
   onDragEnter(event: DragEvent): void {
     event.preventDefault();
@@ -50,6 +55,8 @@ export class BoardColumn {
       this.taskMoved.emit({ taskId, newStatus: this.status() });
     }
   }
+
+  // ─── MOVE MENU ────────────────────────────────────────────
 
   onTaskMoveTo(task: Task, newStatus: TaskStatus): void {
     this.taskMoved.emit({ taskId: task.id, newStatus });

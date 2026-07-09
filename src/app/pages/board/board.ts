@@ -30,12 +30,14 @@ import { TaskModal } from '@components/board/task/task-modal/task-modal';
   styleUrl: './board.scss',
 })
 export class Board {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private taskService = inject(TaskService);
   private contactService = inject(ContactService);
   private modalService = inject(ModalService);
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
 
+  // ─── STATE ────────────────────────────────────────────────
   searchQuery = signal('');
 
   private mobileQuery = window.matchMedia('(width <= 1025px)');
@@ -47,16 +49,7 @@ export class Board {
     this.destroyRef.onDestroy(() => this.mobileQuery.removeEventListener('change', onChange));
   }
 
-  private matchesSearch = (title: string, description: string) => {
-    const q = this.searchQuery().toLowerCase().trim();
-    if (!q) return true;
-    return title.toLowerCase().includes(q) || description.toLowerCase().includes(q);
-  };
-
-  /** Applies the current search query to a list of tasks, by title/description. */
-  private filterBySearch = (tasks: Task[]): Task[] =>
-    tasks.filter((t) => this.matchesSearch(t.title, t.description));
-
+  // ─── COMPUTED ─────────────────────────────────────────────
   todoTasks = computed(() => this.filterBySearch(this.taskService.todoTasks()));
   inProgressTasks = computed(() => this.filterBySearch(this.taskService.inProgressTasks()));
   awaitingFeedbackTasks = computed(() =>
@@ -80,6 +73,8 @@ export class Board {
     },
     { title: STATUS_LABELS.done, status: 'done', tasks: this.doneTasks(), showAddIcon: false },
   ]);
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   onSearchChange(query: string): void {
     this.searchQuery.set(query);
@@ -113,6 +108,13 @@ export class Board {
     });
   }
 
+  /** Called by drag-and-drop when a task is dropped into a different column. */
+  onTaskMoved(event: { taskId: string; newStatus: TaskStatus }): void {
+    this.taskService.moveTask(event.taskId, event.newStatus);
+  }
+
+  // ─── PRIVATE ──────────────────────────────────────────────
+
   private onEditTask(task: Task): void {
     this.openTaskFormModal({ task });
   }
@@ -140,8 +142,14 @@ export class Board {
     });
   }
 
-  /** Called by drag-and-drop when a task is dropped into a different column. */
-  onTaskMoved(event: { taskId: string; newStatus: TaskStatus }): void {
-    this.taskService.moveTask(event.taskId, event.newStatus);
+  private matchesSearch(title: string, description: string): boolean {
+    const q = this.searchQuery().toLowerCase().trim();
+    if (!q) return true;
+    return title.toLowerCase().includes(q) || description.toLowerCase().includes(q);
+  }
+
+  /** Applies the current search query to a list of tasks, by title/description. */
+  private filterBySearch(tasks: Task[]): Task[] {
+    return tasks.filter((t) => this.matchesSearch(t.title, t.description));
   }
 }

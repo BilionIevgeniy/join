@@ -24,12 +24,15 @@ const TASK_WITH_CONTACTS_SELECT = `
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private supabase = inject(SupabaseService);
   private toast = inject(ToastService);
 
+  // ─── STATE ────────────────────────────────────────────────
   private tasksMap = signal<Record<string, Task>>({});
   isLoading = signal(false);
 
+  // ─── COMPUTED ─────────────────────────────────────────────
   // Array of all tasks — for search and general operations
   tasks = computed(() => Object.values(this.tasksMap()));
 

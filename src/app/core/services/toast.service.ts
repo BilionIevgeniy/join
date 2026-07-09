@@ -22,6 +22,8 @@ export class ToastService {
     this.toasts.update((list) => list.filter((t) => t.id !== id));
   }
 
+  // ─── PRIVATE ──────────────────────────────────────────────
+
   private show(message: string, type: ToastType): void {
     const toast: Toast = { id: this.generateId(), message, type };
     this.toasts.update((list) => [...list, toast]);

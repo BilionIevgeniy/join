@@ -13,30 +13,37 @@ import { Button } from '@shared/button/button';
   styleUrl: './login.scss',
 })
 export class Login {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
 
-  isLoading = this.authService.isLoading;
+  // ─── STATE ────────────────────────────────────────────────
   showPassword = signal(false);
 
+  // ─── FORM ─────────────────────────────────────────────────
   form = this.fb.group({
     email: ['', EMAIL_VALIDATORS],
     password: ['', PASSWORD_VALIDATORS],
   });
 
+  private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.value });
+
+  // ─── COMPUTED ─────────────────────────────────────────────
+  isLoading = this.authService.isLoading;
+  hasPasswordInput = computed(() => !!this.formValue().password);
+
+  // ─── PUBLIC API ───────────────────────────────────────────
+
   isFormValid(): boolean {
     return this.form.valid;
   }
 
-  private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.value });
-  hasPasswordInput = computed(() => !!this.formValue().password);
+  isFieldInvalid(field: string): boolean {
+    return isFieldInvalid(this.form, field);
+  }
 
   togglePasswordVisibility(): void {
     this.showPassword.update((v) => !v);
-  }
-
-  isFieldInvalid(field: string): boolean {
-    return isFieldInvalid(this.form, field);
   }
 
   onLogin(): void {

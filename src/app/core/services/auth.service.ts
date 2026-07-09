@@ -23,14 +23,17 @@ const GUEST_USER: Contact = {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private supabase = inject(SupabaseService);
   private contactService = inject(ContactService);
   private toastService = inject(ToastService);
   private router = inject(Router);
 
+  // ─── STATE ────────────────────────────────────────────────
   currentUser = signal<Contact | null>(null);
   isLoading = signal(false);
 
+  // ─── COMPUTED ─────────────────────────────────────────────
   isLoggedIn = computed(() => !!this.currentUser());
   isGuest = computed(() => this.currentUser()?.id === 'guest');
 

@@ -14,19 +14,25 @@ import { Button } from '@shared/button/button';
   styleUrl: './contact-modal.scss',
 })
 export class ContactModal implements OnInit {
+  // ─── INPUTS ───────────────────────────────────────────────
   mode = input<ContactMode>('add');
   contact = input<Contact | null>(null);
   isLoading = input<boolean>(false);
+
+  // ─── OUTPUTS ──────────────────────────────────────────────
   save = output<CreateContactDto>();
   delete = output<Contact>();
   closed = output<void>();
 
+  // ─── FORM ─────────────────────────────────────────────────
   form = new FormGroup({
     first_name: new FormControl('', NAME_VALIDATORS),
     last_name: new FormControl('', NAME_VALIDATORS),
     email: new FormControl('', EMAIL_VALIDATORS),
     phone: new FormControl('', [Validators.required, Validators.pattern(/^\+?[0-9]+$/)]),
   });
+
+  // ─── LIFECYCLE ────────────────────────────────────────────
 
   ngOnInit(): void {
     const contact = this.contact();
@@ -39,6 +45,8 @@ export class ContactModal implements OnInit {
       });
     }
   }
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   getField(name: string) {
     return this.form.get(name)!;
