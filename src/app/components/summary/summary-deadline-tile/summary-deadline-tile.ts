@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
 
+/** Summary tile showing the urgent-task count and the nearest upcoming deadline. */
 @Component({
   selector: 'app-summary-deadline-tile',
   standalone: true,

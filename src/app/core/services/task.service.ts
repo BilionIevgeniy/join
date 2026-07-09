@@ -153,6 +153,7 @@ export class TaskService {
 
   // ─── SEARCH ───────────────────────────────────────────────────
 
+  /** Filters loaded tasks by title/description. Returns all tasks when `query` is blank. */
   searchTasks(query: string): Task[] {
     const q = query.toLowerCase().trim();
     if (!q) return this.tasks();
@@ -167,6 +168,10 @@ export class TaskService {
    * Applies a local update immediately (optimistic), persists it, and rolls back
    * to the previous value if the request fails. Used by field-only updates
    * (status, subtasks) that don't need the full create/update RPC round-trip.
+   * @param updater - derives the new local task from the existing one
+   * @param persist - performs the actual write; only its `error` is checked
+   * @param operation - short label used in the console error log
+   * @param userMessage - shown via a toast if `persist` fails
    */
   private async applyOptimisticUpdate(
     id: string,

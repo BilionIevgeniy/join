@@ -21,6 +21,10 @@ const GUEST_USER: Contact = {
   auth_user_id: '',
 };
 
+/**
+ * AuthService — session state and sign-up/sign-in/sign-out flows.
+ * Wraps Supabase Auth and keeps {@link currentUser} in sync with the linked {@link Contact}.
+ */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   // ─── DEPENDENCIES ───────────────────────────────────────────
@@ -56,7 +60,10 @@ export class AuthService {
 
   // ─── AUTH ─────────────────────────────────────────────────
 
-  /** Creates a Supabase Auth user and its linked contact, then signs the user in. */
+  /**
+   * Creates a Supabase Auth user and its linked contact, then signs the user in.
+   * @returns Whether sign-up succeeded — errors are already reported via {@link ToastService} internally.
+   */
   async signUp(
     firstName: string,
     lastName: string,
@@ -130,7 +137,10 @@ export class AuthService {
     return true;
   }
 
-  /** Step 1: creates the Supabase Auth user. Step 2: upserts its linked contact. */
+  /**
+   * Step 1: creates the Supabase Auth user. Step 2: upserts its linked contact.
+   * Avatar `color`/`initials` are generated here, once, at registration (see CLAUDE.md).
+   */
   private async createAuthUserAndContact(
     firstName: string,
     lastName: string,
@@ -162,6 +172,7 @@ export class AuthService {
     this.toastService.error(message);
   }
 
+  /** Loads the {@link Contact} linked to a Supabase Auth user id and sets it as {@link currentUser}. */
   private async loadContactForUser(authUserId: string): Promise<void> {
     const contact = await this.contactService.getByAuthUserId(authUserId);
     if (!contact) {

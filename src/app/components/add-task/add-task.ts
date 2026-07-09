@@ -305,6 +305,7 @@ export class AddTaskComponent implements OnInit {
 
   // ─── PRIVATE ──────────────────────────────────────────────
 
+  /** Rejects past due dates, except the task's own original date so editing other fields doesn't block saving. */
   private minDateValidator(): ValidatorFn {
     return (control: AbstractControl) => {
       if (!control.value) return null;
@@ -313,6 +314,7 @@ export class AddTaskComponent implements OnInit {
     };
   }
 
+  /** Serializes form + subtasks into a comparable string, used by {@link hasChanges}. */
   private buildSnapshot(formValue: typeof this.form.value, subtasks: Subtask[]): string {
     return JSON.stringify({
       title: formValue.title ?? '',
