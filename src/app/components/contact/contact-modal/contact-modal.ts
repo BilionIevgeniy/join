@@ -29,7 +29,7 @@ export class ContactModal implements OnInit {
     first_name: new FormControl('', NAME_VALIDATORS),
     last_name: new FormControl('', NAME_VALIDATORS),
     email: new FormControl('', EMAIL_VALIDATORS),
-    phone: new FormControl('', [Validators.required, Validators.pattern(/^\+?[0-9]+$/)]),
+    phone: new FormControl('', [Validators.required, Validators.pattern(/^\+?[0-9\s]+$/)]),
   });
 
   // ─── LIFECYCLE ────────────────────────────────────────────
@@ -69,7 +69,7 @@ export class ContactModal implements OnInit {
       first_name: (this.getField('first_name').value ?? '').trim(),
       last_name: (this.getField('last_name').value ?? '').trim(),
       email: this.getField('email').value ?? '',
-      phone: this.getField('phone').value ?? '',
+      phone: (this.getField('phone').value ?? '').trim(),
     });
   }
 
