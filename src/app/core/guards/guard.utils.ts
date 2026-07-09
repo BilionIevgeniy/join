@@ -5,8 +5,8 @@ import { RoutesEnum } from '../models/routes.model';
 
 /**
  * Builds a `CanActivateFn` that allows navigation when `condition` is true,
- * redirecting to `redirectTo` otherwise. Shared by {@link authGuard} and
- * {@link guestGuard}, which only differ in the condition and redirect target.
+ * redirecting to `redirectTo` otherwise. Shared by `authGuard` and
+ * `guestGuard`, which only differ in the condition and redirect target.
  */
 export function createAuthGuard(
   condition: (authService: AuthService) => boolean,

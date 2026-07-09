@@ -25,10 +25,10 @@ import { countRemaining, takeVisible } from '@core/utils/collection.utils';
 /**
  * AddTaskComponent — create/edit form for a task.
  *
- * Used both as a standalone page ({@link AddTaskPage}) and inside the app-wide
- * modal (opened via {@link ModalService} for the "add task" / "edit task" flows).
+ * Used both as a standalone page (AddTaskPage) and inside the app-wide
+ * modal (opened via ModalService for the "add task" / "edit task" flows).
  * Emits {@link save} with a ready-to-persist DTO; the caller owns actually
- * calling {@link TaskService}.
+ * calling TaskService.
  */
 @Component({
   selector: 'app-add-task-component',

@@ -1,7 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { Toast, ToastType } from '@core/models/toast.model';
 
-/** ToastService — queues success/error notifications for display by {@link ToastContainer}. */
+/** ToastService — queues success/error notifications for display by ToastContainer. */
 @Injectable({ providedIn: 'root' })
 export class ToastService {
   // Chronological order: oldest first, newest last

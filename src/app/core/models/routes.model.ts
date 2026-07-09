@@ -1,4 +1,4 @@
-/** Route path segments used for navigation and for matching the current URL (e.g. in {@link AuthLayout}). */
+/** Route path segments used for navigation and for matching the current URL (e.g. in AuthLayout). */
 export enum RoutesEnum {
   SUMMARY = 'summary',
   BOARD = 'board',
@@ -11,7 +11,7 @@ export enum RoutesEnum {
   HELP = 'help',
 }
 
-/** One entry in the sidebar navigation, rendered by {@link Sidebar}. */
+/** One entry in the sidebar navigation, rendered by Sidebar. */
 export interface NavItem {
   label: string;
   route: string;

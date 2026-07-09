@@ -57,7 +57,7 @@ export interface CreateTaskDto {
   category: TaskCategory;
   subtasks: Subtask[];
   due_date: string;
-  /** Contact UUIDs to assign — persisted via a separate join table by {@link TaskService}. */
+  /** Contact UUIDs to assign — persisted via a separate join table by TaskService. */
   contact_ids: string[];
 }
 
@@ -112,7 +112,7 @@ export function getCategoryModifierClass(category: TaskCategory, block: string):
 //  BOARD COLUMN CONFIG — one column's data, built by the Board page
 // ============================================================
 
-/** One board column's rendering data, assembled by the Board page and passed to {@link BoardColumn}. */
+/** One board column's rendering data, assembled by the Board page and passed to BoardColumn. */
 export interface BoardColumnConfig {
   title: string;
   status: TaskStatus;
