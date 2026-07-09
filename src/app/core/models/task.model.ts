@@ -6,6 +6,9 @@ import { Contact } from './contact.model';
 
 export type TaskStatus = 'todo' | 'inProgress' | 'awaitingFeedback' | 'done';
 
+/** All task statuses, in board column order. */
+export const ALL_TASK_STATUSES: TaskStatus[] = ['todo', 'inProgress', 'awaitingFeedback', 'done'];
+
 export type TaskPriority = 'urgent' | 'medium' | 'low';
 
 export type TaskCategory = 'User Story' | 'Technical Task';
@@ -74,6 +77,31 @@ export const STATUS_LABELS: Record<TaskStatus, string> = {
   awaitingFeedback: 'Awaiting feedback',
   done: 'Done',
 };
+
+// ============================================================
+//  Helper map of priorities → label for UI
+// ============================================================
+
+export const PRIORITY_LABELS: Record<TaskPriority, string> = {
+  urgent: 'Urgent',
+  medium: 'Medium',
+  low: 'Low',
+};
+
+/** Filename of the priority icon asset for a given priority (e.g. `urgent-prio-icon.svg`). */
+export function getPriorityIconUrl(priority: TaskPriority): string {
+  return `${priority}-prio-icon.svg`;
+}
+
+/**
+ * BEM modifier class for a task's category, scoped to the given block name.
+ * Used by task-card and task-modal, which render the same category pill under
+ * different block names (`task-card__category--...` vs `task-modal__category--...`).
+ */
+export function getCategoryModifierClass(category: TaskCategory, block: string): string {
+  const modifier = category === 'User Story' ? 'user-story' : 'technical-task';
+  return `${block}__category--${modifier}`;
+}
 
 // ============================================================
 //  BOARD COLUMN CONFIG — one column's data, built by the Board page

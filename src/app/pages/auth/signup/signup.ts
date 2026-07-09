@@ -9,6 +9,12 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import {
+  EMAIL_VALIDATORS,
+  NAME_VALIDATORS,
+  PASSWORD_VALIDATORS,
+  isFieldInvalid,
+} from '@core/utils/form.utils';
 import { Button } from '@shared/button/button';
 import { CheckboxButton } from '@shared/checkbox-button/checkbox-button';
 import { BackButton } from '@shared/back-button/back-button';
@@ -38,31 +44,10 @@ export class Signup {
 
   form = this.fb.group(
     {
-      first_name: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s-]+$/),
-        ],
-      ],
-      last_name: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.pattern(/^[a-zA-ZÄÖÜäöüß\s-]+$/),
-        ],
-      ],
-      email: ['', [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/)]],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).+$/),
-        ],
-      ],
+      first_name: ['', NAME_VALIDATORS],
+      last_name: ['', NAME_VALIDATORS],
+      email: ['', EMAIL_VALIDATORS],
+      password: ['', PASSWORD_VALIDATORS],
       confirmPassword: ['', [Validators.required]],
     },
     { validators: passwordsMatchValidator },
@@ -77,8 +62,7 @@ export class Signup {
   }
 
   isFieldInvalid(field: string): boolean {
-    const control = this.form.get(field);
-    return !!(control && control.touched && control.invalid);
+    return isFieldInvalid(this.form, field);
   }
 
   isConfirmPasswordInvalid(): boolean {

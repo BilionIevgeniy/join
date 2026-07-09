@@ -6,6 +6,10 @@ export const GREETING_INTRO_SESSION_KEY = 'summaryGreetingIntroPlayed';
 export const GREETING_INTRO_HOLD_MS = 1500;
 export const GREETING_INTRO_TRANSITION_MS = 400;
 
+/**
+ * Summary — presentational dashboard of task-count tiles and the greeting header.
+ * Plays a one-time greeting animation on the first visit per browser session.
+ */
 @Component({
   selector: 'app-summary',
   standalone: true,

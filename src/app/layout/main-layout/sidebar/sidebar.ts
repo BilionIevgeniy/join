@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavItem, RoutesEnum } from '@core/models/routes.model';
 import { AuthService } from '@core/services/auth.service';
 
+/** Sidebar — primary navigation, shown only when a user is logged in. */
 @Component({
   selector: 'app-sidebar',
   standalone: true,

@@ -1,5 +1,6 @@
 import { Component, input, output, signal } from '@angular/core';
 
+/** SearchInput — controlled text input emitting `searchChange` on every keystroke. */
 @Component({
   selector: 'app-search-input',
   standalone: true,

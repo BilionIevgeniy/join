@@ -5,6 +5,7 @@ import { TaskService } from '@core/services/task.service';
 import { RoutesEnum } from '@core/models/routes.model';
 import { Summary as SummaryComponent } from '@components/summary/summary';
 
+/** Summary — page-level container wiring auth/task data into the presentational summary view. */
 @Component({
   selector: 'app-summary-page',
   standalone: true,

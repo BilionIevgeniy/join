@@ -8,6 +8,7 @@ import { Button } from '@shared/button/button';
 import { ContactModal } from '@components/contact/contact-modal/contact-modal';
 import { AuthService } from '@core/services/auth.service';
 
+/** Contacts — page listing all contacts grouped alphabetically, with add/edit/delete via modal. */
 @Component({
   selector: 'app-contacts',
   standalone: true,
@@ -66,6 +67,7 @@ export class Contacts {
     this.modalService.close();
   }
 
+  /** Deletes a contact and signs out if the deleted contact was the current user. */
   async deleteContact(contact: Contact): Promise<void> {
     this.selectedContact.set(null);
     const result = await this.contactService.deleteContact(
@@ -78,6 +80,7 @@ export class Contacts {
     this.modalService.close();
   }
 
+  /** Alphabet section headers present in the currently grouped contacts. */
   getLetters(): string[] {
     return Object.keys(this.groupedContacts()).sort();
   }

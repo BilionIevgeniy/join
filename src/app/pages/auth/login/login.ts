@@ -1,7 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '@app/core/services/auth.service';
+import { EMAIL_VALIDATORS, PASSWORD_VALIDATORS, isFieldInvalid } from '@core/utils/form.utils';
 import { Button } from '@shared/button/button';
 
 @Component({
@@ -19,15 +20,8 @@ export class Login {
   showPassword = signal(false);
 
   form = this.fb.group({
-    email: ['', [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/)]],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).+$/),
-      ],
-    ],
+    email: ['', EMAIL_VALIDATORS],
+    password: ['', PASSWORD_VALIDATORS],
   });
 
   isFormValid(): boolean {
@@ -42,8 +36,7 @@ export class Login {
   }
 
   isFieldInvalid(field: string): boolean {
-    const control = this.form.get(field);
-    return !!(control && control.touched && control.invalid);
+    return isFieldInvalid(this.form, field);
   }
 
   onLogin(): void {

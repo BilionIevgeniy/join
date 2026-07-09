@@ -1,12 +1,17 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 import {
+  ALL_TASK_STATUSES,
+  getCategoryModifierClass,
+  getPriorityIconUrl,
   getTaskContacts,
   STATUS_LABELS,
   Task,
   TaskStatus,
 } from '@core/models/task.model';
+import { countRemaining, takeVisible } from '@core/utils/collection.utils';
 import { Avatar } from '@shared/avatar/avatar';
 
+/** TaskCard — draggable card rendered inside a board column, summarizing one task. */
 @Component({
   selector: 'app-task-card',
   standalone: true,
@@ -25,9 +30,9 @@ export class TaskCard {
   showMoveMenu = signal(false);
 
   assignedContacts = computed(() => getTaskContacts(this.task()));
-  visibleContacts = computed(() => this.assignedContacts().slice(0, this.maxVisibleAvatars));
+  visibleContacts = computed(() => takeVisible(this.assignedContacts(), this.maxVisibleAvatars));
   remainingContactsCount = computed(() =>
-    Math.max(0, this.assignedContacts().length - this.maxVisibleAvatars),
+    countRemaining(this.assignedContacts(), this.maxVisibleAvatars),
   );
 
   doneSubtasks = computed(() => this.task().subtasks.filter((s) => s.done).length);
@@ -37,25 +42,27 @@ export class TaskCard {
     return total === 0 ? 0 : (this.doneSubtasks() / total) * 100;
   });
 
-  categoryClass = computed(() =>
-    this.task().category === 'User Story'
-      ? 'task-card__category--user-story'
-      : 'task-card__category--technical-task',
-  );
+  categoryClass = computed(() => getCategoryModifierClass(this.task().category, 'task-card'));
 
-  priorityIcon = computed(() => `${this.task().priority}-prio-icon.svg`);
+  priorityIcon = computed(() => getPriorityIconUrl(this.task().priority));
 
   otherStatuses = computed(() => {
     const current = this.task().status;
-    const all: TaskStatus[] = ['todo', 'inProgress', 'awaitingFeedback', 'done'];
-    return all.filter((s) => s !== current).map((s) => ({ status: s, label: STATUS_LABELS[s] }));
+    return ALL_TASK_STATUSES.filter((s) => s !== current).map((s) => ({
+      status: s,
+      label: STATUS_LABELS[s],
+    }));
   });
 
   onDragStart(event: DragEvent): void {
     this.isDragging.set(true);
     event.dataTransfer?.setData('text/plain', this.task().id);
     if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+    this.setCustomDragImage(event);
+  }
 
+  /** Renders an off-screen clone of the card as the native drag ghost image. */
+  private setCustomDragImage(event: DragEvent): void {
     const el = event.currentTarget as HTMLElement;
     const clone = el.cloneNode(true) as HTMLElement;
     clone.style.cssText = `

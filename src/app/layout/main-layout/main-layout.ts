@@ -8,6 +8,7 @@ import { Modal } from '@shared/modal/modal';
 import { ModalService } from '@core/services/modal.service';
 import { TaskService } from '@core/services/task.service';
 
+/** MainLayout — shell for authenticated pages: sidebar, header, router outlet, and the app-wide modal/loader. */
 @Component({
   selector: 'app-main-layout',
   standalone: true,

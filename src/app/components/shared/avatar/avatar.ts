@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 
+/** Avatar — renders initials on a colored badge, or a default person icon when there are none. */
 @Component({
   selector: 'app-avatar',
   standalone: true,
