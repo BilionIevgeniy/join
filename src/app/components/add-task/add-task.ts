@@ -282,7 +282,8 @@ export class AddTaskComponent implements OnInit {
       title: title!,
       description: description ?? '',
       due_date: due_date!,
-      status: this.initialStatus(),
+      // Editing keeps the task's current column; only a brand-new task uses initialStatus.
+      status: this.task()?.status ?? this.initialStatus(),
       priority: (priority as TaskPriority) ?? 'medium',
       category: category as TaskCategory,
       subtasks: this.subtasks(),
