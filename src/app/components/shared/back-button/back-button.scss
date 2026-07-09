@@ -19,3 +19,11 @@
     height: 31px;
   }
 }
+
+@media (max-width: 768px) {
+  .back-button {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+  }
+}

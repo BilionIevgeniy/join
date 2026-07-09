@@ -188,7 +188,7 @@
     gap: 20px;
     width: 100%;
     max-width: 396px;
-    padding: 32px 24px;
+    padding: 24px 24px;
     border-radius: 20px;
 
     &__title-row {
@@ -197,6 +197,16 @@
 
     &__title {
       font-size: var(--font-size-xl);
+    }
+
+    &__divider {
+      width: 88px;
+    }
+
+    &__back-btn {
+      top: -2px;
+      left: 2px;
+      transform: none;
     }
 
     &__form {
