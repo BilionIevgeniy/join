@@ -25,6 +25,25 @@ export interface Subtask {
 }
 
 // ============================================================
+//  TASK FILE — stored as jsonb array inside tasks table
+// ============================================================
+
+/**
+ * A single file attached to a {@link Task}, stored inline as part of the
+ * task's jsonb `files` column. `size` is the original file size in bytes
+ * (not the larger size of the Base64-encoded `data` string). `data` holds
+ * the file content Base64-encoded — see the (upcoming) base64 utils.
+ */
+export interface TaskFile {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+  createdAt: string;
+  data: string;
+}
+
+// ============================================================
 //  TASK — matches Supabase response with joined contacts
 // ============================================================
 
@@ -36,6 +55,7 @@ export interface Task {
   priority: TaskPriority;
   category: TaskCategory;
   subtasks: Subtask[];
+  files: TaskFile[];
   due_date: string;
   created_at: string;
   /**
@@ -56,6 +76,7 @@ export interface CreateTaskDto {
   priority: TaskPriority;
   category: TaskCategory;
   subtasks: Subtask[];
+  files: TaskFile[];
   due_date: string;
   /** Contact UUIDs to assign — persisted via a separate join table by {@link TaskService}. */
   contact_ids: string[];

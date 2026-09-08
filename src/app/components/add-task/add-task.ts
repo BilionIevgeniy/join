@@ -287,6 +287,8 @@ export class AddTaskComponent implements OnInit {
       priority: (priority as TaskPriority) ?? 'medium',
       category: category as TaskCategory,
       subtasks: this.subtasks(),
+      // TODO(AT-6/AT-7): wire up real selected files once the filepicker exists.
+      files: [],
       contact_ids: assigned_contacts ?? [],
     };
     this.save.emit(dto);
