@@ -544,6 +544,185 @@
   border-radius: 50%;
 }
 
+// ─── ATTACHMENTS ──────────────────────────────────────────
+.add-task__attachments-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-task__delete-all {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-right: 5px;
+  font-size: 12px;
+  color: var(--inverted-text-color);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  opacity: 0.7;
+  transition: opacity 100ms ease;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.add-task__hint-text {
+  margin: -4px 0 0;
+  font-size: var(--font-size-s);
+  color: var(--inverted-text-color);
+  opacity: 0.6;
+}
+
+// The visible dropzone — a <label for="task-files"> wrapping/associated with
+// the real (visually-hidden) file input below, so a click anywhere on it
+// opens the native file dialog with no JS needed.
+.add-task__filepicker {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  font-size: var(--font-size-sm);
+  color: var(--inverted-text-color);
+  cursor: pointer;
+  background: transparent;
+  border: 1.5px dashed var(--border-color);
+  border-radius: var(--radius);
+  transition:
+    border-color 100ms ease,
+    background 100ms ease;
+
+  &:hover {
+    border-color: var(--primary-color);
+  }
+
+  &--dragover {
+    background: var(--bg-color-lighter);
+    border-color: var(--primary-color);
+  }
+
+  // The real <input> is visually hidden but still focusable (Tab lands on
+  // it, Enter/Space opens the dialog). Since it has no visible box of its
+  // own, mirror its focus state onto this label instead.
+  &:has(+ .add-task__filepicker-input:focus-visible) {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+}
+
+.add-task__filepicker-text {
+  font-size: var(--font-size-s);
+  color: var(--inverted-text-color);
+  opacity: 0.6;
+}
+
+.add-task__filepicker-icon {
+  font-size: 18px;
+  color: var(--inverted-text-color);
+  opacity: 0.6;
+}
+
+// Standard "visually hidden" pattern — NOT display:none/visibility:hidden,
+// both of which would also remove the input from the tab order and break
+// keyboard access.
+.add-task__filepicker-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip-path: inset(50%);
+}
+
+.add-task__file-list {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 4px;
+  overflow-x: auto;
+  list-style: none;
+}
+
+.add-task__file-item {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 4px;
+  width: 112px;
+  height: 83px;
+}
+
+.add-task__file-thumb-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+
+  // Reveal the remove button on hover AND on keyboard focus (:focus-within
+  // fires when the button inside receives focus) — hover-only would make it
+  // permanently invisible to keyboard-only users.
+  &:hover,
+  &:focus-within {
+    .add-task__file-remove {
+      opacity: 1;
+    }
+  }
+}
+
+.add-task__file-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.add-task__file-remove {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgb(0 0 0 / 45%);
+  border: none;
+  opacity: 0;
+  transition: opacity 100ms ease;
+
+  &:focus-visible {
+    // Negative offset keeps the ring inside the button's own box — a
+    // regular outline would get clipped by the wrapper's overflow: hidden.
+    outline: 2px solid #fff;
+    outline-offset: -2px;
+    opacity: 1;
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
+
+    // delete-icon.svg is dark by default; invert so it reads against the
+    // dark overlay instead of adding a second, white-only icon asset.
+    filter: invert(1);
+  }
+}
+
+.add-task__file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  color: var(--inverted-text-color);
+  text-align: center;
+  white-space: nowrap;
+}
+
 // ─── SUBTASKS ─────────────────────────────────────────────
 .add-task__subtask-input-row {
   position: relative;
