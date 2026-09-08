@@ -291,6 +291,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-width: 0; // let this grid item shrink below its content's natural width
 
   &:first-of-type {
     position: relative;
@@ -624,12 +625,6 @@
   opacity: 0.6;
 }
 
-.add-task__filepicker-icon {
-  font-size: 18px;
-  color: var(--inverted-text-color);
-  opacity: 0.6;
-}
-
 // Standard "visually hidden" pattern — NOT display:none/visibility:hidden,
 // both of which would also remove the input from the tab order and break
 // keyboard access.
@@ -647,25 +642,35 @@
 
 .add-task__file-list {
   display: flex;
+
+  // width and overflow-x: auto never kicks in — the whole grid column
+  // grows instead of scrolling
   gap: 8px;
+  min-width: 0; // without this the row refuses to shrink below its content
   padding-bottom: 4px;
   overflow-x: auto;
   list-style: none;
 }
 
+// One shared border wraps both the thumbnail and its filename (per Figma —
+// they're a single card, not two free-floating pieces). The item itself
+// clips/rounds; the inner thumb-wrapper no longer needs its own border.
 .add-task__file-item {
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
-  gap: 4px;
   width: 112px;
   height: 83px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
 }
 
 .add-task__file-thumb-wrapper {
   position: relative;
-  overflow: hidden;
-  border-radius: var(--radius);
+  flex: 1; // fills whatever height .add-task__file-name doesn't use — self
+  width: 100%;
+  min-height: 0; // adjusts if the label's height ever changes, no magic number
 
   // Reveal the remove button on hover AND on keyboard focus (:focus-within
   // fires when the button inside receives focus) — hover-only would make it
@@ -715,9 +720,10 @@
 }
 
 .add-task__file-name {
+  padding: 4px 6px;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 11px;
+  font-size: var(--font-size-s);
   color: var(--inverted-text-color);
   text-align: center;
   white-space: nowrap;

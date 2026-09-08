@@ -112,7 +112,7 @@
           <label class="add-task__filepicker" [class.add-task__filepicker--dragover]="isDragOver()" for="task-files"
             (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
             <span class="add-task__filepicker-text">Drag a file or browse</span>
-            <span class="add-task__filepicker-icon">+</span>
+            <span><img src="assets/icons/add-icon-gray.svg" alt="add-icon-gray" /></span>
           </label>
           <input id="task-files" class="add-task__filepicker-input" type="file" accept="image/jpeg,image/png" multiple
             (change)="onFilesSelected($event)" />
