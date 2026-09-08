@@ -15,12 +15,16 @@ import {
   TaskStatus,
   TaskCategory,
   Subtask,
+  TaskFile,
   CreateTaskDto,
 } from '@core/models/task.model';
 import { PriorityButton } from '@shared/button/priority-button/priority-button';
 import { Avatar } from '@shared/avatar/avatar';
 import { isFieldInvalid } from '@core/utils/form.utils';
 import { countRemaining, takeVisible } from '@core/utils/collection.utils';
+import { validateFile } from '@core/utils/file.utils';
+import { buildTaskFile } from '@core/utils/task-file.utils';
+import { ToastService } from '@core/services/toast.service';
 
 /**
  * AddTaskComponent — create/edit form for a task.
@@ -40,6 +44,7 @@ import { countRemaining, takeVisible } from '@core/utils/collection.utils';
 export class AddTaskComponent implements OnInit {
   // ─── DEPENDENCIES ───────────────────────────────────────────
   private fb = inject(FormBuilder);
+  private toast = inject(ToastService);
 
   // ─── INPUTS ───────────────────────────────────────────────
   /** Column the task is created into when there's no existing task (create mode). */
@@ -64,6 +69,8 @@ export class AddTaskComponent implements OnInit {
   // ─── STATE ────────────────────────────────────────────────
   today = new Date().toISOString().split('T')[0];
   subtasks = signal<Subtask[]>([]);
+  files = signal<TaskFile[]>([]);
+  isDragOver = signal(false);
   subtaskInput = signal('');
   isSubtaskActive = signal(false);
   editingSubtask = signal<string | null>(null); // id of subtask being edited
@@ -114,7 +121,9 @@ export class AddTaskComponent implements OnInit {
   // Typing a character and deleting it again correctly stays "unchanged".
   hasChanges = computed(() => {
     if (this.originalSnapshot === null) return true;
-    return this.buildSnapshot(this.formValue(), this.subtasks()) !== this.originalSnapshot;
+    return (
+      this.buildSnapshot(this.formValue(), this.subtasks(), this.files()) !== this.originalSnapshot
+    );
   });
 
   // ─── LIFECYCLE ────────────────────────────────────────────
@@ -129,10 +138,11 @@ export class AddTaskComponent implements OnInit {
 
     this.prefillFormFields(task);
     this.subtasks.set(task.subtasks ?? []);
+    this.files.set(task.files ?? []);
     this.prefillAssignedContacts(task);
 
     // Capture the baseline to compare future edits against.
-    this.originalSnapshot = this.buildSnapshot(this.form.value, this.subtasks());
+    this.originalSnapshot = this.buildSnapshot(this.form.value, this.subtasks(), this.files());
   }
 
   // ─── FORM VALIDITY ────────────────────────────────────────
@@ -273,6 +283,54 @@ export class AddTaskComponent implements OnInit {
     this.editingSubtask.set(null);
   }
 
+  // ─── FILES ────────────────────────────────────────────────
+
+  onFilesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.handleFiles(input.files);
+    input.value = ''; // reset so re-selecting the same file still fires 'change'
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragOver.set(true);
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragOver.set(false);
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragOver.set(false);
+    this.handleFiles(event.dataTransfer?.files ?? null);
+  }
+
+  removeFile(id: string): void {
+    this.files.update((list) => list.filter((f) => f.id !== id));
+  }
+
+  clearFiles(): void {
+    this.files.set([]);
+  }
+
+  private handleFiles(fileList: FileList | null): void {
+    if (!fileList) return;
+    Array.from(fileList).forEach((file) => this.processFile(file));
+  }
+
+  /** Validates one file and, if valid, compresses/encodes it and adds it to {@link files}. */
+  private async processFile(file: File): Promise<void> {
+    const result = validateFile(file);
+    if (!result.valid) {
+      this.toast.error(result.error!);
+      return;
+    }
+    const taskFile = await buildTaskFile(file);
+    this.files.update((list) => [...list, taskFile]);
+  }
+
   // ─── FORM ACTIONS ─────────────────────────────────────────
 
   onSave(): void {
@@ -287,8 +345,7 @@ export class AddTaskComponent implements OnInit {
       priority: (priority as TaskPriority) ?? 'medium',
       category: category as TaskCategory,
       subtasks: this.subtasks(),
-      // TODO(AT-6/AT-7): wire up real selected files once the filepicker exists.
-      files: [],
+      files: this.files(),
       contact_ids: assigned_contacts ?? [],
     };
     this.save.emit(dto);
@@ -297,6 +354,7 @@ export class AddTaskComponent implements OnInit {
   onClear(): void {
     this.form.reset({ priority: 'medium', assigned_contacts: [] });
     this.subtasks.set([]);
+    this.files.set([]);
     this.subtaskInput.set('');
     this.searchQuery.set('');
   }
@@ -316,8 +374,12 @@ export class AddTaskComponent implements OnInit {
     };
   }
 
-  /** Serializes form + subtasks into a comparable string, used by {@link hasChanges}. */
-  private buildSnapshot(formValue: typeof this.form.value, subtasks: Subtask[]): string {
+  /** Serializes form + subtasks + files into a comparable string, used by {@link hasChanges}. */
+  private buildSnapshot(
+    formValue: typeof this.form.value,
+    subtasks: Subtask[],
+    files: TaskFile[],
+  ): string {
     return JSON.stringify({
       title: formValue.title ?? '',
       description: formValue.description ?? '',
@@ -326,6 +388,11 @@ export class AddTaskComponent implements OnInit {
       category: formValue.category ?? '',
       assigned_contacts: [...(formValue.assigned_contacts ?? [])].sort(),
       subtasks: subtasks.map((s) => ({ id: s.id, title: s.title, done: s.done })),
+      // name+size+type, not id/data: id is a fresh UUID on every re-upload
+      // (would falsely flag "changed" for a removed-then-re-added identical
+      // file) and data is a potentially large Base64 string this computed
+      // would otherwise re-stringify on every keystroke.
+      files: files.map((f) => `${f.name}|${f.size}|${f.type}`).sort(),
     });
   }
 
