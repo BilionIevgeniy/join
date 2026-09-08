@@ -38,3 +38,17 @@ export function validateFile(file: File): FileValidationResult {
   }
   return { valid: true };
 }
+
+/**
+ * Reads a Blob's bytes as a Base64 data URL (`data:<mime>;base64,...`).
+ * Wraps the callback-based `FileReader` in a Promise; rejects on read errors
+ * instead of hanging (unlike a naive `onloadend`-only implementation).
+ */
+export function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error ?? new Error('FileReader failed.'));
+    reader.readAsDataURL(blob);
+  });
+}
