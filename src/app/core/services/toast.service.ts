@@ -28,11 +28,7 @@ export class ToastService {
   // ─── PRIVATE ──────────────────────────────────────────────
 
   private show(message: string, type: ToastType): void {
-    const toast: Toast = { id: this.generateId(), message, type };
+    const toast: Toast = { id: crypto.randomUUID(), message, type };
     this.toasts.update((list) => [...list, toast]);
-  }
-
-  private generateId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).slice(2);
   }
 }

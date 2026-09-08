@@ -244,7 +244,7 @@ export class AddTaskComponent implements OnInit {
     const title = this.subtaskInput().trim();
     if (!title) return;
     const subtask: Subtask = {
-      id: Date.now().toString(36),
+      id: crypto.randomUUID(),
       title,
       done: false,
     };
