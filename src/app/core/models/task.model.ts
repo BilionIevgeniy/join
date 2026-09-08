@@ -93,6 +93,18 @@ export function getTaskContacts(task: Task): Contact[] {
   return (task.assigned_contacts ?? []).map((ac) => ac.contact).filter((c): c is Contact => !!c);
 }
 
+/**
+ * Normalizes a {@link Task} fresh from Supabase. `subtasks`/`files` are
+ * nullable jsonb columns (a `default '[]'::jsonb`, but no `NOT NULL`
+ * constraint — matches existing precedent) — older rows or manually-edited
+ * ones can come back as `null` instead of `[]`. Call this once per task on
+ * read so the rest of the app can rely on the `Task` type's promise that
+ * both are always arrays, instead of every template/component re-guarding.
+ */
+export function normalizeTask(task: Task): Task {
+  return { ...task, subtasks: task.subtasks ?? [], files: task.files ?? [] };
+}
+
 // ============================================================
 //  Helper map of statuses → label for UI
 // ============================================================

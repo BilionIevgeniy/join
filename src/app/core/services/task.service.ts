@@ -10,7 +10,14 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { ToastService } from './toast.service';
-import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto, Subtask } from '@core/models/task.model';
+import {
+  Task,
+  TaskStatus,
+  CreateTaskDto,
+  UpdateTaskDto,
+  Subtask,
+  normalizeTask,
+} from '@core/models/task.model';
 import { logAndNotify, withLoading } from '../utils/async.utils';
 import { toMapById } from '../utils/collection.utils';
 
@@ -70,7 +77,7 @@ export class TaskService {
           .from('tasks')
           .select(TASK_WITH_CONTACTS_SELECT);
         if (error) throw error;
-        this.tasksMap.set(toMapById(data));
+        this.tasksMap.set(toMapById(data.map(normalizeTask)));
       } catch (err) {
         logAndNotify(this.toast, 'getAll tasks', err, 'Failed to load tasks.');
       }
@@ -233,6 +240,6 @@ export class TaskService {
       .select(TASK_WITH_CONTACTS_SELECT)
       .eq('id', id)
       .single();
-    if (!error && data) this.setOne(data);
+    if (!error && data) this.setOne(normalizeTask(data));
   }
 }

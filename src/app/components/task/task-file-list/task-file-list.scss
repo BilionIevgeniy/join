@@ -1,0 +1,112 @@
+// min-width: 0 is required — without it a flex row can't shrink below its
+// content's natural width, and overflow-x: auto never kicks in.
+.file-list {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  padding: 0 0 4px;
+  margin: 0;
+  overflow-x: auto;
+  list-style: none;
+}
+
+// One shared border wraps both the thumbnail and its filename (single card,
+// not two free-floating pieces).
+.file-item {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  width: 112px;
+  height: 83px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+}
+
+.file-thumb-wrapper {
+  position: relative;
+  flex: 1; // fills whatever height .file-name doesn't use — self-adjusting
+  width: 100%;
+  min-height: 0;
+
+  // Reveal the action buttons on hover AND keyboard focus (:focus-within
+  // fires when a button inside receives focus) — hover-only would make them
+  // permanently invisible to keyboard-only users.
+  &:hover,
+  &:focus-within {
+    .file-actions {
+      opacity: 1;
+    }
+  }
+}
+
+.file-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Full-image darkened overlay with the actions centered on top (per Figma)
+// — not corner badges. "view" being one of the two buttons here means the
+// AT-10 click-to-open-viewer interaction has a real target either way.
+.file-actions {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 45%);
+  opacity: 0;
+  transition: opacity 100ms ease;
+
+  // No reliable :hover on touch devices — show the same darkened/centered
+  // state permanently instead of requiring a hover that will never happen.
+  @media (hover: none) {
+    opacity: 1;
+  }
+}
+
+.file-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+
+  &:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 1px;
+  }
+}
+
+.file-action-icon {
+  width: 20px;
+  height: 20px;
+
+  // Default icons (delete/eye/download) are dark navy/gray — invert to
+  // white so they read against the dark overlay. On hover/focus, swap to
+  // the blue variant (same technique as the shared Button component,
+  // button.scss) and drop the filter so the blue actually shows through.
+  filter: brightness(0) invert(100%);
+
+  .file-action:hover &,
+  .file-action:focus-visible & {
+    content: var(--hover-icon);
+    filter: none;
+  }
+}
+
+.file-name {
+  padding: 4px 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--font-size-s);
+  color: var(--inverted-text-color);
+  text-align: center;
+  white-space: nowrap;
+}

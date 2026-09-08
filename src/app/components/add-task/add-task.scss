@@ -337,6 +337,7 @@
 }
 
 .add-task__label {
+  align-self: flex-start;
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--inverted-text-color);
@@ -352,6 +353,10 @@
 
 .add-task__input {
   @include input-base;
+
+  &--date {
+    cursor: pointer;
+  }
 }
 
 .add-task__textarea {
@@ -640,94 +645,9 @@
   clip-path: inset(50%);
 }
 
-.add-task__file-list {
-  display: flex;
-
-  // width and overflow-x: auto never kicks in — the whole grid column
-  // grows instead of scrolling
-  gap: 8px;
-  min-width: 0; // without this the row refuses to shrink below its content
-  padding-bottom: 4px;
-  overflow-x: auto;
-  list-style: none;
-}
-
-// One shared border wraps both the thumbnail and its filename (per Figma —
-// they're a single card, not two free-floating pieces). The item itself
-// clips/rounds; the inner thumb-wrapper no longer needs its own border.
-.add-task__file-item {
-  display: flex;
-  flex-shrink: 0;
-  flex-direction: column;
-  width: 112px;
-  height: 83px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-}
-
-.add-task__file-thumb-wrapper {
-  position: relative;
-  flex: 1; // fills whatever height .add-task__file-name doesn't use — self
-  width: 100%;
-  min-height: 0; // adjusts if the label's height ever changes, no magic number
-
-  // Reveal the remove button on hover AND on keyboard focus (:focus-within
-  // fires when the button inside receives focus) — hover-only would make it
-  // permanently invisible to keyboard-only users.
-  &:hover,
-  &:focus-within {
-    .add-task__file-remove {
-      opacity: 1;
-    }
-  }
-}
-
-.add-task__file-thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.add-task__file-remove {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: rgb(0 0 0 / 45%);
-  border: none;
-  opacity: 0;
-  transition: opacity 100ms ease;
-
-  &:focus-visible {
-    // Negative offset keeps the ring inside the button's own box — a
-    // regular outline would get clipped by the wrapper's overflow: hidden.
-    outline: 2px solid #fff;
-    outline-offset: -2px;
-    opacity: 1;
-  }
-
-  img {
-    width: 18px;
-    height: 18px;
-
-    // delete-icon.svg is dark by default; invert so it reads against the
-    // dark overlay instead of adding a second, white-only icon asset.
-    filter: invert(1);
-  }
-}
-
-.add-task__file-name {
-  padding: 4px 6px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: var(--font-size-s);
-  color: var(--inverted-text-color);
-  text-align: center;
-  white-space: nowrap;
-}
+// File preview cards (thumbnail + name + view/delete actions) now live in
+// the shared app-task-file-list component (task-file-list.scss) — reused
+// by the task detail modal too, see docs/ihk-image-upload.md.
 
 // ─── SUBTASKS ─────────────────────────────────────────────
 .add-task__subtask-input-row {

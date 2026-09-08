@@ -1,6 +1,6 @@
 import { Component, input, output, signal } from '@angular/core';
 import { Task, TaskStatus } from '@core/models/task.model';
-import { TaskCard } from '@components/board/task/task-card/task-card';
+import { TaskCard } from '@components/task/task-card/task-card';
 
 /** BoardColumn — one status column on the board, rendering its tasks and handling drag/drop. */
 @Component({

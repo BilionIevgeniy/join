@@ -5,7 +5,7 @@ import { Contact, ContactMode, CreateContactDto } from '@core/models/contact.mod
 import { ModalService } from '@core/services/modal.service';
 import { Avatar } from '@shared/avatar/avatar';
 import { Button } from '@shared/button/button';
-import { ContactModal } from '@components/contact/contact-modal/contact-modal';
+import { ContactModal } from '@app/components/contact/contact-modal/contact-modal';
 import { AuthService } from '@core/services/auth.service';
 
 /** Contacts — page listing all contacts grouped alphabetically, with add/edit/delete via modal. */

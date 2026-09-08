@@ -36,8 +36,9 @@
           <label class="add-task__label" for="due_date">
             Due date <span class="add-task__required">*</span>
           </label>
-          <input id="due_date" class="add-task__input" [class.add-task__input--error]="isFieldInvalid('due_date')"
-            formControlName="due_date" type="date" min="{{ today }}" placeholder="dd/mm/yyyy" />
+          <input id="due_date" #dueDateInput class="add-task__input add-task__input--date"
+            [class.add-task__input--error]="isFieldInvalid('due_date')" formControlName="due_date" type="date"
+            min="{{ today }}" placeholder="dd/mm/yyyy" (click)="dueDateInput.showPicker()" />
           @if (isFieldInvalid('due_date')) {
           @if (form.controls['due_date'].errors?.['minDate']) {
           <span class="add-task__error">Date cannot be in the past</span>
@@ -46,17 +47,6 @@
           }
           }
         </div>
-
-        <!-- Priority -->
-        <fieldset class="add-task__field add-task__field--fieldset">
-          <label class="add-task__label">Priority</label>
-          <div class="add-task__priority">
-            @for (p of priorities; track p) {
-            <app-priority-button [priority]="p" [selected]="form.get('priority')!.value === p"
-              (priorityChange)="onPriorityChange($event)" />
-            }
-          </div>
-        </fieldset>
 
         <!-- Category -->
         <div class="add-task__field">
@@ -117,23 +107,24 @@
           <input id="task-files" class="add-task__filepicker-input" type="file" accept="image/jpeg,image/png" multiple
             (change)="onFilesSelected($event)" />
 
-          @if (files().length > 0) {
-          <ul class="add-task__file-list">
-            @for (file of files(); track file.id) {
-            <li class="add-task__file-item">
-              <div class="add-task__file-thumb-wrapper">
-                <img class="add-task__file-thumb" [src]="file.data" [alt]="file.name" />
-                <button type="button" class="add-task__file-remove" (click)="removeFile(file.id)"
-                  [attr.aria-label]="'Remove ' + file.name">
-                  <img src="assets/icons/delete-icon.svg" alt="" />
-                </button>
-              </div>
-              <span class="add-task__file-name">{{ file.name }}</span>
-            </li>
-            }
-          </ul>
-          }
+          <app-task-file-list
+            [files]="files()"
+            variant="editable"
+            (view)="onViewFile($event)"
+            (remove)="removeFile($event)"
+          />
         </div>
+
+        <!-- Priority -->
+        <fieldset class="add-task__field add-task__field--fieldset">
+          <label class="add-task__label">Priority</label>
+          <div class="add-task__priority">
+            @for (p of priorities; track p) {
+            <app-priority-button [priority]="p" [selected]="form.get('priority')!.value === p"
+              (priorityChange)="onPriorityChange($event)" />
+            }
+          </div>
+        </fieldset>
 
         <!-- Subtasks -->
         <div class="add-task__field">

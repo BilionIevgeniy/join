@@ -20,6 +20,7 @@ import {
 } from '@core/models/task.model';
 import { PriorityButton } from '@shared/button/priority-button/priority-button';
 import { Avatar } from '@shared/avatar/avatar';
+import { TaskFileList } from '@components/task/task-file-list/task-file-list';
 import { isFieldInvalid } from '@core/utils/form.utils';
 import { countRemaining, takeVisible } from '@core/utils/collection.utils';
 import { validateFile } from '@core/utils/file.utils';
@@ -37,7 +38,7 @@ import { ToastService } from '@core/services/toast.service';
 @Component({
   selector: 'app-add-task-component',
   standalone: true,
-  imports: [ReactiveFormsModule, PriorityButton, Avatar],
+  imports: [ReactiveFormsModule, PriorityButton, Avatar, TaskFileList],
   templateUrl: './add-task.html',
   styleUrl: './add-task.scss',
 })
@@ -309,6 +310,11 @@ export class AddTaskComponent implements OnInit {
 
   removeFile(id: string): void {
     this.files.update((list) => list.filter((f) => f.id !== id));
+  }
+
+  /** TODO(AT-10): open the shared Image Viewer on this file, paging across {@link files}. */
+  onViewFile(file: TaskFile): void {
+    console.warn('Image viewer not implemented yet (AT-10):', file.name);
   }
 
   clearFiles(): void {

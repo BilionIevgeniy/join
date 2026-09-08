@@ -16,7 +16,7 @@ import { Button } from '@shared/button/button';
 import { SearchInput } from '@shared/search-input/search-input';
 import { Board as BoardComponent } from '@components/board/board';
 import { AddTaskComponent } from '@components/add-task/add-task';
-import { TaskModal } from '@components/board/task/task-modal/task-modal';
+import { TaskModal } from '@components/task/task-modal/task-modal';
 
 /**
  * Board — page-level container wiring {@link TaskService} data to the presentational
