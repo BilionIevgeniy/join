@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, computed, input, output } from '@angular/core';
+import { Component, ViewEncapsulation, computed, inject, input, output } from '@angular/core';
 import {
   getCategoryModifierClass,
   getPriorityIconUrl,
@@ -12,6 +12,7 @@ import { Avatar } from '@shared/avatar/avatar';
 import { Button } from '@shared/button/button';
 import { CheckboxButton } from '@shared/checkbox-button/checkbox-button';
 import { TaskFileList } from '@components/task/task-file-list/task-file-list';
+import { ImageViewerService } from '@core/services/image-viewer.service';
 
 /** TaskModal — read-only task detail view opened via the app-wide modal service. */
 @Component({
@@ -23,6 +24,8 @@ import { TaskFileList } from '@components/task/task-file-list/task-file-list';
   encapsulation: ViewEncapsulation.None,
 })
 export class TaskModal {
+  private imageViewer = inject(ImageViewerService);
+
   // ─── INPUTS ───────────────────────────────────────────────
   task = input.required<Task>();
 
@@ -54,9 +57,11 @@ export class TaskModal {
     this.delete.emit(this.task().id);
   }
 
-  /** TODO(AT-10): open the shared Image Viewer on this file, paging across `task().files`. */
+  /** Opens the Image Viewer on this file, paging across the rest of `task().files`. */
   onViewFile(file: TaskFile): void {
-    console.warn('Image viewer not implemented yet (AT-10):', file.name);
+    const files = this.task().files;
+    const index = files.findIndex((f) => f.id === file.id);
+    this.imageViewer.open(files, index);
   }
 
   close(): void {

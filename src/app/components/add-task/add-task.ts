@@ -26,6 +26,7 @@ import { countRemaining, takeVisible } from '@core/utils/collection.utils';
 import { validateFile } from '@core/utils/file.utils';
 import { buildTaskFile } from '@core/utils/task-file.utils';
 import { ToastService } from '@core/services/toast.service';
+import { ImageViewerService } from '@core/services/image-viewer.service';
 
 /**
  * AddTaskComponent — create/edit form for a task.
@@ -46,6 +47,7 @@ export class AddTaskComponent implements OnInit {
   // ─── DEPENDENCIES ───────────────────────────────────────────
   private fb = inject(FormBuilder);
   private toast = inject(ToastService);
+  private imageViewer = inject(ImageViewerService);
 
   // ─── INPUTS ───────────────────────────────────────────────
   /** Column the task is created into when there's no existing task (create mode). */
@@ -312,9 +314,10 @@ export class AddTaskComponent implements OnInit {
     this.files.update((list) => list.filter((f) => f.id !== id));
   }
 
-  /** TODO(AT-10): open the shared Image Viewer on this file, paging across {@link files}. */
+  /** Opens the Image Viewer on this file, paging across the rest of {@link files}. */
   onViewFile(file: TaskFile): void {
-    console.warn('Image viewer not implemented yet (AT-10):', file.name);
+    const index = this.files().findIndex((f) => f.id === file.id);
+    this.imageViewer.open(this.files(), index);
   }
 
   clearFiles(): void {
