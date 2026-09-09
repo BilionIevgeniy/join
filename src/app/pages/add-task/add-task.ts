@@ -4,11 +4,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { TaskService } from '@core/services/task.service';
 import { ContactService } from '@core/services/contact.service';
-import { CreateTaskDto, TaskStatus } from '@core/models/task.model';
+import { ALL_TASK_STATUSES, CreateTaskDto, TaskStatus } from '@core/models/task.model';
 import { AddTaskComponent } from '@components/add-task/add-task';
 
-const VALID_STATUSES: TaskStatus[] = ['todo', 'inProgress', 'awaitingFeedback', 'done'];
-
+/** AddTaskPage — mobile-only standalone route wrapping {@link AddTaskComponent} (desktop uses the modal). */
 @Component({
   selector: 'app-add-task',
   standalone: true,
@@ -17,11 +16,13 @@ const VALID_STATUSES: TaskStatus[] = ['todo', 'inProgress', 'awaitingFeedback', 
   styleUrl: './add-task.scss',
 })
 export class AddTaskPage {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private taskService = inject(TaskService);
   private contactService = inject(ContactService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
+  // ─── COMPUTED ─────────────────────────────────────────────
   isLoading = this.taskService.isLoading;
   contacts = this.contactService.contacts;
 
@@ -29,11 +30,13 @@ export class AddTaskPage {
     this.route.queryParamMap.pipe(
       map((params) => {
         const s = params.get('status') as TaskStatus | null;
-        return s && VALID_STATUSES.includes(s) ? s : 'todo';
+        return s && ALL_TASK_STATUSES.includes(s) ? s : 'todo';
       }),
     ),
     { initialValue: 'todo' as TaskStatus },
   );
+
+  // ─── PUBLIC API ───────────────────────────────────────────
 
   async onSave(dto: CreateTaskDto): Promise<void> {
     const result = await this.taskService.addTask(dto);

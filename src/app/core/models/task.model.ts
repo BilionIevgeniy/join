@@ -6,6 +6,9 @@ import { Contact } from './contact.model';
 
 export type TaskStatus = 'todo' | 'inProgress' | 'awaitingFeedback' | 'done';
 
+/** All task statuses, in board column order. */
+export const ALL_TASK_STATUSES: TaskStatus[] = ['todo', 'inProgress', 'awaitingFeedback', 'done'];
+
 export type TaskPriority = 'urgent' | 'medium' | 'low';
 
 export type TaskCategory = 'User Story' | 'Technical Task';
@@ -14,10 +17,30 @@ export type TaskCategory = 'User Story' | 'Technical Task';
 //  SUBTASK — stored as jsonb array inside tasks table
 // ============================================================
 
+/** A single checklist item within a {@link Task}, stored inline as part of the task's jsonb column. */
 export interface Subtask {
   id: string;
   title: string;
   done: boolean;
+}
+
+// ============================================================
+//  TASK FILE — stored as jsonb array inside tasks table
+// ============================================================
+
+/**
+ * A single file attached to a {@link Task}, stored inline as part of the
+ * task's jsonb `files` column. `size` is the original file size in bytes
+ * (not the larger size of the Base64-encoded `data` string). `data` holds
+ * the file content Base64-encoded — see the (upcoming) base64 utils.
+ */
+export interface TaskFile {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+  createdAt: string;
+  data: string;
 }
 
 // ============================================================
@@ -32,10 +55,13 @@ export interface Task {
   priority: TaskPriority;
   category: TaskCategory;
   subtasks: Subtask[];
+  files: TaskFile[];
   due_date: string;
   created_at: string;
-  // Joined from task_contacts → contacts
-  // Supabase returns: assigned_contacts: [{ contact: Contact }]
+  /**
+   * Joined from `task_contacts` → `contacts` via the Supabase query.
+   * Use {@link getTaskContacts} to get a flat `Contact[]` instead of unwrapping this manually.
+   */
   assigned_contacts?: { contact: Contact }[];
 }
 
@@ -50,10 +76,13 @@ export interface CreateTaskDto {
   priority: TaskPriority;
   category: TaskCategory;
   subtasks: Subtask[];
+  files: TaskFile[];
   due_date: string;
-  contact_ids: string[]; // UUID array — handled separately in TaskService
+  /** Contact UUIDs to assign — persisted via a separate join table by {@link TaskService}. */
+  contact_ids: string[];
 }
 
+/** Partial update — only the fields that changed are sent to the update RPC. */
 export type UpdateTaskDto = Partial<CreateTaskDto>;
 
 // ============================================================
@@ -62,6 +91,18 @@ export type UpdateTaskDto = Partial<CreateTaskDto>;
 
 export function getTaskContacts(task: Task): Contact[] {
   return (task.assigned_contacts ?? []).map((ac) => ac.contact).filter((c): c is Contact => !!c);
+}
+
+/**
+ * Normalizes a {@link Task} fresh from Supabase. `subtasks`/`files` are
+ * nullable jsonb columns (a `default '[]'::jsonb`, but no `NOT NULL`
+ * constraint — matches existing precedent) — older rows or manually-edited
+ * ones can come back as `null` instead of `[]`. Call this once per task on
+ * read so the rest of the app can rely on the `Task` type's promise that
+ * both are always arrays, instead of every template/component re-guarding.
+ */
+export function normalizeTask(task: Task): Task {
+  return { ...task, subtasks: task.subtasks ?? [], files: task.files ?? [] };
 }
 
 // ============================================================
@@ -76,9 +117,35 @@ export const STATUS_LABELS: Record<TaskStatus, string> = {
 };
 
 // ============================================================
+//  Helper map of priorities → label for UI
+// ============================================================
+
+export const PRIORITY_LABELS: Record<TaskPriority, string> = {
+  urgent: 'Urgent',
+  medium: 'Medium',
+  low: 'Low',
+};
+
+/** Filename of the priority icon asset for a given priority (e.g. `urgent-prio-icon.svg`). */
+export function getPriorityIconUrl(priority: TaskPriority): string {
+  return `${priority}-prio-icon.svg`;
+}
+
+/**
+ * BEM modifier class for a task's category, scoped to the given block name.
+ * Used by task-card and task-modal, which render the same category pill under
+ * different block names (`task-card__category--...` vs `task-modal__category--...`).
+ */
+export function getCategoryModifierClass(category: TaskCategory, block: string): string {
+  const modifier = category === 'User Story' ? 'user-story' : 'technical-task';
+  return `${block}__category--${modifier}`;
+}
+
+// ============================================================
 //  BOARD COLUMN CONFIG — one column's data, built by the Board page
 // ============================================================
 
+/** One board column's rendering data, assembled by the Board page and passed to {@link BoardColumn}. */
 export interface BoardColumnConfig {
   title: string;
   status: TaskStatus;

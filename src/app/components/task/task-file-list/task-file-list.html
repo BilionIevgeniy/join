@@ -1,0 +1,56 @@
+@if (files().length > 0) {
+  <ul class="file-list">
+    @for (file of files(); track file.id) {
+      <li class="file-item">
+        <div class="file-thumb-wrapper">
+          <img class="file-thumb" [src]="file.data" [alt]="file.name" />
+          <div class="file-actions">
+            <button
+              type="button"
+              class="file-action file-action--view"
+              (click)="onView(file)"
+              [attr.aria-label]="'View ' + file.name"
+            >
+              <img
+                class="file-action-icon"
+                src="assets/icons/eye-icon.svg"
+                [style.--hover-icon]="'url(assets/icons/eye-blue.svg)'"
+                alt=""
+              />
+            </button>
+            @if (variant() === 'editable') {
+              <button
+                type="button"
+                class="file-action file-action--delete"
+                (click)="onRemove(file.id)"
+                [attr.aria-label]="'Remove ' + file.name"
+              >
+                <img
+                  class="file-action-icon"
+                  src="assets/icons/delete-icon.svg"
+                  [style.--hover-icon]="'url(assets/icons/delete-blue.svg)'"
+                  alt=""
+                />
+              </button>
+            } @else {
+              <a
+                class="file-action file-action--download"
+                [href]="file.data"
+                [download]="file.name"
+                [attr.aria-label]="'Download ' + file.name"
+              >
+                <img
+                  class="file-action-icon"
+                  src="assets/icons/download-icon.svg"
+                  [style.--hover-icon]="'url(assets/icons/download-blue.svg)'"
+                  alt=""
+                />
+              </a>
+            }
+          </div>
+        </div>
+        <span class="file-name">{{ file.name }}</span>
+      </li>
+    }
+  </ul>
+}

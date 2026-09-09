@@ -1,0 +1,9 @@
+<!--
+  Pure mount point — deliberately NOT populated via an Angular @for. The
+  effect() in image-viewer.ts that creates the Viewer.js instance runs
+  before Angular has necessarily re-rendered a template-driven @for here
+  (effect vs. template-update ordering isn't guaranteed), so the images are
+  built and inserted imperatively in TS, synchronously, right before Viewer
+  is constructed. Hidden via CSS; Viewer.js builds its own visible overlay.
+-->
+<div #gallery class="image-viewer-gallery"></div>

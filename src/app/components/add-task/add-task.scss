@@ -280,7 +280,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 48px;
-  align-items: start;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -291,6 +290,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-width: 0; // let this grid item shrink below its content's natural width
 
   &:first-of-type {
     position: relative;
@@ -336,6 +336,7 @@
 }
 
 .add-task__label {
+  align-self: flex-start;
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--inverted-text-color);
@@ -351,6 +352,10 @@
 
 .add-task__input {
   @include input-base;
+
+  &--date {
+    cursor: pointer;
+  }
 }
 
 .add-task__textarea {
@@ -386,7 +391,7 @@
     flex: 1;
   }
 
-  @media (max-width: 1069px) {
+  @media (max-width: 1124px) {
     grid-template-columns: 1fr;
   }
 
@@ -495,6 +500,7 @@
 
   &--single {
     justify-content: space-between;
+    width: 100%;
 
     &:hover:not(.add-task__dropdown-item--selected) {
       background: var(--bg-color-lighter);
@@ -543,6 +549,11 @@
   border: 2px solid #fff;
   border-radius: 50%;
 }
+
+// Attachments field (dropzone, hint, preview list) moved into its own
+// component, app-task-file-picker (task-file-picker.scss) — see
+// docs/ihk-image-upload.md, AT-14 (kept add-task.ts/scss under the
+// 400-LOC/file limit and made the picker reusable for Epic B/avatars).
 
 // ─── SUBTASKS ─────────────────────────────────────────────
 .add-task__subtask-input-row {

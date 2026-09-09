@@ -10,16 +10,36 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { ToastService } from './toast.service';
-import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto, Subtask } from '@core/models/task.model';
+import {
+  Task,
+  TaskStatus,
+  CreateTaskDto,
+  UpdateTaskDto,
+  Subtask,
+  normalizeTask,
+} from '@core/models/task.model';
+import { logAndNotify, withLoading } from '../utils/toast.utils';
+import { toMapById } from '../utils/collection.utils';
+
+// Selects a task row together with its assigned contacts via the task_contacts join table.
+const TASK_WITH_CONTACTS_SELECT = `
+  *,
+  assigned_contacts:task_contacts(
+    contact:contacts(*)
+  )
+`;
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private supabase = inject(SupabaseService);
   private toast = inject(ToastService);
 
+  // ─── STATE ────────────────────────────────────────────────
   private tasksMap = signal<Record<string, Task>>({});
   isLoading = signal(false);
 
+  // ─── COMPUTED ─────────────────────────────────────────────
   // Array of all tasks — for search and general operations
   tasks = computed(() => Object.values(this.tasksMap()));
 
@@ -49,138 +69,98 @@ export class TaskService {
 
   // ─── CRUD ──────────────────────────────────────────────────────
 
+  /** Loads all tasks (with joined assigned contacts) from Supabase into local state. */
   async getAll(): Promise<void> {
-    this.isLoading.set(true);
-    try {
-      const { data, error } = await this.supabase.db.from('tasks').select(`
-          *,
-          assigned_contacts:task_contacts(
-            contact:contacts(*)
-          )
-        `);
-      if (error) throw error;
-      const map: Record<string, Task> = {};
-      data.forEach((t: Task) => {
-        if (t.id) map[t.id] = t;
-      });
-      this.tasksMap.set(map);
-    } catch (err) {
-      console.error('getAll tasks failed:', err);
-      this.toast.error('Failed to load tasks.');
-    } finally {
-      this.isLoading.set(false);
-    }
+    await withLoading(this.isLoading, async () => {
+      try {
+        const { data, error } = await this.supabase.db
+          .from('tasks')
+          .select(TASK_WITH_CONTACTS_SELECT);
+        if (error) throw error;
+        this.tasksMap.set(toMapById(data.map(normalizeTask)));
+      } catch (err) {
+        logAndNotify(this.toast, 'getAll tasks', err, 'Failed to load tasks.');
+      }
+    });
   }
 
-  // Transactional create — inserts task + task_contacts in one transaction
+  /** Transactional create — inserts the task and its task_contacts rows in one RPC call. */
   async addTask(dto: CreateTaskDto): Promise<Task | null> {
-    this.isLoading.set(true);
-    try {
-      const { contact_ids, ...taskData } = dto;
-      const { data, error } = await this.supabase.db.rpc('create_task_with_contacts', {
-        task_data: taskData,
-        contact_ids: contact_ids ?? [],
-      });
-      if (error) throw error;
-      // Reload to get full task with joined contacts
-      await this.reloadOne(data.id);
-      this.toast.success('Task created successfully.');
-      return this.tasksMap()[data.id] ?? null;
-    } catch (err) {
-      console.error('addTask failed:', err);
-      this.toast.error('Failed to create task.');
-      return null;
-    } finally {
-      this.isLoading.set(false);
-    }
+    return withLoading(this.isLoading, async () => {
+      try {
+        const { contact_ids, ...taskData } = dto;
+        return await this.saveTaskViaRpc(
+          'create_task_with_contacts',
+          { task_data: taskData, contact_ids: contact_ids ?? [] },
+          'Task created successfully.',
+        );
+      } catch (err) {
+        logAndNotify(this.toast, 'addTask', err, 'Failed to create task.');
+        return null;
+      }
+    });
   }
 
-  // Transactional update — updates task + replaces task_contacts in one transaction
+  /** Transactional update — updates the task and replaces its task_contacts rows in one RPC call. */
   async updateTask(id: string, dto: UpdateTaskDto): Promise<Task | null> {
     const existing = this.tasksMap()[id];
     if (!existing) return null;
-    this.isLoading.set(true);
-    try {
-      const { contact_ids, ...taskData } = dto;
-      const { data, error } = await this.supabase.db.rpc('update_task_with_contacts', {
-        p_task_id: id,
-        task_data: taskData,
-        contact_ids: contact_ids ?? [],
-      });
-      if (error) throw error;
-      // Reload to get full task with updated contacts
-      await this.reloadOne(data.id);
-      this.toast.success('Task updated successfully.');
-      return this.tasksMap()[data.id] ?? null;
-    } catch (err) {
-      console.error('updateTask failed:', err);
-      this.toast.error('Failed to update task.');
-      return null;
-    } finally {
-      this.isLoading.set(false);
-    }
+    return withLoading(this.isLoading, async () => {
+      try {
+        const { contact_ids, ...taskData } = dto;
+        return await this.saveTaskViaRpc(
+          'update_task_with_contacts',
+          { p_task_id: id, task_data: taskData, contact_ids: contact_ids ?? [] },
+          'Task updated successfully.',
+        );
+      } catch (err) {
+        logAndNotify(this.toast, 'updateTask', err, 'Failed to update task.');
+        return null;
+      }
+    });
   }
 
-  // Move only changes status — no contacts change, simple update
+  /** Moves a task to a new status, updating the UI optimistically before the server confirms. */
   async moveTask(id: string, newStatus: TaskStatus): Promise<void> {
-    const existing = this.tasksMap()[id];
-    if (!existing) return;
-    // Optimistic update — update UI immediately before server confirms
-    this.setOne({ ...existing, status: newStatus });
-    try {
-      const { error } = await this.supabase.db
-        .from('tasks')
-        .update({ status: newStatus })
-        .eq('id', id);
-      if (error) throw error;
-    } catch (err) {
-      // Rollback optimistic update on error
-      this.setOne(existing);
-      console.error('moveTask failed:', err);
-      this.toast.error('Failed to move task.');
-    }
+    await this.applyOptimisticUpdate(
+      id,
+      (task) => ({ ...task, status: newStatus }),
+      () => this.supabase.db.from('tasks').update({ status: newStatus }).eq('id', id),
+      'moveTask',
+      'Failed to move task.',
+    );
   }
 
-  // Update subtasks only
+  /** Replaces a task's subtasks, updating the UI optimistically before the server confirms. */
   async updateSubtasks(id: string, subtasks: Subtask[]): Promise<void> {
-    const existing = this.tasksMap()[id];
-    if (!existing) return;
-    // Optimistic update — update UI immediately before server confirms
-    this.setOne({ ...existing, subtasks });
-    try {
-      const { error } = await this.supabase.db.from('tasks').update({ subtasks }).eq('id', id);
-      if (error) throw error;
-    } catch (err) {
-      // Rollback optimistic update on error
-      this.setOne(existing);
-      console.error('updateSubtasks failed:', err);
-      this.toast.error('Failed to update subtasks.');
-    }
+    await this.applyOptimisticUpdate(
+      id,
+      (task) => ({ ...task, subtasks }),
+      () => this.supabase.db.from('tasks').update({ subtasks }).eq('id', id),
+      'updateSubtasks',
+      'Failed to update subtasks.',
+    );
   }
 
+  /** Deletes a task; `task_contacts` rows cascade-delete automatically. */
   async deleteTask(id: string): Promise<boolean> {
-    this.isLoading.set(true);
-    try {
-      const { error } = await this.supabase.db.from('tasks').delete().eq('id', id);
-      if (error) throw error;
-      this.tasksMap.update((map) => {
-        const next = { ...map };
-        delete next[id];
-        return next;
-      });
-      this.toast.success('Task deleted successfully.');
-      return true;
-    } catch (err) {
-      console.error('deleteTask failed:', err);
-      this.toast.error('Failed to delete task.');
-      return false;
-    } finally {
-      this.isLoading.set(false);
-    }
+    return withLoading(this.isLoading, async () => {
+      try {
+        const { error } = await this.supabase.db.from('tasks').delete().eq('id', id);
+        if (error) throw error;
+        this.removeOne(id);
+        this.toast.success('Task deleted successfully.');
+        return true;
+      } catch (err) {
+        logAndNotify(this.toast, 'deleteTask', err, 'Failed to delete task.');
+        return false;
+      }
+    });
   }
 
   // ─── SEARCH ───────────────────────────────────────────────────
 
+  /** Filters loaded tasks by title/description. Returns all tasks when `query` is blank. */
   searchTasks(query: string): Task[] {
     const q = query.toLowerCase().trim();
     if (!q) return this.tasks();
@@ -191,29 +171,75 @@ export class TaskService {
 
   // ─── PRIVATE ──────────────────────────────────────────────────
 
+  /**
+   * Applies a local update immediately (optimistic), persists it, and rolls back
+   * to the previous value if the request fails. Used by field-only updates
+   * (status, subtasks) that don't need the full create/update RPC round-trip.
+   * @param updater - derives the new local task from the existing one
+   * @param persist - performs the actual write; only its `error` is checked
+   * @param operation - short label used in the console error log
+   * @param userMessage - shown via a toast if `persist` fails
+   */
+  private async applyOptimisticUpdate(
+    id: string,
+    updater: (task: Task) => Task,
+    persist: () => PromiseLike<{ error: unknown }>,
+    operation: string,
+    userMessage: string,
+  ): Promise<void> {
+    const existing = this.tasksMap()[id];
+    if (!existing) return;
+    this.setOne(updater(existing));
+    try {
+      const { error } = await persist();
+      if (error) throw error;
+    } catch (err) {
+      this.setOne(existing);
+      logAndNotify(this.toast, operation, err, userMessage);
+    }
+  }
+
   private setOne(task: Task): void {
     if (!task.id) return;
     this.tasksMap.update((map) => ({ ...map, [task.id!]: task }));
+  }
+
+  private removeOne(id: string): void {
+    this.tasksMap.update((map) => {
+      const next = { ...map };
+      delete next[id];
+      return next;
+    });
   }
 
   private filterByStatus(status: TaskStatus): Task[] {
     return this.tasks().filter((t) => t.status === status);
   }
 
-  // Reload single task with joined contacts after create/update
+  /**
+   * Calls a create/update RPC, then reloads the affected task with joined contacts.
+   * Shared by {@link addTask} and {@link updateTask}, which only differ in the RPC
+   * name and its parameters.
+   */
+  private async saveTaskViaRpc(
+    rpcName: 'create_task_with_contacts' | 'update_task_with_contacts',
+    rpcParams: Record<string, unknown>,
+    successMessage: string,
+  ): Promise<Task | null> {
+    const { data, error } = await this.supabase.db.rpc(rpcName, rpcParams);
+    if (error) throw error;
+    await this.reloadOne(data.id);
+    this.toast.success(successMessage);
+    return this.tasksMap()[data.id] ?? null;
+  }
+
+  /** Reloads a single task with joined contacts after create/update. */
   private async reloadOne(id: string): Promise<void> {
     const { data, error } = await this.supabase.db
       .from('tasks')
-      .select(
-        `
-        *,
-        assigned_contacts:task_contacts(
-          contact:contacts(*)
-        )
-      `,
-      )
+      .select(TASK_WITH_CONTACTS_SELECT)
       .eq('id', id)
       .single();
-    if (!error && data) this.setOne(data);
+    if (!error && data) this.setOne(normalizeTask(data));
   }
 }

@@ -1,0 +1,26 @@
+// Source gallery Viewer.js reads from — never shown directly, it builds its
+// own overlay copy. display: none (not visually-hidden) is fine here: unlike
+// a focusable control, nothing here needs to stay in the tab order.
+.image-viewer-gallery {
+  display: none;
+}
+
+// Viewer.js ships icons only for its built-in buttons (see viewer.css) — our
+// custom "download" toolbar entry gets no icon by default, so we style it
+// ourselves, matching the library's own toolbar-button dimensions exactly
+// (20x20 icon, 2px margin, from .viewer-toolbar > ul > li::before).
+.viewer-download::before {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 2px;
+  content: '';
+  background-image: url('/assets/icons/download-icon.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px;
+
+  // download-icon.svg is dark navy by default; Viewer.js's own icons are
+  // white (its sprite is drawn with fill="#fff") — match that.
+  filter: brightness(0) invert(100%);
+}

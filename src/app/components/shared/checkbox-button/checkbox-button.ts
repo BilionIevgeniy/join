@@ -1,5 +1,6 @@
 import { Component, input, output, signal } from '@angular/core';
 
+/** CheckboxButton — icon-based checkbox that briefly flags `justChecked` to trigger a check animation. */
 @Component({
   selector: 'app-checkbox-button',
   standalone: true,

@@ -1,8 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
-import { RoutesEnum } from '@core/models/routes.model';
+import { loggedInAwareBackRoute } from '@core/utils/route.utils';
 import { BackButton } from '@shared/back-button/back-button';
 
+/** Static privacy-policy page, reachable both from the auth flow and from within the logged-in app. */
 @Component({
   selector: 'app-privacy-policy',
   standalone: true,
@@ -13,7 +14,5 @@ import { BackButton } from '@shared/back-button/back-button';
 export class PrivacyPolicy {
   private authService = inject(AuthService);
 
-  backRoute = computed(() =>
-    this.authService.isLoggedIn() ? `/${RoutesEnum.SUMMARY}` : `/${RoutesEnum.LOGIN}`,
-  );
+  backRoute = computed(() => loggedInAwareBackRoute(this.authService));
 }

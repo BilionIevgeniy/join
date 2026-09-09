@@ -7,6 +7,7 @@ const PRIORITY_CONFIG: Record<TaskPriority, { label: string; color: string }> = 
   low: { label: 'Low', color: '#7AE229' },
 };
 
+/** One priority option (urgent/medium/low) in the priority picker; label and color come from {@link PRIORITY_CONFIG}. */
 @Component({
   selector: 'app-priority-button',
   standalone: true,

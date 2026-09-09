@@ -4,6 +4,7 @@ import { filter } from 'rxjs';
 import { RoutesEnum } from '@core/models/routes.model';
 import { SignupHint } from '@shared/signup-hint/signup-hint';
 
+/** AuthLayout — shell for unauthenticated pages; plays the login intro animation and toggles the signup hint. */
 @Component({
   selector: 'app-auth-layout',
   imports: [RouterOutlet, RouterLink, SignupHint],
@@ -11,21 +12,29 @@ import { SignupHint } from '@shared/signup-hint/signup-hint';
   styleUrl: './auth-layout.scss',
 })
 export class AuthLayout implements OnInit {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private router = inject(Router);
 
+  // ─── STATE ────────────────────────────────────────────────
   animating = signal(true);
   hideSignupHint = signal(false);
 
+  // ─── LIFECYCLE ────────────────────────────────────────────
+
   ngOnInit(): void {
-    this.playIntroIfLogin(this.router.url);
-    this.hideSignupHint.set(this.router.url.includes(RoutesEnum.SIGNUP));
+    this.updateForUrl(this.router.url);
 
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
-      .subscribe((event) => {
-        this.playIntroIfLogin(event.urlAfterRedirects);
-        this.hideSignupHint.set(event.urlAfterRedirects.includes(RoutesEnum.SIGNUP));
-      });
+      .subscribe((event) => this.updateForUrl(event.urlAfterRedirects));
+  }
+
+  // ─── PRIVATE ──────────────────────────────────────────────
+
+  /** Re-evaluates intro-animation and signup-hint visibility for the current URL. */
+  private updateForUrl(url: string): void {
+    this.playIntroIfLogin(url);
+    this.hideSignupHint.set(url.includes(RoutesEnum.SIGNUP));
   }
 
   private playIntroIfLogin(url: string): void {

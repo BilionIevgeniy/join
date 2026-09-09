@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { Avatar } from '@shared/avatar/avatar';
 import { AuthService } from '@core/services/auth.service';
 
+/** Header — top bar with the user avatar and its account/logout dropdown menu. */
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -11,16 +12,21 @@ import { AuthService } from '@core/services/auth.service';
   styleUrl: './header.scss',
 })
 export class Header {
+  // ─── DEPENDENCIES ───────────────────────────────────────────
   private authService = inject(AuthService);
 
+  // ─── STATE ────────────────────────────────────────────────
+  isDropdownOpen = signal(false);
+  isDropdownClosing = signal(false);
+
+  // ─── COMPUTED ─────────────────────────────────────────────
   isLoggedIn = this.authService.isLoggedIn;
   userInitials = computed(() => this.authService.currentUser()?.initials ?? '');
   userColor = computed(() => this.authService.currentUser()?.color ?? '');
 
-  isDropdownOpen = signal(false);
-  isDropdownClosing = signal(false);
-
   constructor(private elementRef: ElementRef<HTMLElement>) {}
+
+  // ─── DROPDOWN ─────────────────────────────────────────────
 
   toggleDropdown(): void {
     if (this.isDropdownOpen()) {
@@ -30,6 +36,7 @@ export class Header {
     }
   }
 
+  /** Plays the closing animation for 200ms before actually removing the dropdown from the DOM. */
   closeDropdown(): void {
     this.isDropdownClosing.set(true);
     setTimeout(() => {
@@ -38,6 +45,7 @@ export class Header {
     }, 200);
   }
 
+  /** Closes the dropdown on any outside click; ignored while already closing to avoid restarting the animation. */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     if (!this.isDropdownOpen() || this.isDropdownClosing()) return;

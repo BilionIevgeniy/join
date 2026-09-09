@@ -8,6 +8,8 @@
       #host
       class="modal-overlay__panel"
       [class.modal-overlay__panel--closing]="isClosing()"
+      role="dialog"
+      aria-modal="true"
       (click)="$event.stopPropagation()"
     ></div>
   </div>

@@ -1,15 +1,8 @@
-import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { RoutesEnum } from '../models/routes.model';
+import { createAuthGuard } from './guard.utils';
 
-export const guestGuard: CanActivateFn = () => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
-
-  if (!authService.isLoggedIn()) {
-    return true;
-  }
-
-  return router.createUrlTree([RoutesEnum.SUMMARY]);
-};
+/** Blocks access to guest-only routes (login/signup) for logged-in users, redirecting to summary. */
+export const guestGuard = createAuthGuard(
+  (authService) => !authService.isLoggedIn(),
+  RoutesEnum.SUMMARY,
+);
