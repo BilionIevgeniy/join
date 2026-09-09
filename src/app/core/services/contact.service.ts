@@ -23,7 +23,7 @@ import {
   UpsertContactDto,
 } from '../models/contact.model';
 import { generateAvatarColor, generateInitials } from '../utils/contact.utils';
-import { logAndNotify, withLoading } from '../utils/async.utils';
+import { logAndNotify, withLoading } from '../utils/toast.utils';
 import { toMapById } from '../utils/collection.utils';
 
 @Injectable({ providedIn: 'root' })

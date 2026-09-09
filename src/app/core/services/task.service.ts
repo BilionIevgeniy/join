@@ -18,7 +18,7 @@ import {
   Subtask,
   normalizeTask,
 } from '@core/models/task.model';
-import { logAndNotify, withLoading } from '../utils/async.utils';
+import { logAndNotify, withLoading } from '../utils/toast.utils';
 import { toMapById } from '../utils/collection.utils';
 
 // Selects a task row together with its assigned contacts via the task_contacts join table.

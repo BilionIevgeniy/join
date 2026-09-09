@@ -6,7 +6,7 @@ import { ToastService } from './toast.service';
 import { Contact } from '../models/contact.model';
 import { RoutesEnum } from '../models/routes.model';
 import { generateAvatarColor, generateInitials } from '../utils/contact.utils';
-import { logAndNotify, withLoading } from '../utils/async.utils';
+import { logAndNotify, withLoading } from '../utils/toast.utils';
 import { GREETING_INTRO_SESSION_KEY } from '@app/components/summary/summary';
 
 // Guest placeholder — lives only in memory, never stored in DB

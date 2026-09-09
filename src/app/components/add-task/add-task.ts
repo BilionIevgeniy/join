@@ -26,6 +26,7 @@ import { countRemaining, takeVisible } from '@core/utils/collection.utils';
 import { validateFile } from '@core/utils/file.utils';
 import { buildTaskFile } from '@core/utils/task-file.utils';
 import { ToastService } from '@core/services/toast.service';
+import { logAndNotify } from '@core/utils/toast.utils';
 import { ImageViewerService } from '@core/services/image-viewer.service';
 
 /**
@@ -336,8 +337,17 @@ export class AddTaskComponent implements OnInit {
       this.toast.error(result.error!);
       return;
     }
-    const taskFile = await buildTaskFile(file);
-    this.files.update((list) => [...list, taskFile]);
+    try {
+      const taskFile = await buildTaskFile(file);
+      this.files.update((list) => [...list, taskFile]);
+    } catch (err) {
+      logAndNotify(
+        this.toast,
+        'buildTaskFile',
+        err,
+        `${file.name}: could not be processed. Try a different file.`,
+      );
+    }
   }
 
   // ─── FORM ACTIONS ─────────────────────────────────────────
