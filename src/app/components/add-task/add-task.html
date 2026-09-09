@@ -107,12 +107,8 @@
           <input id="task-files" class="add-task__filepicker-input" type="file" accept="image/jpeg,image/png" multiple
             (change)="onFilesSelected($event)" />
 
-          <app-task-file-list
-            [files]="files()"
-            variant="editable"
-            (view)="onViewFile($event)"
-            (remove)="removeFile($event)"
-          />
+          <app-task-file-list [files]="files()" variant="editable" (view)="onViewFile($event)"
+            (remove)="removeFile($event)" />
         </div>
 
         <!-- Priority -->
@@ -125,6 +121,48 @@
             }
           </div>
         </fieldset>
+
+        <!-- Assigned to -->
+        <div class="add-task__field">
+          <label class="add-task__label" for="assigned">Assigned to</label>
+          <div class="add-task__dropdown-wrapper">
+            <div class="add-task__dropdown-trigger" [class.add-task__dropdown-trigger--open]="isDropdownOpen()"
+              (click)="toggleDropdown()">
+              <input #contactSearch id="assigned" class="add-task__input" type="text"
+                placeholder="Select contacts to assign" (input)="onSearchChange(contactSearch.value)" />
+              <span class="add-task__dropdown-arrow" (click)="openDropdown(); $event.stopPropagation()">▾</span>
+            </div>
+
+            @if (isDropdownOpen()) {
+            <div class="add-task__dropdown-backdrop" (click)="closeDropdown()"></div>
+            <div class="add-task__dropdown">
+              @for (contact of filteredContacts(); track contact.id) {
+              <div class="add-task__dropdown-item"
+                [class.add-task__dropdown-item--selected]="isContactSelected(contact.id!)"
+                (click)="toggleContact(contact.id!)">
+                <app-avatar [initials]="contact.initials" [color]="contact.color" size="small" />
+                <span>{{ contact.first_name }} {{ contact.last_name }}</span>
+                <input type="checkbox" [checked]="isContactSelected(contact.id!)"
+                  (click)="toggleContact(contact.id!); $event.stopPropagation()" />
+              </div>
+              }
+            </div>
+            }
+
+            <!-- Selected contact avatars -->
+            @if (getSelectedContacts().length > 0) {
+            <div class="add-task__selected-avatars">
+              @for (contact of getVisibleContacts(); track contact.id) {
+              <app-avatar [initials]="contact.initials" [color]="contact.color" size="small" />
+              }
+              @if (getRemainingContactsCount() > 0) {
+              <app-avatar [initials]="`+${getRemainingContactsCount().toString()}`" [color]="'#e0e0e0'"
+                [textColor]="'#606060'" size="small" />
+              }
+            </div>
+            }
+          </div>
+        </div>
 
         <!-- Subtasks -->
         <div class="add-task__field">
@@ -186,47 +224,6 @@
           </ul>
         </div>
 
-        <!-- Assigned to -->
-        <div class="add-task__field">
-          <label class="add-task__label" for="assigned">Assigned to</label>
-          <div class="add-task__dropdown-wrapper">
-            <div class="add-task__dropdown-trigger" [class.add-task__dropdown-trigger--open]="isDropdownOpen()"
-              (click)="toggleDropdown()">
-              <input #contactSearch id="assigned" class="add-task__input" type="text"
-                placeholder="Select contacts to assign" (input)="onSearchChange(contactSearch.value)" />
-              <span class="add-task__dropdown-arrow" (click)="openDropdown(); $event.stopPropagation()">▾</span>
-            </div>
-
-            @if (isDropdownOpen()) {
-            <div class="add-task__dropdown-backdrop" (click)="closeDropdown()"></div>
-            <div class="add-task__dropdown">
-              @for (contact of filteredContacts(); track contact.id) {
-              <div class="add-task__dropdown-item"
-                [class.add-task__dropdown-item--selected]="isContactSelected(contact.id!)"
-                (click)="toggleContact(contact.id!)">
-                <app-avatar [initials]="contact.initials" [color]="contact.color" size="small" />
-                <span>{{ contact.first_name }} {{ contact.last_name }}</span>
-                <input type="checkbox" [checked]="isContactSelected(contact.id!)"
-                  (click)="toggleContact(contact.id!); $event.stopPropagation()" />
-              </div>
-              }
-            </div>
-            }
-
-            <!-- Selected contact avatars -->
-            @if (getSelectedContacts().length > 0) {
-            <div class="add-task__selected-avatars">
-              @for (contact of getVisibleContacts(); track contact.id) {
-              <app-avatar [initials]="contact.initials" [color]="contact.color" size="small" />
-              }
-              @if (getRemainingContactsCount() > 0) {
-              <app-avatar [initials]="`+${getRemainingContactsCount().toString()}`" [color]="'#e0e0e0'"
-                [textColor]="'#606060'" size="small" />
-              }
-            </div>
-            }
-          </div>
-        </div>
       </div>
     </div>
   </form>
