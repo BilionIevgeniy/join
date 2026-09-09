@@ -714,3 +714,21 @@ Verantwortlichkeits-Vermischung, bräuchte bei jeder künftigen Erweiterung
 erneut Kürzungs-Kunststücke); klassisches `@Input()`/`@Output('filesChange')`
 statt `model()` (verworfen — mehr Code für dasselbe Ergebnis, `model()` ist
 das modernere, für diesen Fall vorgesehene Muster).
+
+### Finale Prüfung gegen die Checkliste vor Abgabe
+
+Vor Einreichung nochmal Punkt für Punkt gegen die IHK-Dateiupload-Checkliste
+geprüft. Ein konkreter Fund: `.task-file-picker__delete-all` hatte
+`font-size: 12px` fest verdrahtet — Überbleibsel aus dem alten
+`.add-task__delete-all` (add-task.scss), bei der AT-14-Extraktion
+mitkopiert, ohne die Checklisten-Vorgabe *"Kleingedrucktes nicht unter
+14px"* zu prüfen. Behoben: `font-size: var(--font-size-xs)` (Projekt-Token,
+exakt 14px).
+
+**Bewusst nicht (erneut) geprüft, da außerhalb des vereinbarten Scopes:**
+"Alle Punkte aus den normalen Join-Frontend-Checkliste" (Sprint 1-3, vom
+Nutzer + Waldemar separat abgenommen) und "Semantisches HTML in der
+gesamten Join-Applikation" (AT-13/15 wurden bewusst auf die in diesem
+Feature berührten Dateien begrenzt, nicht die gesamte bestehende App —
+siehe Entscheidung dort). Beides dem Nutzer vor Abgabe nochmal explizit als
+Restrisiko genannt.

@@ -10,6 +10,8 @@ import { Component, input, output, signal } from '@angular/core';
 export class CheckboxButton {
   checked = input<boolean>(false);
   label = input<string>('');
+  /** id of an external element (e.g. adjacent text) that names this control, for callers with no visible `label`. */
+  ariaLabelledby = input<string>('');
   toggled = output<boolean>();
 
   justChecked = signal(false);

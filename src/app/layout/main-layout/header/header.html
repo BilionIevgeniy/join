@@ -11,11 +11,17 @@
     @if (isLoggedIn()) {
       <div class="header__user">
         <!-- Hilfenachricht: nur Desktop sichtbar -->
-        <button class="help-button" title="Help" routerLink="/help"></button>
+        <button class="help-button" title="Help" aria-label="Help" routerLink="/help"></button>
 
         <!-- Benutzer Dropdown -->
         <div class="user-dropdown">
-          <button class="user-button" (click)="toggleDropdown()">
+          <button
+            class="user-button"
+            aria-label="User menu"
+            aria-haspopup="true"
+            [attr.aria-expanded]="isDropdownOpen()"
+            (click)="toggleDropdown()"
+          >
             <app-avatar
               [size]="'medium'"
               [initials]="userInitials()"
@@ -30,7 +36,7 @@
               <a routerLink="/help" class="dropdown-item dropdown-item--mobile-help">Help</a>
               <a routerLink="/legal-notice" class="dropdown-item">Legal Notice</a>
               <a routerLink="/privacy-policy" class="dropdown-item">Privacy Policy</a>
-              <a class="dropdown-item" (click)="logout()">Log out</a>
+              <button type="button" class="dropdown-item" (click)="logout()">Log out</button>
             </div>
           }
         </div>
