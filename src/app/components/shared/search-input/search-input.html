@@ -1,7 +1,8 @@
 <div class="search-input" [class.search-input--focused]="isFocused()">
   <input
-    type="text"
+    type="search"
     class="search-input__field"
+    aria-label="Search"
     [placeholder]="placeholder()"
     [value]="value()"
     (input)="onInput($any($event.target).value)"

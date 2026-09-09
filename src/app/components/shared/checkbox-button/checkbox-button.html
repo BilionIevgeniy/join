@@ -1,4 +1,10 @@
-<button type="button" class="checkbox-button" (click)="toggle()">
+<button
+  type="button"
+  class="checkbox-button"
+  [attr.aria-labelledby]="ariaLabelledby() || null"
+  [attr.aria-pressed]="checked()"
+  (click)="toggle()"
+>
   <img
     [src]="'assets/icons/' + icon"
     alt=""

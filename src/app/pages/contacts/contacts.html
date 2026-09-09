@@ -22,7 +22,8 @@
             <div class="contacts-page__divider"></div>
 
             @for (contact of groupedContacts()[letter]; track contact.id) {
-              <div
+              <button
+                type="button"
                 class="contacts-page__item"
                 [class.contacts-page__item--active]="selectedContact()?.id === contact.id"
                 (click)="selectContact(contact)"
@@ -41,7 +42,7 @@
                   <span class="contacts-page__name">{{ getFullName(contact) }}</span>
                   <span class="contacts-page__email">{{ contact.email }}</span>
                 </div>
-              </div>
+              </button>
             }
           </div>
         }

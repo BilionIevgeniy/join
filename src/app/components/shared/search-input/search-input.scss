@@ -24,9 +24,20 @@
     font-family: var(--font-family-main);
     font-size: var(--font-size-sm);
     color: black;
+
+    // type="search" (for the native search semantics/label) still ships
+    // browser-default chrome in WebKit — reset it so it renders identically
+    // to the old type="text": no native rounded box, no native clear "x"
+    // (the component already has its own icon button for that).
+    appearance: none;
     outline: none;
     background: transparent;
     border: none;
+
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-decoration {
+      appearance: none;
+    }
 
     &::placeholder {
       color: #A8A8A8;

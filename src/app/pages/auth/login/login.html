@@ -6,7 +6,9 @@
 
     <!-- Email -->
     <div class="login__field" [class.login__field--error]="isFieldInvalid('email')">
+      <label class="visually-hidden" for="login-email">Email</label>
       <input
+        id="login-email"
         class="login__input"
         formControlName="email"
         type="text"
@@ -21,7 +23,9 @@
 
     <!-- Password -->
     <div class="login__field" [class.login__field--error]="isFieldInvalid('password')">
+      <label class="visually-hidden" for="login-password">Password</label>
       <input
+        id="login-password"
         class="login__input"
         formControlName="password"
         [type]="showPassword() ? 'text' : 'password'"

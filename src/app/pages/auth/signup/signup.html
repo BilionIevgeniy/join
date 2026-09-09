@@ -10,7 +10,9 @@
     <!-- Name row -->
     <div class="signup__name-row">
       <div class="signup__field" [class.signup__field--error]="isFieldInvalid('first_name')">
+        <label class="visually-hidden" for="signup-first-name">First name</label>
         <input
+          id="signup-first-name"
           class="signup__input"
           formControlName="first_name"
           type="text"
@@ -31,7 +33,9 @@
         }
       </div>
       <div class="signup__field" [class.signup__field--error]="isFieldInvalid('last_name')">
+        <label class="visually-hidden" for="signup-last-name">Last name</label>
         <input
+          id="signup-last-name"
           class="signup__input"
           formControlName="last_name"
           type="text"
@@ -55,7 +59,9 @@
 
     <!-- Email -->
     <div class="signup__field" [class.signup__field--error]="isFieldInvalid('email')">
+      <label class="visually-hidden" for="signup-email">Email</label>
       <input
+        id="signup-email"
         class="signup__input"
         formControlName="email"
         type="text"
@@ -70,7 +76,9 @@
 
     <!-- Password -->
     <div class="signup__field" [class.signup__field--error]="isFieldInvalid('password')">
+      <label class="visually-hidden" for="signup-password">Password</label>
       <input
+        id="signup-password"
         class="signup__input"
         formControlName="password"
         [type]="showPassword() ? 'text' : 'password'"
@@ -102,7 +110,9 @@
 
     <!-- Confirm Password -->
     <div class="signup__field" [class.signup__field--error]="isConfirmPasswordInvalid()">
+      <label class="visually-hidden" for="signup-confirm-password">Confirm password</label>
       <input
+        id="signup-confirm-password"
         class="signup__input"
         formControlName="confirmPassword"
         [type]="showConfirmPassword() ? 'text' : 'password'"
@@ -136,10 +146,11 @@
     <!-- Privacy policy -->
     <div class="signup__policy-row">
       <app-checkbox-button
+        ariaLabelledby="signup-policy-text"
         [checked]="acceptedPolicy()"
         (toggled)="toggleAcceptPolicy()"
       />
-      <span class="signup__policy-text">
+      <span id="signup-policy-text" class="signup__policy-text">
         I accept the <a routerLink="/privacy-policy" class="signup__policy-link">Privacy Policy</a>
       </span>
     </div>

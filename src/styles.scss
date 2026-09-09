@@ -33,6 +33,22 @@
   margin-right: auto;
 }
 
+// Standard "visually hidden" pattern for <label>s that pair with an
+// icon/placeholder-only input (WCAG requires a programmatic label, but the
+// design has no room for a visible one). NOT display:none/visibility:hidden
+// — both would also remove the label from being announced correctly.
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip-path: inset(50%);
+}
+
 @media (width <= 1025px) {
   .header .user-avatar {
     width: 40px !important;

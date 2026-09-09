@@ -28,7 +28,8 @@
         <div class="modal__name-row">
           <div class="modal__field">
             @let firstNameField = getField('first_name');
-            <input class="modal__input" formControlName="first_name" placeholder="First name" type="text" />
+            <label class="visually-hidden" for="contact-first-name">First name</label>
+            <input id="contact-first-name" class="modal__input" formControlName="first_name" placeholder="First name" type="text" />
             <img class="modal__input-icon" src="assets/icons/person-dark-icon.svg" alt="" />
             <span class="modal__error">
               @if (firstNameField.touched && firstNameField.hasError('required')) {
@@ -42,7 +43,8 @@
           </div>
           <div class="modal__field">
             @let lastNameField = getField('last_name');
-            <input class="modal__input" formControlName="last_name" placeholder="Last name" type="text" />
+            <label class="visually-hidden" for="contact-last-name">Last name</label>
+            <input id="contact-last-name" class="modal__input" formControlName="last_name" placeholder="Last name" type="text" />
             <img class="modal__input-icon" src="assets/icons/person-dark-icon.svg" alt="" />
             <span class="modal__error">
               @if (lastNameField.touched && lastNameField.hasError('required')) {
@@ -59,7 +61,8 @@
         <!-- Email -->
         <div class="modal__field">
           @let emailField = getField('email');
-          <input class="modal__input" formControlName="email" placeholder="Email" type="email" />
+          <label class="visually-hidden" for="contact-email">Email</label>
+          <input id="contact-email" class="modal__input" formControlName="email" placeholder="Email" type="email" />
           <img class="modal__input-icon" src="assets/icons/mail-dark-icon.svg" alt="" />
           <span class="modal__error">
             @if (emailField.touched && emailField.hasError('required')) {
@@ -73,7 +76,8 @@
         <!-- Phone -->
         <div class="modal__field">
           @let phoneField = getField('phone');
-          <input class="modal__input" formControlName="phone" placeholder="Phone" type="tel" />
+          <label class="visually-hidden" for="contact-phone">Phone</label>
+          <input id="contact-phone" class="modal__input" formControlName="phone" placeholder="Phone" type="tel" />
           <img class="modal__input-icon" src="assets/icons/phone-dark-icon.svg" alt="" />
           <span class="modal__error">
             @if (phoneField.touched && phoneField.hasError('required')) {
