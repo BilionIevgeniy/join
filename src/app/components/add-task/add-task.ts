@@ -20,14 +20,9 @@ import {
 } from '@core/models/task.model';
 import { PriorityButton } from '@shared/button/priority-button/priority-button';
 import { Avatar } from '@shared/avatar/avatar';
-import { TaskFileList } from '@components/task/task-file-list/task-file-list';
+import { TaskFilePicker } from '@components/task/task-file-picker/task-file-picker';
 import { isFieldInvalid } from '@core/utils/form.utils';
 import { countRemaining, takeVisible } from '@core/utils/collection.utils';
-import { validateFile } from '@core/utils/file.utils';
-import { buildTaskFile } from '@core/utils/task-file.utils';
-import { ToastService } from '@core/services/toast.service';
-import { logAndNotify } from '@core/utils/toast.utils';
-import { ImageViewerService } from '@core/services/image-viewer.service';
 
 /**
  * AddTaskComponent — create/edit form for a task.
@@ -40,15 +35,13 @@ import { ImageViewerService } from '@core/services/image-viewer.service';
 @Component({
   selector: 'app-add-task-component',
   standalone: true,
-  imports: [ReactiveFormsModule, PriorityButton, Avatar, TaskFileList],
+  imports: [ReactiveFormsModule, PriorityButton, Avatar, TaskFilePicker],
   templateUrl: './add-task.html',
   styleUrl: './add-task.scss',
 })
 export class AddTaskComponent implements OnInit {
   // ─── DEPENDENCIES ───────────────────────────────────────────
   private fb = inject(FormBuilder);
-  private toast = inject(ToastService);
-  private imageViewer = inject(ImageViewerService);
 
   // ─── INPUTS ───────────────────────────────────────────────
   /** Column the task is created into when there's no existing task (create mode). */
@@ -74,7 +67,6 @@ export class AddTaskComponent implements OnInit {
   today = new Date().toISOString().split('T')[0];
   subtasks = signal<Subtask[]>([]);
   files = signal<TaskFile[]>([]);
-  isDragOver = signal(false);
   subtaskInput = signal('');
   isSubtaskActive = signal(false);
   editingSubtask = signal<string | null>(null); // id of subtask being edited
@@ -285,69 +277,6 @@ export class AddTaskComponent implements OnInit {
   saveEditSubtask(id: string, newTitle: string): void {
     this.subtasks.update((list) => list.map((s) => (s.id === id ? { ...s, title: newTitle } : s)));
     this.editingSubtask.set(null);
-  }
-
-  // ─── FILES ────────────────────────────────────────────────
-
-  onFilesSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.handleFiles(input.files);
-    input.value = ''; // reset so re-selecting the same file still fires 'change'
-  }
-
-  onDragOver(event: DragEvent): void {
-    event.preventDefault();
-    this.isDragOver.set(true);
-  }
-
-  onDragLeave(event: DragEvent): void {
-    event.preventDefault();
-    this.isDragOver.set(false);
-  }
-
-  onDrop(event: DragEvent): void {
-    event.preventDefault();
-    this.isDragOver.set(false);
-    this.handleFiles(event.dataTransfer?.files ?? null);
-  }
-
-  removeFile(id: string): void {
-    this.files.update((list) => list.filter((f) => f.id !== id));
-  }
-
-  /** Opens the Image Viewer on this file, paging across the rest of {@link files}. */
-  onViewFile(file: TaskFile): void {
-    const index = this.files().findIndex((f) => f.id === file.id);
-    this.imageViewer.open(this.files(), index);
-  }
-
-  clearFiles(): void {
-    this.files.set([]);
-  }
-
-  private handleFiles(fileList: FileList | null): void {
-    if (!fileList) return;
-    Array.from(fileList).forEach((file) => this.processFile(file));
-  }
-
-  /** Validates one file and, if valid, compresses/encodes it and adds it to {@link files}. */
-  private async processFile(file: File): Promise<void> {
-    const result = validateFile(file);
-    if (!result.valid) {
-      this.toast.error(result.error!);
-      return;
-    }
-    try {
-      const taskFile = await buildTaskFile(file);
-      this.files.update((list) => [...list, taskFile]);
-    } catch (err) {
-      logAndNotify(
-        this.toast,
-        'buildTaskFile',
-        err,
-        `${file.name}: could not be processed. Try a different file.`,
-      );
-    }
   }
 
   // ─── FORM ACTIONS ─────────────────────────────────────────

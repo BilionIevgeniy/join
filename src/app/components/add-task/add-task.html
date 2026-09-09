@@ -91,26 +91,7 @@
       <div class="add-task__col">
         <!-- Attachments -->
         <div class="add-task__field">
-          <div class="add-task__attachments-header">
-            <label class="add-task__label">Attachments</label>
-            @if (files().length > 0) {
-            <button type="button" class="add-task__delete-all" (click)="clearFiles()">
-              <img src="assets/icons/delete-icon.svg" alt="" /> Delete all
-            </button>
-            }
-          </div>
-          <p class="add-task__hint-text">Allowed file types are JPEG and PNG</p>
-
-          <label class="add-task__filepicker" [class.add-task__filepicker--dragover]="isDragOver()" for="task-files"
-            (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
-            <span class="add-task__filepicker-text">Drag a file or browse</span>
-            <span><img src="assets/icons/add-icon-gray.svg" alt="" /></span>
-          </label>
-          <input id="task-files" class="add-task__filepicker-input" type="file" accept="image/jpeg,image/png" multiple
-            (change)="onFilesSelected($event)" />
-
-          <app-task-file-list [files]="files()" variant="editable" (view)="onViewFile($event)"
-            (remove)="removeFile($event)" />
+          <app-task-file-picker [(files)]="files" />
         </div>
 
         <!-- Priority -->
