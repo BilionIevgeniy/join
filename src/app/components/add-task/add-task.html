@@ -58,21 +58,23 @@
               [class.add-task__dropdown-trigger--error]="isFieldInvalid('category')" (click)="toggleCategoryDropdown()">
               <input class="add-task__input" [class.add-task__input--error]="isFieldInvalid('category')" type="text"
                 readonly [placeholder]="getSelectedCategory() || 'Select task category'"
-                [value]="getSelectedCategory()" />
-              <span class="add-task__dropdown-arrow">▾</span>
+                [value]="getSelectedCategory()" (keydown.enter)="toggleCategoryDropdown()"
+                (keydown.space)="$event.preventDefault(); toggleCategoryDropdown()"
+                (keydown.escape)="closeCategoryDropdown()" />
+              <span class="add-task__dropdown-arrow" aria-hidden="true">▾</span>
             </div>
 
             @if (isCategoryDropdownOpen()) {
             <div class="add-task__dropdown-backdrop" (click)="closeCategoryDropdown()"></div>
             <div class="add-task__dropdown">
               @for (cat of categories; track cat) {
-              <div class="add-task__dropdown-item add-task__dropdown-item--single"
+              <button type="button" class="add-task__dropdown-item add-task__dropdown-item--single"
                 [class.add-task__dropdown-item--selected]="getSelectedCategory() === cat" (click)="selectCategory(cat)">
                 <span>{{ cat }}</span>
                 @if (getSelectedCategory() === cat) {
                 <span class="add-task__dropdown-check"><img src="assets/icons/check-grey.svg" alt="" /></span>
                 }
-              </div>
+              </button>
               }
             </div>
             }
@@ -102,7 +104,7 @@
           <label class="add-task__filepicker" [class.add-task__filepicker--dragover]="isDragOver()" for="task-files"
             (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
             <span class="add-task__filepicker-text">Drag a file or browse</span>
-            <span><img src="assets/icons/add-icon-gray.svg" alt="add-icon-gray" /></span>
+            <span><img src="assets/icons/add-icon-gray.svg" alt="" /></span>
           </label>
           <input id="task-files" class="add-task__filepicker-input" type="file" accept="image/jpeg,image/png" multiple
             (change)="onFilesSelected($event)" />
@@ -129,8 +131,10 @@
             <div class="add-task__dropdown-trigger" [class.add-task__dropdown-trigger--open]="isDropdownOpen()"
               (click)="toggleDropdown()">
               <input #contactSearch id="assigned" class="add-task__input" type="text"
-                placeholder="Select contacts to assign" (input)="onSearchChange(contactSearch.value)" />
-              <span class="add-task__dropdown-arrow" (click)="openDropdown(); $event.stopPropagation()">▾</span>
+                placeholder="Select contacts to assign" (input)="onSearchChange(contactSearch.value)"
+                (focus)="openDropdown()" (keydown.escape)="closeDropdown()" />
+              <span class="add-task__dropdown-arrow" aria-hidden="true"
+                (click)="openDropdown(); $event.stopPropagation()">▾</span>
             </div>
 
             @if (isDropdownOpen()) {
@@ -143,6 +147,7 @@
                 <app-avatar [initials]="contact.initials" [color]="contact.color" size="small" />
                 <span>{{ contact.first_name }} {{ contact.last_name }}</span>
                 <input type="checkbox" [checked]="isContactSelected(contact.id!)"
+                  [attr.aria-label]="contact.first_name + ' ' + contact.last_name"
                   (click)="toggleContact(contact.id!); $event.stopPropagation()" />
               </div>
               }
@@ -173,16 +178,16 @@
             <div class="add-task__subtask-buttons-wrapper">
               @if (isSubtaskActive()) {
               <button class="add-task__subtask-action-btn add-task__subtask-action-btn--clear" type="button"
-                (click)="clearSubtask()">
+                aria-label="Clear subtask input" (click)="clearSubtask()">
                 ✕
               </button>
               <button class="add-task__subtask-action-btn add-task__subtask-action-btn--confirm" type="button"
-                (click)="confirmSubtask()">
+                aria-label="Confirm new subtask" (click)="confirmSubtask()">
                 <img src="assets/icons/check-grey.svg" alt="" />
               </button>
               } @else {
               <button class="add-task__subtask-action-btn add-task__subtask-action-btn--add" type="button"
-                (click)="addSubtask()">
+                aria-label="Add subtask" (click)="addSubtask()">
                 +
               </button>
               }
@@ -197,12 +202,12 @@
               <!-- Edit mode -->
               <input class="add-task__input add-task__subtask-edit" type="text" [value]="subtask.title" #editInput />
               <div class="add-task__subtask-edit-buttons">
-                <button type="button" class="add-task__subtask-btn"
+                <button type="button" class="add-task__subtask-btn" aria-label="Save subtask"
                   (click)="saveEditSubtask(subtask.id, editInput.value)">
                   <img src="assets/icons/check-grey.svg" alt="" />
                 </button>
                 <button type="button" class="add-task__subtask-btn add-task__subtask-btn--delete"
-                  (click)="deleteSubtask(subtask.id)">
+                  aria-label="Delete subtask" (click)="deleteSubtask(subtask.id)">
                   <img src="assets/icons/delete-icon.svg" alt="" />
                 </button>
               </div>
@@ -210,11 +215,12 @@
               <!-- View mode -->
               <span class="add-task__subtask-title">• {{ subtask.title }}</span>
               <div class="add-task__subtask-actions">
-                <button type="button" class="add-task__subtask-btn" (click)="startEditSubtask(subtask.id)">
+                <button type="button" class="add-task__subtask-btn" aria-label="Edit subtask"
+                  (click)="startEditSubtask(subtask.id)">
                   <img src="assets/icons/edit.svg" alt="" />
                 </button>
                 <button type="button" class="add-task__subtask-btn add-task__subtask-btn--delete"
-                  (click)="deleteSubtask(subtask.id)">
+                  aria-label="Delete subtask" (click)="deleteSubtask(subtask.id)">
                   <img src="assets/icons/delete-icon.svg" alt="" />
                 </button>
               </div>

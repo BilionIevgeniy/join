@@ -500,6 +500,7 @@
 
   &--single {
     justify-content: space-between;
+    width: 100%;
 
     &:hover:not(.add-task__dropdown-item--selected) {
       background: var(--bg-color-lighter);
