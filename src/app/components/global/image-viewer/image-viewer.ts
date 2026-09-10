@@ -100,19 +100,18 @@ export class ImageViewer {
     return `${filename} • ${filetype} • ${formatFileSize(Number(filesize))}`;
   }
 
+  /**
+   * Only what the checklist actually asks for — paging, zoom, and download.
+   * Viewer.js defaults to 12 buttons (rotate/flip/reset/play included); on a
+   * narrow phone screen that many 24px buttons packed edge-to-edge is nearly
+   * unusable to tap accurately, so the extras are left off.
+   */
   private buildToolbar(): Viewer.ToolbarOptions {
     return {
       zoomIn: true,
       zoomOut: true,
-      oneToOne: true,
-      reset: true,
       prev: true,
-      play: true,
       next: true,
-      rotateLeft: true,
-      rotateRight: true,
-      flipHorizontal: true,
-      flipVertical: true,
       download: { show: true, click: () => this.downloadCurrent() },
     };
   }

@@ -78,6 +78,15 @@
   border: none;
   border-radius: 50%;
 
+  // 28px is fine for a mouse pointer but well under the ~40px touch-target
+  // guideline — on touch devices .file-actions is always visible (no hover
+  // to reveal it) with two buttons 12px apart, both a real fingertip target.
+  // A 112px-wide card fits two 40px buttons + the gap comfortably.
+  @media (hover: none) {
+    width: 40px;
+    height: 40px;
+  }
+
   &:focus-visible {
     outline: 2px solid #fff;
     outline-offset: 1px;

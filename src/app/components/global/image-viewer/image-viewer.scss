@@ -5,6 +5,122 @@
   display: none;
 }
 
+// Viewer.js's default backdrop is only 50% black — over a bright photo that
+// leaves barely any contrast for the white title/toolbar text sitting on
+// top of it (flagged in review: "kann man mit dem Kontrast verbessern").
+.viewer-backdrop {
+  background-color: rgb(0 0 0 / 85%);
+}
+
+// ─── Top bar: filename • type • size ─────────────────────────────────
+// Viewer.js's default title floats centered near the bottom, inside the
+// same translucent footer as the toolbar, at 12px/#ccc — under the
+// checklist's 14px floor and hard to read once it sits over image content
+// instead of a solid backdrop. Turned into its own solid bar fixed to the
+// top instead (matches the Figma reference's file-viewer chrome).
+// `position: fixed` pulls it out of the footer's own layout without having
+// to touch Viewer.js's managed DOM structure.
+.viewer-title {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  display: block;
+  max-width: none;
+  padding: 18px 70px 18px 20px; // right padding clears the close button
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: #fff;
+  text-align: left;
+  background: rgb(0 0 0 / 85%);
+  opacity: 1;
+}
+
+// Default close button is a giant 80px circle, deliberately half-hidden off
+// the top-right corner (Viewer.js's own "peek" effect) — pulled fully
+// on-screen and resized to match the toolbar buttons below (44px, same
+// reasoning as .viewer-toolbar > ul > li: real width/height, not transform,
+// so it can't get clipped by an ancestor sized for the old dimensions).
+// The 20x20 icon itself isn't a child flex can center — Viewer.js positions
+// it with `position: absolute; bottom: 15px; left: 15px`, offsets tuned for
+// the original 80px box — so those get recomputed for the new 44px box
+// instead: (44 − 20) / 2 = 12px on each side.
+// z-index must beat .viewer-title's (1) — an explicit z-index on a
+// positioned sibling always paints above one left at the default `auto`,
+// regardless of DOM order, so without this the opaque title bar was
+// painting over the close button and hiding it completely.
+.viewer-close {
+  top: 4px;
+  right: 4px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+
+  &::before {
+    bottom: 12px;
+    left: 12px;
+  }
+}
+
+// ─── Bottom bar: zoom / paging / download ────────────────────────────
+.viewer-footer {
+  padding: 10px 0;
+  background: rgb(0 0 0 / 85%);
+}
+
+// `overflow: hidden` on this `<ul>` (viewer.css) exists to contain the
+// default 24px floated buttons — with bigger buttons below it was clipping
+// their top/bottom edges instead (the actual bug reported). flex lets the
+// container size itself to whatever its children need instead of a fixed
+// float-based height, so nothing needs clipping in the first place.
+.viewer-toolbar > ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+// Bigger tap targets (44px, per the ~40-44px touch-target guideline) without
+// touching icon size: earlier this used `transform: scale()` to grow the
+// whole button uniformly, which — being paint-only, not layout — both
+// overlapped neighbours and got clipped by the parent's `overflow: hidden`
+// above. Real width/height participates correctly in flex layout instead,
+// and the icon (fixed 20x20 sprite crop, unrelated to the button's own box
+// size) is centered inside it via flex instead of the library's own
+// margin-based centering math, which was tuned for the original smaller box.
+// Repeated for :where(.viewer-small, .viewer-large) — Viewer.js's own
+// same-specificity size-modifier classes (each 1 class + 2 type selectors)
+// would otherwise keep their 18px/30px sizing over this plain `li` rule.
+.viewer-toolbar > ul > li,
+.viewer-toolbar > ul > .viewer-small,
+.viewer-toolbar > ul > .viewer-large {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 4px;
+  background-color: transparent;
+
+  &::before {
+    margin: 0; // centering now comes from the flex parent, not this margin
+  }
+
+  &:hover,
+  &:focus {
+    background-color: rgb(255 255 255 / 15%);
+  }
+}
+
+.viewer-toolbar > ul > li + li {
+  margin-left: 4px;
+}
+
 // Viewer.js ships icons only for its built-in buttons (see viewer.css) — our
 // custom "download" toolbar entry gets no icon by default, so we style it
 // ourselves, matching the library's own toolbar-button dimensions exactly

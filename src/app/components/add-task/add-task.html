@@ -50,13 +50,13 @@
 
         <!-- Category -->
         <div class="add-task__field">
-          <label class="add-task__label">
+          <label class="add-task__label" for="category">
             Category <span class="add-task__required">*</span>
           </label>
           <div class="add-task__dropdown-wrapper">
             <div class="add-task__dropdown-trigger" [class.add-task__dropdown-trigger--open]="isCategoryDropdownOpen()"
               [class.add-task__dropdown-trigger--error]="isFieldInvalid('category')" (click)="toggleCategoryDropdown()">
-              <input class="add-task__input" [class.add-task__input--error]="isFieldInvalid('category')" type="text"
+              <input id="category" class="add-task__input" [class.add-task__input--error]="isFieldInvalid('category')" type="text"
                 readonly [placeholder]="getSelectedCategory() || 'Select task category'"
                 [value]="getSelectedCategory()" (keydown.enter)="toggleCategoryDropdown()"
                 (keydown.space)="$event.preventDefault(); toggleCategoryDropdown()"
