@@ -2,7 +2,11 @@
   position: fixed;
   top: 24px;
   right: max(24px, calc((100vw - 1700px)));
-  z-index: 1000;
+
+  // Must stay above the modal panel (modal.scss: z-index 2000) — a toast
+  // fired while a dialog is open (e.g. a file-validation error while
+  // Add-Task is open in a modal) has to render on top of it, not behind.
+  z-index: 2100;
   display: flex;
   flex-direction: column;
   gap: 12px;

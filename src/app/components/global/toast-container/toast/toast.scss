@@ -12,6 +12,14 @@
   // Entry animation — slides in from the right while fading in
   animation: slideInFade 250ms ease-out;
 
+  // Fixed min-width (280px) doesn't fit a 320px viewport once the
+  // container's 24px right offset is accounted for — the toast runs off
+  // the left edge. Let it shrink to the available width instead.
+  @media (width <= 480px) {
+    width: calc(100vw - 48px);
+    min-width: 0;
+  }
+
   &--success {
     border-left: 4px solid #2ecc71;
 
@@ -44,8 +52,15 @@
 
   &__message {
     flex: 1;
+
+    // A flex child's default min-width is `auto`, not 0 — it won't shrink
+    // below its content's intrinsic width, so a long unbroken filename (e.g.
+    // "some_very_long_name.png" — underscores aren't a break opportunity)
+    // pushes the toast wider than its box instead of wrapping.
+    min-width: 0;
     font-size: var(--font-size-s);
     color: var(--text-color);
+    overflow-wrap: anywhere;
   }
 
   &__close {

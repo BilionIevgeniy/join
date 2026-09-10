@@ -15,12 +15,21 @@ export interface FileValidationResult {
   error?: string;
 }
 
-/** True when the file's MIME type is in the {@link ALLOWED_FILE_TYPES} whitelist. */
+/**
+ * True when the file's MIME type is in the {@link ALLOWED_FILE_TYPES} whitelist.
+ * @param file - The file selected for upload.
+ * @returns Whether `file.type` is an allowed image MIME type.
+ */
 export function isAllowedFileType(file: File): boolean {
   return (ALLOWED_FILE_TYPES as readonly string[]).includes(file.type);
 }
 
-/** True when the file's (uncompressed) size does not exceed `maxBytes`. */
+/**
+ * True when the file's (uncompressed) size does not exceed `maxBytes`.
+ * @param file - The file selected for upload.
+ * @param maxBytes - Size ceiling in bytes, defaults to {@link MAX_FILE_SIZE_BYTES}.
+ * @returns Whether `file.size` is within the limit.
+ */
 export function isFileSizeValid(file: File, maxBytes = MAX_FILE_SIZE_BYTES): boolean {
   return file.size <= maxBytes;
 }
@@ -28,6 +37,8 @@ export function isFileSizeValid(file: File, maxBytes = MAX_FILE_SIZE_BYTES): boo
 /**
  * Validates a single file selected for upload — format first, then size —
  * and returns a user-facing error message for the first check that fails.
+ * @param file - The file selected for upload.
+ * @returns `{ valid: true }`, or `{ valid: false, error }` with a user-facing message.
  */
 export function validateFile(file: File): FileValidationResult {
   if (!isAllowedFileType(file)) {
@@ -43,6 +54,8 @@ export function validateFile(file: File): FileValidationResult {
  * Reads a Blob's bytes as a Base64 data URL (`data:<mime>;base64,...`).
  * Wraps the callback-based `FileReader` in a Promise; rejects on read errors
  * instead of hanging (unlike a naive `onloadend`-only implementation).
+ * @param blob - The file/blob to encode (e.g. a compressed image).
+ * @returns A promise resolving to the Base64 data URL string.
  */
 export function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -53,7 +66,11 @@ export function blobToBase64(blob: Blob): Promise<string> {
   });
 }
 
-/** Formats a byte count as a short human-readable string, e.g. `2359296` → `"2.3 MB"`. */
+/**
+ * Formats a byte count as a short human-readable string, e.g. `2359296` → `"2.3 MB"`.
+ * @param bytes - The byte count to format.
+ * @returns A human-readable size string (e.g. `"2.3 MB"`, `"512 B"`).
+ */
 export function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   const units = ['KB', 'MB', 'GB'];

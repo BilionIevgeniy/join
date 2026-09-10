@@ -8,6 +8,10 @@ const JPEG_QUALITY = 0.8;
  * Scales `width`×`height` down to fit within `maxSize`×`maxSize`, preserving
  * aspect ratio. Returns the input unchanged if it already fits — images are
  * never upscaled.
+ * @param width - Original image width in pixels.
+ * @param height - Original image height in pixels.
+ * @param maxSize - Max allowed width/height, defaults to {@link MAX_IMAGE_DIMENSION}.
+ * @returns The scaled `{ width, height }`, rounded to whole pixels.
  */
 export function calculateScaledDimensions(
   width: number,
@@ -19,7 +23,13 @@ export function calculateScaledDimensions(
   return { width: Math.round(width * scale), height: Math.round(height * scale) };
 }
 
-/** Draws `bitmap` onto a new canvas sized `width`×`height`, resampling its pixels. */
+/**
+ * Draws `bitmap` onto a new canvas sized `width`×`height`, resampling its pixels.
+ * @param bitmap - The decoded source image.
+ * @param width - Target canvas width in pixels.
+ * @param height - Target canvas height in pixels.
+ * @returns An in-memory (never DOM-attached) canvas holding the resampled image.
+ */
 function drawToCanvas(bitmap: ImageBitmap, width: number, height: number): HTMLCanvasElement {
   // <canvas> is never attached to the DOM — it only exists in memory as a
   // pixel buffer we draw into and then export from, below.
@@ -32,7 +42,13 @@ function drawToCanvas(bitmap: ImageBitmap, width: number, height: number): HTMLC
   return canvas;
 }
 
-/** Promise wrapper around the callback-based `HTMLCanvasElement.toBlob`. */
+/**
+ * Promise wrapper around the callback-based `HTMLCanvasElement.toBlob`.
+ * @param canvas - The canvas to export.
+ * @param type - Target MIME type (e.g. `"image/jpeg"`).
+ * @param quality - Encode quality 0..1, only used for lossy formats.
+ * @returns A promise resolving to the encoded image blob.
+ */
 function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const onResult = (blob: Blob | null): void =>
@@ -50,6 +66,8 @@ function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number)
  * {@link MAX_IMAGE_DIMENSION}×{@link MAX_IMAGE_DIMENSION} (preserving aspect
  * ratio, never upscaling), and re-encodes it in its original format.
  * JPEGs are additionally re-encoded at reduced quality; PNG stays lossless.
+ * @param file - The original, unvalidated-size image file to compress.
+ * @returns A promise resolving to the compressed image as a Blob.
  */
 export async function compressImage(file: File): Promise<Blob> {
   // createImageBitmap: native, no import needed. Decodes the file's raw

@@ -7,6 +7,8 @@ import { compressImage } from './image.utils';
  * (see {@link compressImage}), Base64-encodes the result, and attaches
  * metadata. `size` is the *compressed* byte size — what actually gets stored
  * and later downloaded, not the original upload size.
+ * @param file - An already-validated (type/size) file selected for upload.
+ * @returns A promise resolving to the complete {@link TaskFile}, ready to store.
  */
 export async function buildTaskFile(file: File): Promise<TaskFile> {
   const compressed = await compressImage(file);
