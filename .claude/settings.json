@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./supabase/.env)",
+      "Read(./supabase/.env.*)",
+      "Read(./supabase/.temp/**)"
+    ],
+    "allow": ["Bash(npx ng:*)", "Bash(npm run:*)"]
+  }
+}
