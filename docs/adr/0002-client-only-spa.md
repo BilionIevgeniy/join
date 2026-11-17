@@ -15,9 +15,9 @@ Angular supports server-side rendering and prerendering (`@angular/ssr`, hydrati
 
 ## Decision
 
-Option 1. The content behind the sign-in is private and not indexed, the data comes from Supabase directly in the browser, and static hosting needs no server. The cost is a slower first paint, which `@defer`, lazy routes and budgets keep small (feature 15).
+Option 1. The content behind the sign-in is private and not indexed, the data comes from Supabase directly in the browser, and static hosting needs no server. The cost is a slower first paint, which `@defer`, lazy routes and budgets keep small (feature 18).
 
 ## Consequences
 
-- Hosting is static with an SPA fallback and security headers (features 2, 15)
+- Hosting is static with an SPA fallback and security headers (features 2, 18)
 - The code may use browser APIs (`window`, `sessionStorage`, `matchMedia`) directly; if prerendering of the public pages is ever wanted (option 3), those uses must be guarded first, and that change gets its own record

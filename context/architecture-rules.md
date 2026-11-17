@@ -13,17 +13,20 @@ src/app/
   app.ts, app.config.ts, app.routes.ts   bootstrap, root providers, top-level routes only
   core/                                   app-wide infrastructure, no UI, no feature knowledge
     supabase/                             the Supabase client (InjectionToken), generated database.types.ts
+    config/                               APP_CONFIG token, loader and schema of config.json (feature 2)
     error/                                global ErrorHandler, logger
+    time/                                 CLOCK token
     i18n/ …                               (later features)
   shell/                                  main layout, auth layout, header, sidebar
   shared/
-    ui/                                   presentational building blocks with no feature knowledge (button, avatar, modal, loader, search input, toast, image viewer…)
+    ui/                                   the UI kit (feature 10): presentational, CDK/Angular Aria based, each with a harness (button, dialog, confirm, menu, combobox, form field, toast, skeleton, empty/error state…)
     util/                                 pure helpers with no feature knowledge (collection, file, image, date), each with its test
   features/
     auth/        data-access/ (auth.store, auth.repository), guards/, pages/ (login, signup…), index.ts
     workspaces/  data-access/, ui/, pages/, index.ts        (feature 7)
     contacts/    data-access/ (contacts.store, contact.repository, contact.model), ui/, pages/, index.ts
-    tasks/       data-access/ (tasks.store, task.repository, task.model), domain/, ui/ (task-form, task-detail, file-picker…), pages/, index.ts
+    tasks/       data-access/ (tasks.store, task.repository, task.model, mappers), domain/, ui/ (task-form, task-detail, file-picker, comments, activity…), pages/ (incl. labels), index.ts
+    notifications/ data-access/, ui/ (bell, list), index.ts  (feature 20)
     board/       ui/ (board-column, task-card), pages/ (board-page)
     summary/     ui/, pages/
     legal/       pages/ (privacy, legal notice, help, accessibility statement)
@@ -46,11 +49,12 @@ e2e/                                      Playwright journeys
 
 1. Only `*.repository.ts` files and `core/supabase` touch the Supabase client. Stores call repositories; components never do.
 2. A feature imports another feature only through its `index.ts`, never a deep path.
-3. Dependencies between features point one way: `board → tasks → contacts → workspaces → auth`, `summary → tasks`, `legal` depends on nothing. No cycles.
+3. Dependencies between features point one way: `board → tasks → contacts → workspaces → auth`, `summary → tasks`, `notifications → tasks`, `legal` depends on nothing. No cycles. `shell` may import features' `index.ts`; no feature imports `shell`.
+3a. Stores never call each other's reset or load methods: a store's `resource()` is keyed by the context it depends on (`currentUserId()`, `currentWorkspaceId()`), so a sign-out or a workspace switch empties it by itself.
 4. `shared/` and `core/` never import from `features/` or `shell/`.
 5. Every feature's pages are lazy-loaded (`loadComponent`/`loadChildren`); a store with per-page state is provided at route level, a store with app-wide state (`auth`, the current workspace) in root.
 6. Security lives in the database (RLS, Storage policies, Edge Functions). Guards and hidden buttons are UX only.
-7. Types of a table come from the generated `database.types.ts`; a feature's model maps them to what the UI needs in its repository.
+7. The generated `database.types.ts` is the data contract; the repository maps rows to the feature's camelCase models with pure, tested mappers; components never see row types.
 8. A folder past about 12 files is split by topic.
 
 ## Where does this go
@@ -70,6 +74,8 @@ e2e/                                      Playwright journeys
 - Every table has RLS enabled; policies per command; access is by workspace membership (feature 7); `anon` gets nothing on user data
 - Writes that must be atomic (a task with its assignees) go through one RPC, `security invoker` unless the ADR says otherwise
 - `security definer` functions have `set search_path = ''`, check the caller and are not executable by `anon`
+- Concurrent edits: `tasks.version` with `expected_version` in the update RPCs (a mapped `conflict` error); subtasks are rows, not a jsonb array; ordering by fractional `position` keys through `move_task`
+- History is written only by `security definer` triggers (`task_activity`); clients have no insert policy on it
 - Files live in a private Storage bucket under `<workspace_id>/<task_id>/<file>`; the table keeps metadata only; the app shows them through signed URLs (feature 9)
 
 ## What the lint enforces

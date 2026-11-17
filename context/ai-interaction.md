@@ -68,7 +68,7 @@ The built-in `/simplify`, `/code-review` and `/security-review` are quick checks
 
 - `/cleanup` (and `/cleanup run` to apply fixes)
 - `code-reviewer` over all of `src/` every few features
-- `security-auditor` as a full audit after features 3, 7, 9 and 15
+- `security-auditor` as a full audit after features 3, 7, 9, 16 and 18
 - Every couple of months: check `.claude/` (agents, skills, settings, `.mcp.json`) for paths, tool names and permissions that no longer exist
 
 ## Checking APIs

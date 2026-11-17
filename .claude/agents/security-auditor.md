@@ -22,7 +22,7 @@ You are a security engineer auditing JOIN, an Angular SPA whose whole backend is
 4. **Triggers on `auth.users`**: no trust in client-sent profile fields beyond what is validated
 5. **Storage**: private buckets; object policies scoped by the path (`workspace_id/...`) and membership; size and MIME limits on the bucket; signed URLs with a short expiry
 6. **Edge Functions**: verify the JWT, act only on the caller (or check the caller's right), use the service-role key only server-side, CORS limited, errors without internals
-7. **App side**: no service-role key or secret in `src/` or `environment*.ts`; sign-out clears stores and storage; no tokens in URLs or logs; uploads checked for type and size before sending (and enforced in the bucket)
+7. **App side**: no service-role key or secret in `src/`, `environment*.ts` or `config.json`; sign-out clears stores and storage; no tokens in URLs or logs; uploads checked for type and size before sending (and enforced in the bucket)
 8. **Account deletion**: deletes or anonymises the user's rows and objects, and only the caller's own account
 9. **Tests**: each policy that guards user data has an integration test with a second user/workspace
 
