@@ -2,7 +2,7 @@
 
 ## JOIN — Kanban task management
 
-JOIN is a collaborative Kanban board for small teams: tasks move through To do → In progress → Awaiting feedback → Done, are assigned to contacts, carry subtasks, a priority, a category, a due date and image attachments, and a summary dashboard shows what needs attention. It started as a Developer Akademie course project (2025–2026) and is now being brought to production standard as a portfolio project and the basis of an English Angular interview handbook (`BilionIevgeniy/join-handbook`).
+JOIN is a collaborative Kanban board for small teams: tasks move through To do → In progress → Awaiting feedback → Done, are assigned to contacts, carry subtasks, a priority, a category, a due date and image attachments, and a summary dashboard shows what needs attention. It started as a Developer Akademie course project (2025–2026) and is now being brought to production standard as a portfolio project.
 
 **Goal:** a codebase that looks and works like what a German company runs in production with Angular — security in the database, tests on every level, CI/CD, accessibility (BFSG), GDPR-aware — and that its author can explain line by line in an interview.
 
@@ -49,4 +49,4 @@ On top of today's features: workspaces with invitations and an owner/member perm
 
 ## Status
 
-Course phase finished (PR #68). The production plan is in `context/features/plan/` (24 features, in order; what is not in JOIN is a topic of the handbook); nothing of it is implemented yet.
+Course phase finished (PR #68). The production plan is in `context/features/plan/` (24 features, in order; what JOIN deliberately does not use is listed in its README with the reason); nothing of it is implemented yet.
