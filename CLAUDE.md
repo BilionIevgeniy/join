@@ -1,6 +1,6 @@
 # JOIN
 
-A collaborative Kanban board (Angular 22 + Supabase), brought to production standard as a portfolio project and the basis of an Angular interview handbook.
+A collaborative Kanban board (Angular 22 + Supabase), brought to production standard as a portfolio project whose author can explain every line in an interview.
 
 ## Context Files
 
