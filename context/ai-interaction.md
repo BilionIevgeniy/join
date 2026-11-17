@@ -3,7 +3,7 @@
 ## Communication
 
 - Be concise and direct
-- Explain non-obvious decisions briefly, and say why this option and not the alternative (the project is also the basis of an interview handbook)
+- Explain non-obvious decisions briefly, and say why this option and not the alternative (the author must be able to explain every decision in an interview)
 - Ask before large refactors or architectural changes
 - Don't add features not in the project spec or the feature plan
 - Never delete files without clarification
