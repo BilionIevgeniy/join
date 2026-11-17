@@ -13,6 +13,9 @@ updates:
         update-types: [minor, patch]
       minor-and-patch:
         update-types: [minor, patch]
+        # Angular packages must move in lockstep (exact peer versions), so they
+        # stay in the `angular` group only and never land here.
+        exclude-patterns: ["@angular/*", "@angular-devkit/*", "@schematics/angular", "angular-eslint", "@angular-eslint/*"]
     ignore:
       - dependency-name: "@angular/*"
         update-types: ["version-update:semver-major"]
