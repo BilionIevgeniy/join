@@ -4,7 +4,9 @@ The short rulebook: where code goes and which way dependencies point. The newcom
 
 ## Status
 
-Feature 5 of the plan moves the code into the target layout below. Until it is merged, `src/app` still has the course layout (`core/`, `components/`, `pages/`, `layout/`); new code in that period follows the target rules as far as the old layout allows, and feature 5 moves it with the rest. Delete this section when feature 5 is merged.
+Feature 5 of the plan moves the code into the target layout below (feature 6 adds the stores and repositories). Until it is merged, `src/app` still has the course layout (`core/`, `components/`, `pages/`, `layout/`); new code in that period follows the target rules as far as the old layout allows, and feature 5 moves it with the rest. Delete this section when feature 5 is merged.
+
+Why this layout: the Angular style guide asks to organise by feature, not by type (`components/`, `services/`), with one concept per file and tests next to the code; the roles inside a feature (`pages`/`ui`/`data-access`/`domain`) are the feature/ui/data-access/util split common in enterprise Angular codebases, here as folders with lint-enforced boundaries instead of Nx libraries (ADR from feature 5).
 
 ## Layout (target)
 
@@ -17,20 +19,20 @@ src/app/
     error/                                global ErrorHandler, logger
     time/                                 CLOCK token
     i18n/ …                               (later features)
-  shell/                                  main layout, auth layout, header, sidebar
+  shell/                                  main layout (signed-in), public layout (login, sign-up, legal, help — no data loads), header, sidebar
   shared/
-    ui/                                   the UI kit (feature 10): presentational, CDK/Angular Aria based, each with a harness (button, dialog, confirm, menu, combobox, form field, toast, skeleton, empty/error state…)
+    ui/                                   the UI kit (feature 11): presentational, CDK/Angular Aria based, each with a harness (button, dialog, confirm, menu, combobox, form field, toast, skeleton, empty/error state…)
     util/                                 pure helpers with no feature knowledge (collection, file, image, date), each with its test
   features/
     auth/        data-access/ (auth.store, auth.repository), guards/, pages/ (login, signup…), index.ts
-    workspaces/  data-access/, ui/, pages/, index.ts        (feature 7)
+    workspaces/  data-access/, ui/, pages/, index.ts        (feature 8)
     contacts/    data-access/ (contacts.store, contact.repository, contact.model), ui/, pages/, index.ts
     tasks/       data-access/ (tasks.store, task.repository, task.model, mappers), domain/, ui/ (task-form, task-detail, file-picker, comments, activity…), pages/ (incl. labels), index.ts
-    notifications/ data-access/, ui/ (bell, list), index.ts  (feature 20)
-    board/       ui/ (board-column, task-card), pages/ (board-page)
+    notifications/ data-access/, ui/ (bell, list), index.ts  (feature 21)
+    board/       domain/ (filters), ui/ (board-column, task-card), pages/ (board-page), index.ts
     summary/     ui/, pages/
     legal/       pages/ (privacy, legal notice, help, accessibility statement)
-supabase/                                 config.toml, migrations/, functions/, seed.sql, tests
+supabase/                                 config.toml, migrations/, functions/delete-user/, seed.sql, tests
 e2e/                                      Playwright journeys
 ```
 
@@ -71,12 +73,13 @@ e2e/                                      Playwright journeys
 
 ## Data and security
 
-- Every table has RLS enabled; policies per command; access is by workspace membership (feature 7); `anon` gets nothing on user data
+- Every table has RLS enabled; policies per command; access is by workspace membership (feature 8); `anon` gets nothing on user data
+- Server-side operations: only account deletion needs the service role (Edge Function `delete-user`, called with `supabase.functions.invoke`); everything else, including the data export (`export_my_data()` RPC), runs under RLS
 - Writes that must be atomic (a task with its assignees) go through one RPC, `security invoker` unless the ADR says otherwise
 - `security definer` functions have `set search_path = ''`, check the caller and are not executable by `anon`
 - Concurrent edits: `tasks.version` with `expected_version` in the update RPCs (a mapped `conflict` error); subtasks are rows, not a jsonb array; ordering by fractional `position` keys through `move_task`
 - History is written only by `security definer` triggers (`task_activity`); clients have no insert policy on it
-- Files live in a private Storage bucket under `<workspace_id>/<task_id>/<file>`; the table keeps metadata only; the app shows them through signed URLs (feature 9)
+- Files live in a private Storage bucket under `<workspace_id>/<task_id>/<file>`; the table keeps metadata only; the app shows them through signed URLs (feature 10)
 
 ## What the lint enforces
 

@@ -19,7 +19,7 @@ Option 2. The data is relational (tasks, assignees, workspaces, members), Postgr
 
 ## Consequences
 
-- All protection must hold in the database: every table has RLS, `anon` gets nothing on user data, and each policy has an integration test (feature 3, 7)
+- All protection must hold in the database: every table has RLS, `anon` gets nothing on user data, and each policy has an integration test (feature 3, 8)
 - The schema is code: migrations in `supabase/migrations/`, a local stack for development and CI (feature 3)
 - Atomic writes over several tables are RPCs; privileged operations are Edge Functions that verify the caller
 - The Angular app has a thin data layer: repositories wrap `supabase-js`; `HttpClient` and interceptors are not used
