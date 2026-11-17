@@ -6,7 +6,8 @@ Rules for every line of JOIN. Check Angular APIs against the installed version (
 
 - `strict` stays on (with `strictTemplates`, `strictInjectionParameters`, `noPropertyAccessFromIndexSignature`)
 - No `any`; use `unknown` and narrow. Errors in `catch` are `unknown`
-- Types of Supabase tables come from the generated `database.types.ts`; app models are derived from them (`Pick`, `Omit`), not written by hand twice
+- The generated `database.types.ts` (`Row`/`Insert`/`Update`) is the data contract; domain models are camelCase types in `data-access/*.model.ts`, mapped by pure, tested mappers next to the repository; snake_case and `Json` never reach components (ADR from feature 5)
+- Dates without time are `date` columns and plain `YYYY-MM-DD` strings in the model; "now" comes from the `CLOCK` token, never `new Date()` in domain code; display through `Intl`/`DatePipe` with the locale
 - Prefer `type` unions and `as const` objects over `enum` for new code
 - Path aliases (`@core/*`, `@shared/*`, `@features/*`) instead of long relative paths
 
@@ -43,7 +44,8 @@ Rules for every line of JOIN. Check Angular APIs against the installed version (
 
 ## Styling
 
-- SCSS with BEM (`block__element--modifier`), one stylesheet per component, design tokens as CSS custom properties in `src/styles/`
+- SCSS with BEM (`block__element--modifier`), one stylesheet per component; colors, spacing, radii and type only through the design tokens (CSS custom properties in `src/styles/tokens/`, three layers: primitive → semantic → component; feature 10)
+- UI building blocks come from the kit in `shared/ui` (feature 10); a feature does not build its own button, dialog, menu or dropdown
 - No inline styles; no `::ng-deep`; `ViewEncapsulation.None` only for a shell that renders foreign DOM, with a comment
 - Component style budget: 8 kB (angular.json); a bigger stylesheet is split into child components
 - Font sizes ≥ 16px for body text, ≥ 14px for small print
@@ -60,7 +62,7 @@ Rules for every line of JOIN. Check Angular APIs against the installed version (
 
 ## Accessibility
 
-Target WCAG 2.1 AA (BFSG). Checked by the template lint rules (feature 2), axe in tests (feature 12) and the `ui-reviewer` agent.
+Target WCAG 2.1 AA (BFSG). Checked by the template lint rules (feature 2), axe in tests (feature 13) and the `ui-reviewer` agent.
 
 - Native elements first: a click target is a `<button>` or `<a>`, never a `<div (click)>`
 - Every form field has a label; every icon-only button an `aria-label`
@@ -71,8 +73,8 @@ Target WCAG 2.1 AA (BFSG). Checked by the template lint rules (feature 2), axe i
 ## Error handling
 
 - Repositories throw typed errors (`{ code, message }` mapped from Supabase errors); stores catch, roll back, and expose an error state; components show it
-- The global `ErrorHandler` (feature 11) logs unexpected errors through the logger (and Sentry); no `console.*` outside the logger
-- User-facing messages come from one place (a message map per feature, i18n keys from feature 16), never raw Supabase messages
+- The global `ErrorHandler` (feature 12) logs unexpected errors through the logger (and Sentry); no `console.*` outside the logger
+- User-facing messages come from one place (a message map per feature, i18n keys from feature 21), never raw Supabase messages
 
 ## Size limits
 

@@ -33,4 +33,4 @@ Added by the feature plan and listed here in the commit that adds them: `lint`, 
 
 - Schema changes only as migrations in `supabase/migrations/` via the Supabase CLI, never in the dashboard (from feature 3)
 - Work against the local stack (`supabase start`) or the development project; never read from, write to or change the production project unless I explicitly ask for it
-- The publishable key in `src/environments/` is public by design; the service-role key never appears in `src/`
+- The publishable key (in `src/environments/` today, in the runtime `config.json` from feature 2) is public by design; the service-role key never appears in `src/` or `config.json`
