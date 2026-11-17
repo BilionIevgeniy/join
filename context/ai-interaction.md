@@ -23,11 +23,11 @@ This is the common workflow for every feature and fix. Each step names the skill
 9. **PR and CI** (`/feature complete`) - Push the branch, open the PR with `gh`, wait for the required checks to be green
 10. **Merge** (`/feature complete`) - Once the required checks are green, merge the PR on GitHub (`gh pr merge --merge --delete-branch`) without asking: it is the natural end of the task. Then update the local `main` and delete the local branch. A red or missing check means no merge
 
-Do NOT commit until the checks are green. Run them again right before the commit, not only earlier in the feature. If a test or the build fails, fix the issues first; never skip, disable or delete a test to get a commit through. `main` changes only through a PR merged on GitHub. Until feature 2 creates CI and branch protection, the PR is merged only after I have looked at it.
+Do NOT commit until the checks are green. Run them again right before the commit, not only earlier in the feature. If a test or the build fails, fix the issues first; never skip, disable or delete a test to get a commit through. `main` changes only through a PR merged on GitHub: the ruleset `main: PR only` rejects direct pushes, force pushes and deletion for everyone, admins included, needs no approval (a solo author cannot approve their own PR) and allows merge commits only. Until feature 2 adds the required `ci` check, the PR is merged only after I have looked at it.
 
 ### Required checks
 
-Until feature 2: none (local checks only). Feature 2 adds `ci` (format, lint, typecheck, unit tests, build). Feature 3 adds `integration` (tests against the local Supabase in CI). Feature 4 adds `e2e` (Playwright against the local Supabase). Each becomes a required check on `main` once it has run green on its PR, and this list changes in the same commit.
+Until feature 2: none (local checks only; the ruleset `main: PR only` requires a PR but no check). Feature 2 adds `ci` (format, lint, typecheck, unit tests, build). Feature 3 adds `integration` (tests against the local Supabase in CI). Feature 4 adds `e2e` (Playwright against the local Supabase). Each becomes a required check on `main` once it has run green on its PR, and this list changes in the same commit.
 
 ### Working with review agents
 
