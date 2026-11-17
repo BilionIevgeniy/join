@@ -7,7 +7,7 @@ One short file per decision that shapes the structure of the code, in the [MADR]
 | [0001](0001-supabase-as-backend.md) | Supabase as the backend, no own server | accepted |
 | [0002](0002-client-only-spa.md) | A client-only SPA, no SSR | accepted |
 
-Planned records (written by the feature that makes the decision): static host and runtime configuration (2), feature structure, public API per `index.ts` and the boundary lint (5), NgRx SignalStore with `resource()` (5), data contract and mapping (5), workspaces, invitations and permissions (7), files in Storage and subtasks as rows (9), the UI kit and design tokens (10), error monitoring (12), ordering (13), Signal Forms (14), activity by triggers (16), no consent banner (17), realtime (19), the i18n library (21).
+Planned records (written by the feature that makes the decision): static host and runtime configuration (2), feature folders and Sheriff boundaries (5), NgRx SignalStore with `resource()` (6), data contract and mapping (6), workspaces, invitations and permissions (8), files in Storage and subtasks as rows (10), the UI kit and design tokens (11), error monitoring (13), ordering (14), Signal Forms (15), activity by triggers (17), no consent banner (18), realtime (20), the i18n library (22).
 
 ## How to add one
 

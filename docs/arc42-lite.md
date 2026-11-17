@@ -26,7 +26,7 @@ flowchart LR
   spa -.-> sentry[Sentry EU]
 ```
 
-Solid lines exist today (Storage from feature 9), dashed lines are planned (Realtime: feature 19, Sentry: feature 12). The browser talks to Supabase directly with the public publishable key; there is no own backend server ([ADR 0001](adr/0001-supabase-as-backend.md)).
+Solid lines exist today (Storage from feature 10), dashed lines are planned (Realtime: feature 20, Sentry: feature 13). The browser talks to Supabase directly with the public publishable key; there is no own backend server ([ADR 0001](adr/0001-supabase-as-backend.md)).
 
 ## 5. Building block view
 
@@ -46,12 +46,12 @@ pages ─ inputs/outputs ─▶ features/*/ui, shared/ui   (presentational)
 | Feature | Owns |
 | --- | --- |
 | `auth` | session, sign-in/up, demo (anonymous) sign-in, password reset, account deletion, guards |
-| `workspaces` | workspaces, members, invitations, the current workspace (feature 7) |
+| `workspaces` | workspaces, members, invitations, the current workspace (feature 8) |
 | `contacts` | the contacts of a workspace |
 | `tasks` | tasks, subtasks, assignees, labels, files, comments and activity; the task form and detail |
 | `board` | the Kanban view, drag and drop, search |
 | `summary` | the dashboard |
-| `notifications` | in-app notifications, the header bell (feature 20) |
+| `notifications` | in-app notifications, the header bell (feature 21) |
 | `legal` | legal notice, privacy policy, help, accessibility statement |
 
 ## 6. Runtime view
@@ -62,12 +62,12 @@ The flows of later features (anonymous demo, invitations, uploads to Storage, re
 
 ## 8. Cross-cutting concepts
 
-- **State**: signals; feature stores (NgRx SignalStore from feature 5) keyed by user and workspace; `computed` for everything derived
+- **State**: signals; feature stores (NgRx SignalStore from feature 6) keyed by user and workspace; `computed` for everything derived
 - **Configuration**: one build for every environment; `config.json` per deploy context, loaded at startup into `APP_CONFIG` (feature 2)
-- **Data contract**: generated DB types, mapped to camelCase domain models in repositories (feature 5)
-- **Concurrency**: `version` checks, subtasks as rows, fractional ordering, activity by triggers (features 7, 9, 13, 16)
-- **UI kit**: design tokens and CDK/Aria-based components with harnesses (feature 10)
-- **Errors**: repositories map Supabase errors to typed errors; stores expose error state; a global `ErrorHandler` reports the unexpected (feature 12)
+- **Data contract**: generated DB types, mapped to camelCase domain models in repositories (feature 6)
+- **Concurrency**: `version` checks, subtasks as rows, fractional ordering, activity by triggers (features 8, 10, 14, 17)
+- **UI kit**: design tokens and CDK/Aria-based components with harnesses (feature 11)
+- **Errors**: repositories map Supabase errors to typed errors; stores expose error state; a global `ErrorHandler` reports the unexpected (feature 13)
 - **Security**: RLS on every table, Storage policies, Edge Functions verify the caller; the client holds only the publishable key
 - **Accessibility**: native elements, CDK a11y, lint rules for templates, axe in tests
 - **Testing**: see "Testing" in `context/coding-standards.md`
