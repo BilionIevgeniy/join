@@ -32,7 +32,7 @@
     "@angular/compiler-cli": "21.2.17",
     "jsdom": "^31.0.1",
     "prettier": "^3.10.1",
-    "stylelint": "^17.13.0",
+    "stylelint": "^18.1.0",
     "stylelint-config-recess-order": "^7.10.0",
     "stylelint-config-standard-scss": "^17.0.0",
     "stylelint-scss": "^7.5.0",
